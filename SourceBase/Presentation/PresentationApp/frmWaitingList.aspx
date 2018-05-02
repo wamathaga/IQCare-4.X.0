@@ -74,6 +74,7 @@
                                                         <asp:BoundField HeaderText="Waiting Time" DataField="TimeOnList" />
                                                         <asp:BoundField HeaderText="WaitingListID" DataField="WaitingListID" Visible="false" />
                                                         <asp:BoundField HeaderText="Added By" DataField="UserName" />
+                                                         <asp:BoundField HeaderText="Module Name" DataField="ModuleName" />
                                                         <asp:BoundField HeaderText="Waiting For" DataField="WaitingFor" />
                                                     </Columns>
                                                 </asp:GridView>

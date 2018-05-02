@@ -49,6 +49,24 @@ namespace PresentationApp.ClinicalForms.UserControl {
         public global::System.Web.UI.WebControls.Label lblLastRegimen;
         
         /// <summary>
+        /// ChangeRegimenDate_Label control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label ChangeRegimenDate_Label;
+        
+        /// <summary>
+        /// lblChangeRegimentDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblChangeRegimentDt;
+        
+        /// <summary>
         /// grdARVHistory control.
         /// </summary>
         /// <remarks>

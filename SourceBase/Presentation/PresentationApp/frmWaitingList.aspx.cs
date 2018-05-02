@@ -29,7 +29,7 @@ namespace IQCare.Web
             {
                 theDSXML.ReadXml(MapPath(".\\XMLFiles\\AllMasters.con"));
                 IQCareUtils theUtils = new IQCareUtils();
-                                                                                                                          BindFunctions BindManager = new BindFunctions();
+                BindFunctions BindManager = new BindFunctions();
                 DataView theDV = new DataView(theDSXML.Tables["Mst_Decode"]);
                 theDV.RowFilter = "DeleteFlag=0 and CodeID=214";
                 if (theDV.Table != null)

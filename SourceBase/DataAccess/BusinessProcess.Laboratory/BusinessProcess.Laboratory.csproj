@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\Application.Common.dll</HintPath>
     </Reference>
-    <Reference Include="DataAccess.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\DataAccess.Entity.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -83,6 +79,10 @@
     <ProjectReference Include="..\DataAccess.Common\DataAccess.Common.csproj">
       <Project>{FA6D554F-BC52-454A-89D5-F8E576B3843E}</Project>
       <Name>DataAccess.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
+      <Project>{b039aefb-4059-4368-87bf-03545acab705}</Project>
+      <Name>DataAccess.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interface.Laboratory\Interface.Laboratory.csproj">
       <Project>{8BEA1F24-AF9D-40E1-87E2-83D7CD66202B}</Project>

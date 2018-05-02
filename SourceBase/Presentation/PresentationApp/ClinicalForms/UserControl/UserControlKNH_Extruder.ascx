@@ -155,9 +155,9 @@
             onExtClose: function () { }
         });
         
-        var b_ISKNH = "<%=Session["isKNHEnabled"]%>";
+        //var b_ISKNH = "<%=Session["isKNHEnabled"]%>";
         //debugger;
-        if (b_ISKNH=="True") {
+        //if (b_ISKNH=="True") {
             $("#extruderLeft2").buildMbExtruder({
                 position: "left",
                 width: 400,
@@ -167,12 +167,11 @@
                 onExtContentLoad: function () { },
                 onExtClose: function () { }
             });
-        }
-
-        else
-        {
-            document.getElementById("extruderLeft2").style.display = "none";
-        }
+        //}
+        //else
+        //{
+        //    document.getElementById("extruderLeft2").style.display = "none";
+        //}
           
         var b_ISMEI = "<%=Session["isMEIVisible"]%>";
         //debugger;

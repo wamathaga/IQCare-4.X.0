@@ -6,7 +6,28 @@
 <%@ Register Src="../ClinicalForms/UserControl/UserControl_Loading.ascx" TagName="UserControl_Loading"
     TagPrefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="server">
-        <script type="text/javascript">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#hidDifferenciatedCare").val() == 1) {
+                $("#chkYesterdayMed").bootstrapSwitch('state', true);
+            }
+            $("#chkDifferenciatedCare").on('switchChange.bootstrapSwitch', function (event, state) {
+                if (GetSwitchValue("chkDifferenciatedCare") == 1) {
+                    $("#hidDifferenciatedCare").val("1");
+                } else {
+                    $("#hidDifferenciatedCare").val("0");
+                }
+            });
+        });
+        function GetSwitchValue(ctrlName) {
+            var ctrlVal = $("#" + ctrlName).bootstrapSwitch('state');
+            if (ctrlVal)
+                ctrlVal = 1;
+            else
+                ctrlVal = 0;
+            return ctrlVal;
+        }
+
         function ace1_itemSelected(source, e) {
             var hdCustID = $get('<%= hdCustID.ClientID %>');
             hdCustID.value = e.get_value();
@@ -127,6 +148,10 @@
                 document.getElementById("<%=hdnregimenCode.ClientID %>").value = "visible";
             }
 
+            var IsEDC = $("#hidDifferenciatedCare").val();
+            if (IsEDC > 0) {
+                $("#chkYesterdayMed").bootstrapSwitch('state', true);
+            }
         }
 
         function resetPosition(object, args) {
@@ -166,7 +191,6 @@
             }
         }
         //
-        
 
 
     </script>
@@ -174,6 +198,8 @@
         function RegisterJQuery() {
             $('#txtprescriptionDate').datepicker({ autoclose: true });
             $('#txtDispenseDate').datepicker({ autoclose: true });
+            $("#chkDifferenciatedCare").bootstrapSwitch('state', false);
+
         }
         //Calling MyFunction when document is ready (Page loaded first time)
         $(document).ready(RegisterJQuery);
@@ -196,16 +222,25 @@
                             <div class="row" align="center">
                                 <br />
                                 <asp:Button ID="btnNewOrder" runat="server" Text="New Order" OnClick="btnNewOrder_Click"
-                                    CssClass="btn btn-primary" Height="30px" Width="9%" Style="text-align:left;"/>
-                                    <label class="glyphicon glyphicon-plus" style="margin-left: -2%; vertical-align: sub; color: #fff; margin-right: 2%;"></label>
-                                <asp:Button ID="btnPendingOrders" runat="server" CssClass="btn btn-primary" Text="View Pending Orders" Height="30px" Width="13%" Style="text-align:left;"/>
-                                <label class="fa fa-eye" style="margin-left: -2%; vertical-align: sub; color: #fff; margin-right: 2%;"></label>
+                                    CssClass="btn btn-primary" Height="30px" Width="9%" Style="text-align: left;" />
+                                <label class="glyphicon glyphicon-plus" style="margin-left: -2%; vertical-align: sub;
+                                    color: #fff; margin-right: 2%;">
+                                </label>
+                                <asp:Button ID="btnPendingOrders" runat="server" CssClass="btn btn-primary" Text="View Pending Orders"
+                                    Height="30px" Width="13%" Style="text-align: left;" />
+                                <label class="fa fa-eye" style="margin-left: -2%; vertical-align: sub; color: #fff;
+                                    margin-right: 2%;">
+                                </label>
                                 <asp:Button ID="btnDrugHistory" runat="server" CssClass="btn btn-primary" Text="Drug History"
-                                    OnClientClick="openDrugHistory()" Height="30px" Width="9%" Style="text-align:left;"/>
-                                    <label class="fa fa-history" style="margin-left: -2%; vertical-align: sub; color: #fff; margin-right: 2%;"></label>
+                                    OnClientClick="openDrugHistory()" Height="30px" Width="9%" Style="text-align: left;" />
+                                <label class="fa fa-history" style="margin-left: -2%; vertical-align: sub; color: #fff;
+                                    margin-right: 2%;">
+                                </label>
                                 <asp:Button ID="btnAddAllergy" runat="server" CssClass="btn btn-primary" Text="Add Allergy"
-                                    OnClientClick="openAddAllergyPage()" Height="30px" Width="9%" Style="text-align:left;"/>
-                                    <label class="glyphicon glyphicon-plus" style="margin-left: -2%; vertical-align: sub; color: #fff; margin-right: 2%;"></label>
+                                    OnClientClick="openAddAllergyPage()" Height="30px" Width="9%" Style="text-align: left;" />
+                                <label class="glyphicon glyphicon-plus" style="margin-left: -2%; vertical-align: sub;
+                                    color: #fff; margin-right: 2%;">
+                                </label>
                                 <act:ModalPopupExtender ID="btnPendingOrders_ModalPopupExtender" runat="server" TargetControlID="btnPendingOrders"
                                     PopupControlID="tblPendingOrders" BackgroundCssClass="modalBackground" CancelControlID="btnPendingOrdersClose">
                                 </act:ModalPopupExtender>
@@ -445,7 +480,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                                                     <asp:DropDownList ID="ddlTreatmentPlan" runat="server" Width="99%" Enabled="True"
-                                                       CssClass="form-control">
+                                                        CssClass="form-control">
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -457,8 +492,7 @@
                                                         WHO Stage</label>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                                                    <asp:DropDownList ID="ddlWHOStage" runat="server" Width="99%" Enabled="False" 
-                                                        CssClass="form-control">
+                                                    <asp:DropDownList ID="ddlWHOStage" runat="server" Width="99%" Enabled="False" CssClass="form-control">
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -471,6 +505,34 @@
                                     Collapsed="True" ImageControlID="imgClientInfo" Enabled="True"></act:CollapsiblePanelExtender>
                             </div>
                             <hr />
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                            <label for="inputEmail3" class="control-label">
+                                                Patient Classification</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                            <asp:DropDownList ID="ddlPtnClassification" ClientIDMode="Static" runat="server"
+                                                Width="99%" Enabled="True" CssClass="form-control">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                            <label for="inputEmail3" class="control-label">
+                                                Differenciated Care</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                            <asp:HiddenField ID="hidDifferenciatedCare" ClientIDMode="Static" runat="server" Value="0" />
+                                            <input id="chkDifferenciatedCare" runat="server" clientidmode="Static" name="switch-size"
+                                                type="checkbox" checked data-size="small" data-on-text="Yes" data-off-text="No">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
@@ -660,8 +722,14 @@
                                                                                             </asp:DropDownList>
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
+                                                                                    <asp:TemplateField HeaderText="Price" HeaderStyle-Width="50px">
+                                                                                        <ItemTemplate>
+                                                                                            <asp:Label ID="lblSellingPrice" runat="server" Text='<%# Bind("SellingPrice") %>'></asp:Label>
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
                                                                                     <asp:TemplateField HeaderText="Expiry Date" HeaderStyle-Width="80px">
                                                                                         <ItemTemplate>
+                                                                                            <asp:HiddenField ID="hBatchQty" runat="server" />
                                                                                             <asp:Label ID="lblExpiryDate" runat="server" Width="100%" Text='<%# Bind("ExpiryDate") %>'></asp:Label>
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
@@ -700,7 +768,8 @@
                                                                                             <asp:TextBox ID="txtQtyPrescribed" runat="server" Width="90%" Text='<%# Bind("QtyPrescribed") %>'
                                                                                                 class="form-control"></asp:TextBox>
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Required"
-                                                                                                Display="Dynamic" SetFocusOnError="true" ControlToValidate="txtQtyPrescribed" ValidationGroup='RequiredForSave'></asp:RequiredFieldValidator>
+                                                                                                Display="Dynamic" SetFocusOnError="true" ControlToValidate="txtQtyPrescribed"
+                                                                                                ValidationGroup='RequiredForSave'></asp:RequiredFieldValidator>
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
                                                                                     <asp:TemplateField HeaderText="Pill Count" HeaderStyle-Width="120px">
@@ -856,7 +925,7 @@
                                                 Width="100%" BorderColor="white" PageIndex="1" BorderWidth="1" GridLines="None"
                                                 CssClass="table table-bordered table-hover" CellPadding="0" CellSpacing="0" DataKeyNames="ptn_pharmacy_pk, visitID"
                                                 OnSelectedIndexChanged="gvPendingorders_SelectedIndexChanged" OnRowDataBound="gvPendingorders_RowDataBound">
-                                                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>                                              
+                                                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                                                 <Columns>
                                                     <asp:BoundField HeaderText="Transaction Date" DataField="TransactionDate" />
                                                     <asp:BoundField HeaderText="Status" DataField="Status" />

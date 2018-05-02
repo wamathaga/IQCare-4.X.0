@@ -3,13 +3,15 @@ function InitPresentingComplaintsControls(response) {
     window.scrollTo(0, 0);
     arrPresentingComplaints = [];
     arrChronicDisorders = [];
+    var todayDate = new Date();
 
     //Date picker
     $("#dtOnsetDate").datepicker({
         autoclose: true
     })//.datepicker("setDate", "0");
     $("#dtCCOnsetDate").datepicker({
-        autoclose: true
+        autoclose: true,
+        endDate: todayDate
     })//.datepicker("setDate", "0");
     $("#dtLMP").datepicker({
         autoclose: true
@@ -20,8 +22,8 @@ function InitPresentingComplaintsControls(response) {
             var lmpdt = $('#dtLMP').val();
             var EDDdate = new Date(Date.parse(lmpdt, "MM/dd/yyyy"));   //Get the Date object with actual date
             EDDdate.setDate(EDDdate.getDate() + 280); //Set date object adding 3 days.
-            $("#dtEDD").datepicker("setDate", EDDdate);
-
+            //$("#dtEDD").datepicker("setDate", EDDdate);
+            $("#hidDTEDD").val(EDDdate);
         }
     });
     $("#dtEDD").datepicker({
@@ -32,16 +34,16 @@ function InitPresentingComplaintsControls(response) {
     }); //.datepicker("setDate", "0");
     $("#dtDateScreened").datepicker({
         autoclose: true
-    })//.datepicker("setDate", "0");
+    }); //.datepicker("setDate", "0");
     $("#dtVDRL").datepicker({
         autoclose: true
-    })//.datepicker("setDate", "0");
+    }); //.datepicker("setDate", "0");
     $("#dtRhesus").datepicker({
         autoclose: true
-    })//.datepicker("setDate", "0");
+    }); //.datepicker("setDate", "0");
     $("#dtHb").datepicker({
         autoclose: true
-    })//.datepicker("setDate", "0");
+    }); //.datepicker("setDate", "0");
 
 
     $("#ddlPresentingComplaints").select2();
@@ -113,6 +115,9 @@ function InitPresentingComplaintsControls(response) {
 }
 
 function EnableDisableContraceptiveHistory(chkValue) {
+    $("#ddlFPM").select2("val", "0");
+    $("#ddlNoFPReason").select2("val", "0");
+
     if (chkValue == 0) {
         $("#ddlFPM").prop('disabled', true);
         $("#ddlNoFPReason").prop('disabled', false);
@@ -387,6 +392,7 @@ function BindPCCombo(response) {
     //// ANC Profile Section hide or visible.......
     $("#ddlPregnant").select2().on('change', function () {
         // var preg =  $("#ddlPregnant").select2().val();
+        debugger;
         var preg = $(this).val();
         var pregData = $(this).select2('data')[0];
         if (preg != null) {
@@ -398,7 +404,7 @@ function BindPCCombo(response) {
                 $("#divContraceptiveHistory").removeClass().addClass("box box-primary");
                 $("#divContraceptiveHistoryI").removeClass("fa fa-minus").addClass("fa fa-minus");
             }
-
+            $("#dtEDD").datepicker('setDate', "");
             if (pregData.text.toUpperCase() == "NO") {
                 $("#dtEDD").prop('disabled', true);
                 $("#dtOtherDates").prop('disabled', true);
@@ -416,6 +422,9 @@ function BindPCCombo(response) {
                 }
                 else {
                     $("#dtEDD").prop('disabled', false);
+                    var eddDate = new Date(Date.parse($("#hidDTEDD").val(), "MM/dd/yyyy"));
+                    var fmtEDD = $.format.date(eddDate, "MM/dd/yyyy");
+                    $("#dtEDD").datepicker("setDate", fmtEDD);
                     $("#dtOtherDates").prop('disabled', true);
                     //$("#txtParity").prop('disabled', false);
                     //$("#txtGravidae").prop('disabled', false);
@@ -491,6 +500,20 @@ function BindPCData(response) {
     });
     BindDataTable(arrChronicDisorders, "divChronicDisorders", "chkChronicDisorders", "dtlChronicDisorders");
 
+    debugger;
+
+    if (response.OBSGYN.FPS == 1) {
+        $("#chkOnFamilyPlanning").bootstrapSwitch('state', true);
+        $("#ddlFPM").prop('disabled', false);
+        $("#ddlNoFPReason").prop('disabled', true);
+    }
+    else {
+        $("#ddlFPM").prop('disabled', true);
+        $("#ddlNoFPReason").prop('disabled', false);
+    }
+
+    //CheckDatenAssign(response.OBSGYN.EDD, "dtEDD", false);
+    $("#hidDTEDD").val(response.OBSGYN.EDD);
 
     $("#ddlReasonAmenorrhoea").select2().val(response.OBSGYN.Amenorrhoea).trigger("change");
     $("#ddlPregnant").select2().val(response.OBSGYN.Pregnant).trigger("change");
@@ -498,6 +521,22 @@ function BindPCData(response) {
     $("#ddlNoFPReason").select2().val(response.OBSGYN.NFP).trigger("change");
     $("#ddlRhesusResult").select2().val(response.OBSGYN.RhesusTR).trigger("change");
     $("#ddlVDRLResult").select2().val(response.OBSGYN.VDRLTR).trigger("change");
+
+
+    var valFPM = $("#ddlFPM").select2("val");
+    var dataFPM = $("#ddlFPM").select2('data')[0];
+
+
+    if (valFPM != null) {
+        if (dataFPM.text.toUpperCase().indexOf("TUBAL LIGATION") >= 0) {
+            $("#chkOnFamilyPlanning").bootstrapSwitch('disabled', true);
+            $("#ddlFPM").prop('disabled', true);
+        }
+        else if (dataFPM.text.toUpperCase().indexOf("VASECTOMY") >= 0) {
+            $("#chkOnFamilyPlanning").bootstrapSwitch('disabled', true);
+            $("#ddlFPM").prop('disabled', true);
+        }
+    }
 
 
     $("#txtAgeAtMenarche").val(response.OBSGYN.Menarche);
@@ -518,18 +557,8 @@ function BindPCData(response) {
         $("#chkCCS").bootstrapSwitch('state', true);
     }
 
-    if (response.OBSGYN.FPS == 1) {
-        $("#chkOnFamilyPlanning").bootstrapSwitch('state', true);
-        $("#ddlFPM").prop('disabled', false);
-        $("#ddlNoFPReason").prop('disabled', true);
-    }
-    else {
-        $("#ddlFPM").prop('disabled', true);
-        $("#ddlNoFPReason").prop('disabled', false);
-    }
-    debugger;
     CheckDatenAssign(response.OBSGYN.LMP, "dtLMP", false);
-    CheckDatenAssign(response.OBSGYN.EDD, "dtEDD", false);
+
     CheckDatenAssign(response.OBSGYN.CCSD, "dtDateScreened", false);
     CheckDatenAssign(response.OBSGYN.DOD, "dtOtherDates", false);
 
@@ -727,6 +756,8 @@ function SavePresentingComplaints() {
 function CheckPCBlankValues() {
     errorMsg = '';
     var errorField = '';
+    var age = $("#hidDOB").val();
+    var gender = $("#hidGender").val();
 
     var chkComplaints = GetSwitchValue("chkComplaints");
 
@@ -737,6 +768,7 @@ function CheckPCBlankValues() {
     }
     if ($("#hidGender").val().toLowerCase() == "female") {
         var age = $("#hidDOB").val();
+        debugger;
         if (age > 12) {
             var ddlPregnant = $("#ddlPregnant").select2("val");
             if (ddlPregnant == null) {
@@ -745,8 +777,78 @@ function CheckPCBlankValues() {
                 }
                 errorField += 'Pregnant ';
             }
+            else {
+
+                var pregData = $("#ddlPregnant").select2('data')[0];
+                if (pregData.text.toUpperCase() == "YES") {
+
+                    var chkANCProfileDone = GetSwitchValue("chkANCProfileDone");
+                    if (chkANCProfileDone == 1) {
+
+                        var ddlVDRLResult = $("#ddlVDRLResult").select2("val");
+                        if (ddlVDRLResult != null) {
+                            if ($("#dtVDRL").val().length == 0) {
+                                if (errorField.length > 1) {
+                                    errorField += ', ';
+                                }
+                                errorField += 'VDRL date ';
+                            }
+                        }
+
+                        var txtHbResult = $("#txtHbResult").val();
+                        if (parseInt(txtHbResult) > 0) {
+                            if ($("#dtHb").val().length == 0) {
+                                if (errorField.length > 1) {
+                                    errorField += ', ';
+                                }
+                                errorField += 'HB date ';
+                            }
+                        }
+
+                        var ddlRhesusResult = $("#ddlRhesusResult").select2("val");
+                        if (ddlRhesusResult != null) {
+                            if ($("#dtRhesus").val().length == 0) {
+                                if (errorField.length > 1) {
+                                    errorField += ', ';
+                                }
+                                errorField += 'Rhesus date ';
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
+    if (gender.toLowerCase() == "female") {
+        if (age > 12) {
+            var chkOnFamilyPlanning = GetSwitchValue("chkOnFamilyPlanning");
+            if (chkOnFamilyPlanning == 1) {
+                var ddlFPM = $("#ddlFPM").select2("val");
+                if (ddlFPM == null) {
+                    if (errorField.length > 1) {
+                        errorField += ', ';
+                    }
+                    errorField += 'Family Planning Method ';
+                }
+            } else {
+                var ddlNoFPReason = $("#ddlNoFPReason").select2("val");
+                var ddlPregnant = $("#ddlPregnant").select2("val");
+                if (ddlPregnant != null) {
+                    var pregData = $("#ddlPregnant").select2('data')[0];
+                    if (pregData.text.toUpperCase() != "YES") {
+                        if (ddlNoFPReason == null) {
+                            if (errorField.length > 1) {
+                                errorField += ', ';
+                            }
+                            errorField += 'Reason not on Family Planning ';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     if (isNaN(errorField)) {
         errorMsg = errorField + 'cannot be blank.';

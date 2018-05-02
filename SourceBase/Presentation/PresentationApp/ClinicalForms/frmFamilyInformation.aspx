@@ -64,18 +64,18 @@
             else
                 document.getElementById('divRelationDate').style.display = 'none';
         }
-        function fnHideShowControl() {
-            var val = document.getElementById('<%=regthisclinic.ClientID %>').value;
+        //        function fnHideShowControl() {
+        //            var val = document.getElementById('%=regthisclinic.ClientID %').value;
 
-            if (val == 1) {
-                document.getElementById(RegthisclinicYes).style.display = 'inline';
-                document.getElementById(RegthisclinicNo).style.display = 'none';
-            }
-            else {
-                document.getElementById(RegthisclinicNo).style.display = 'inline';
-                document.getElementById(RegthisclinicYes).style.display = 'none';
-            }
-        }
+        //            if (val == 1) {
+        //                document.getElementById(RegthisclinicYes).style.display = 'inline';
+        //                document.getElementById(RegthisclinicNo).style.display = 'none';
+        //            }
+        //            else {
+        //                document.getElementById(RegthisclinicNo).style.display = 'inline';
+        //                document.getElementById(RegthisclinicYes).style.display = 'none';
+        //            }
+        //        }
         function fnValidate() {
             if (document.getElementById('<%=txtfname.ClientID%>').value == "") {
                 alert("First Name cannot be blank");
@@ -163,14 +163,14 @@
                                 </asp:Panel>
                                 <br />
                             </div>
-                            <div class="row">
+                            <%--<div class="row">
                                 <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
                                         Registered at this clinic:</label>
                                 </div>
                                 <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                                    <asp:DropDownList ID="regthisclinic" name="regthisclinic" AutoPostBack="true" runat="server"
-                                        Width="30%" OnSelectedIndexChanged="regthisclinic_SelectedIndexChanged" class="form-control">
+                                    <asp:DropDownList ID="regthisclinic" name="regthisclinic" AutoPostBack="false" runat="server"
+                                        Width="30%" class="form-control">
                                         <asp:ListItem Text="No" Value="0"></asp:ListItem>
                                         <asp:ListItem Text="Yes" Value="1"></asp:ListItem>
                                     </asp:DropDownList>
@@ -179,12 +179,12 @@
                                     <asp:Button ID="btnfind" Text="Find Patient" runat="server" Width="60%" OnClick="btnFind"
                                         CssClass="btn btn-primary" Height="30px" Style="text-align: left;" />
                                     <label class="glyphicon glyphicon-search" style="vertical-align: sub; margin-left: 0%;
-                                        color: #fff; visibility: visible;">
+                                        color: #fff;">
                                     </label>
                                 </div>
                                 <div class="col-md-4 col-sm-12 col-xs-12 form-group">
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="row">
                                 <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
@@ -313,13 +313,29 @@
                                 <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                                 </div>
                             </div>
-                            <div class="row col-sm-12 col-xs-12 form-group" align="center">
-                                <asp:Button ID="btnadd" runat="server" OnClientClick="return fnValidate();" ClientIDMode="Static"
-                                    Style="text-align: left" Text="Add Member" OnClick="btnAdd" CssClass="btn btn-primary"
-                                    Width="13%" Height="30px" />
-                                <label class="glyphicon glyphicon-plus" style="margin-left: -2.8%; vertical-align: sub;
-                                    color: #fff;">
-                                </label>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                    &nbsp;
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                            <asp:Button ID="btnadd" runat="server" OnClientClick="return fnValidate();" ClientIDMode="Static"
+                                                Text="Add Member" OnClick="btnAdd" CssClass="btn btn-primary" Height="30px" Style="text-align: left;
+                                                margin-right: 20px;" />
+                                            <span class="glyphicon glyphicon-plus" style="margin-left: -3%; vertical-align: middle;
+                                                color: #fff; margin-right: 1%"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                    <asp:Button ID="btnfind" Text="Find Patient" runat="server" OnClick="btnFind" CssClass="btn btn-primary" />
+                                    <label class="glyphicon glyphicon-search" style="vertical-align: sub; color: #fff;">
+                                    </label>
+                                </div>
+                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                    &nbsp;
+                                </div>
                             </div>
                             <div class="row" align="center">
                                 <div class="col-sm-12 col-xs-12 form-group">

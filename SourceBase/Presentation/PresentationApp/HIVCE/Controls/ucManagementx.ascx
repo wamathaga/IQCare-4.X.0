@@ -261,7 +261,7 @@
                         <label for="inputEmail3" class="control-label requiredFieldColor">
                             Regimen Code:
                         </label>
-                        <select class="form-control select2" data-placeholder="Select" id="ddlRegimenCode" 
+                        <select class="form-control select2" data-placeholder="Select" id="ddlRegimenCode"
                             style="width: 100%;">
                         </select>
                     </div>
@@ -292,7 +292,8 @@
                             data-on-text="Yes" data-off-text="No">
                     </div>
                     <div class="col-md-5 col-sm-12 col-xs-12 form-group" id="divThreapyChangeComments">
-                        <textarea class="form-control" rows="2" placeholder="Comments" id="txtAreaChangeDiscussMDT" maxlength="150"></textarea>
+                        <textarea class="form-control" rows="2" placeholder="Comments" id="txtAreaChangeDiscussMDT"
+                             maxlength="1000"></textarea>
                     </div>
                 </div>
                 <div class="row" id="divARTStop">
@@ -321,8 +322,8 @@
     <!-- /.box sub box level G1 -->
 </div>
 <!-- / sub box level G1 -->
-<div id="div3PositivePrevention" class="box box-default box-solid">
-    <div class="box-header with-border">
+<div class="box box-default box-solid">
+    <div class="box-header with-border" id="div3PositivePreventionH">
         <h3 class="box-title">
             Positive Prevention</h3>
         <div class="box-tools pull-right">
@@ -333,7 +334,7 @@
         <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body" id="div3PositivePreventionB">
         <!-- / sub box level 2 -->
         <div class="box box-default box-solid">
             <!-- /.box-header -->
@@ -386,7 +387,7 @@
         </div>
         <!-- /.box-body -->
     </div>
-    <div class="box-header with-border">
+    <div class="box-header with-border" id="divMgrDiagnosisH">
         <h3 class="box-title">
             Diagnosis
         </h3>
@@ -398,7 +399,7 @@
         <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body" id="divMgrDiagnosisB">
         <!-- / sub box level 2 -->
         <div class="box box-default box-solid">
             <!-- /.box-header -->
@@ -449,7 +450,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                        <textarea class="form-control" rows="5" placeholder="ICD Comments" id="txtICDComments"></textarea>
+                        <textarea class="form-control" rows="5" placeholder="ICD Comments" id="txtICDComments" maxlength="1000"></textarea>
                     </div>
                 </div>
             </div>
@@ -457,7 +458,7 @@
         </div>
         <!-- /.box-body -->
     </div>
-    <div class="box-header with-border">
+    <div class="box-header with-border" id="divMgrRAWH">
         <h3 class="box-title">
             Reminders and workplan
         </h3>
@@ -469,7 +470,7 @@
         <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body" id="divMgrRAWB">
         <!-- / sub box level 2 -->
         <div class="box box-default box-solid">
             <!-- /.box-header -->
@@ -477,7 +478,7 @@
                 <!-- /.box-body -->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                        <textarea class="form-control" rows="5" placeholder="Reminders and Workplan" id="txtAreaReminders"></textarea>
+                        <textarea class="form-control" rows="5" placeholder="Reminders and Workplan" id="txtAreaReminders" maxlength="1000"></textarea>
                     </div>
                 </div>
             </div>
@@ -485,7 +486,7 @@
         </div>
         <!-- /.box-body -->
     </div>
-    <div class="box-header with-border">
+    <div class="box-header with-border" id="divMgrReferralsH">
         <h3 class="box-title">
             Referrals
         </h3>
@@ -497,7 +498,7 @@
         <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body" id="divMgrReferralsB">
         <!-- / sub box level 2 -->
         <div class="box box-default box-solid">
             <!-- /.box-header -->
@@ -505,7 +506,7 @@
                 <!-- /.box-body -->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                        <textarea class="form-control" rows="5" placeholder="Referrals" id="txtAreaReferrals"></textarea>
+                        <textarea class="form-control" rows="5" placeholder="Referrals" id="txtAreaReferrals" maxlength="1000"></textarea>
                     </div>
                 </div>
             </div>
@@ -536,7 +537,65 @@
                 <div class="row">
                     <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                         <label for="inputEmail3" class="control-label requiredFieldColor">
-                            Next Appointment Date</label>
+                            * Patient Classification</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <select class="form-control select2" data-placeholder="Select" id="ddlPtnClassification">
+                        </select>
+                    </div>
+                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                        &nbsp;</div>
+                    <div class="col-md-3 col-sm-12 col-xs-12 form-group" id="divEDC1">
+                        <label for="inputEmail3" class="control-label">
+                            Enrolled into Differenciated Care?</label>
+                        <input id="chkDifferenciatedCare" name="switch-size" type="checkbox" checked data-size="small"
+                            data-on-text="Yes" data-off-text="No">
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group" id="divEDC2">
+                        <label for="inputEmail3" class="control-label">
+                            ARt Refill Model</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group" id="divEDC3">
+                        <select class="form-control select2" data-placeholder="Select" id="ddlARTRefillModel">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label">
+                            Service Area</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label">
+                            Purpose</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label">
+                            Description</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        &nbsp;
+                    </div>
+                    <%--<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label">
+                            Signature
+                        </label>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <select class="form-control select2" data-placeholder="Select" id="ddlMgtSignature">
+                        </select>
+                    </div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label requiredFieldColor">
+                            * Next Appointment Date</label>
                     </div>
                     <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                         <div class="input-group date">
@@ -547,15 +606,23 @@
                                 style="padding: 13px 12px;" />
                         </div>
                     </div>
-                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
-                        <label for="inputEmail3" class="control-label">
-                            Purpose</label>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <input type="text" class="form-control" id="txtServiceArea" placeholder="Service Area"
+                            disabled="disabled" />
                     </div>
                     <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                         <select class="form-control select2" data-placeholder="Select" id="ddlPurpose">
                         </select>
                     </div>
-                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <input type="text" class="form-control" id="txtNADDescription" placeholder="Description" />
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <button type="button" class="btn btn-block btn-primary btn-sm" style="width: 50px;"
+                            id="btnAddNextAppointment" onclick="AddAppointment('0');">
+                            Add</button>
+                    </div>
+                    <%--<div class="col-md-1 col-sm-12 col-xs-12 form-group">
                         <label for="inputEmail3" class="control-label">
                             Signature
                         </label>
@@ -563,6 +630,77 @@
                     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
                         <select class="form-control select2" data-placeholder="Select" id="ddlMgtSignature">
                         </select>
+                    </div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label requiredFieldColor">
+                            * Drug Refill Appointment</label>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control" id="dtDrugRefillAppointmentDate" data-date-format="dd-M-yyyy"
+                                style="padding: 13px 12px;" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <input type="text" class="form-control" id="txtDRASA" placeholder="Service Area"
+                            disabled="disabled" />
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <select class="form-control select2" data-placeholder="Select" id="ddlDRAPurpose" disabled="disabled">
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <input type="text" class="form-control" id="txtDRADescription" placeholder="Description" />
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                        <button type="button" class="btn btn-block btn-primary btn-sm" style="width: 50px;"
+                            id="btnAddDrugRefillAppointment" onclick="AddAppointment('1');">
+                            Add</button>
+                    </div>
+                    <%--<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label">
+                            Signature
+                        </label>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                        <select class="form-control select2" data-placeholder="Select" id="ddlMgtSignature">
+                        </select>
+                    </div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        <table id="dtlNextAppointment" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">
+                                        #
+                                    </th>
+                                    <th style="width: 150px;">
+                                        Appintment Date
+                                    </th>
+                                    <th style="width: 100px;">
+                                        Service Area
+                                    </th>
+                                    <th style="width: 100px;">
+                                        Reason
+                                    </th>
+                                    <th style="width: 250px;">
+                                        Description
+                                    </th>
+                                    <th style="width: 100px;">
+                                        Status
+                                    </th>
+                                    <th style="width: 10px;">
+                                        Edit
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -579,11 +717,11 @@
                 <!-- /.box-body -->
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <button type="button" class="btn btn-primary" onclick="window.open('<%= ResolveUrl("~/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx") %>');">
+                        <button type="button" class="btn btn-primary" onclick="OpenCEPopup('<%= ResolveUrl("~/PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx") %>');">
                             Prescription<span class="glyphicon glyphicon-pencil" style="padding-left: 5px;"></span></button>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <button type="button" class="btn btn-primary" onclick="window.open('<%= ResolveUrl("~/Laboratory/frm_Laboratory.aspx") %>');">
+                        <button type="button" class="btn btn-primary" onclick="OpenCEPopup('<%= ResolveUrl("~/Laboratory/frm_Laboratory.aspx") %>');">
                             Laboratory<span class="glyphicon glyphicon-tags" style="padding-left: 5px;"></span></button>
                     </div>
                 </div>

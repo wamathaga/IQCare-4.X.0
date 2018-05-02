@@ -85,7 +85,13 @@ namespace PresentationApp.ClinicalForms
                 {
                     GetFormData();
                 }
-
+            }
+            else
+            {
+                if (!IsPostBack)
+                {                    
+                    GetFormData();
+                }
             }
             if (ddlFieldVisitType.SelectedItem.Text == "Initial only")
             {
@@ -618,7 +624,19 @@ namespace PresentationApp.ClinicalForms
         {
             IKNHMEI KNHMEIManager;
             KNHMEIManager = (IKNHMEI)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BKNHMEI, BusinessProcess.Clinical");
-            DataSet theDS = KNHMEIManager.GetKNHMEI_Data(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["PatientVisitId"]));
+            int ptnVisitID = 0;
+            if (Convert.ToInt32(Session["PatientVisitId"]) > 0)
+                ptnVisitID = Convert.ToInt32(Session["PatientVisitId"]);
+            else
+            {
+                DataSet theDSVisitId = KNHMEIManager.GetKNHANC_Data(ptnVisitID);
+                if(theDSVisitId!=null && theDSVisitId.Tables[0].Rows.Count>0)
+                    ptnVisitID = Convert.ToInt32(theDSVisitId.Tables[0].Rows[0]["Visit_ID"]);
+                else
+                    ptnVisitID = 0;
+            }            
+            //DataSet theDS = KNHMEIManager.GetKNHMEI_Data(Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["PatientVisitId"]));
+            DataSet theDS = KNHMEIManager.GetKNHMEI_Data(Convert.ToInt32(Session["PatientId"]), ptnVisitID);
             //Table 0
             if (theDS.Tables[0].Rows.Count > 0)
             {
@@ -1674,7 +1692,17 @@ namespace PresentationApp.ClinicalForms
                 validateMessage += IQCareMsgBox.GetMessage("BlankTextBox", msgBuilder, this) + "</br>";
                 validationCheck = false;
             }
-
+            //Change by Rahmat for-TETANUS TOXOID VACCINE is mandatory is Yes.
+            if (rdotetanustoxoidyes.Checked == true)
+            {
+                if (ddlTTVaccine.SelectedValue == "0" && ddlFieldVisitType.SelectedItem.Text == "Initial only")
+                {
+                    MsgBuilder msgBuilder = new MsgBuilder();
+                    msgBuilder.DataElements["Control"] = " -Tetanus Toxoid Vaccine";
+                    validateMessage += IQCareMsgBox.GetMessage("BlankTextBox", msgBuilder, this) + "</br>";
+                    validationCheck = false;
+                }
+            }
             #endregion
             if (!validationCheck)
             {
@@ -3083,18 +3111,41 @@ namespace PresentationApp.ClinicalForms
         {
             if (ddlFieldVisitType.SelectedItem.Text == "Initial only")
             {
-                showhideInitialOnly();
+                //showhideInitialOnly();
+                EnableDisableObstreticsHistoryField(true, false);
             }
             else if (ddlFieldVisitType.SelectedItem.Text == "Follow Up")
             {
                 showhideFollowUp();
+                EnableDisableObstreticsHistoryField(false, true);
+                //showhideInitialOnly();
             }
             else if (ddlFieldVisitType.SelectedItem.Text == "ANC PMTCT")
             {
                 showhideANCPMTCT();
+                EnableDisableObstreticsHistoryField(false, true);
+                //showhideInitialOnly();
             }
+            else
+            {
+                EnableDisableObstreticsHistoryField(false, true);
+            }
+            showhideInitialOnly();
+        }
+        #region "Enable Disable Field"
+        //Created by Rahmat as on 09-Feb-2018 for (PMTCT - MEI>CLINICAL REVIEW>OBSTRETIC HISTORY Info should auto populate from initial form)
+        void EnableDisableObstreticsHistoryField(bool flg1, bool flg2)
+        {
+            ddlMaternalBloodGroup.Enabled = flg1;
+            ddlRhesusFactor.Enabled = flg1;
+            ddlPartnersBloodGroup.Enabled = flg1;
+            pnlHistoryChronicIllness.Enabled = flg1;
+            rdoHistoryOfTwinsYes.Disabled = flg2;
+            rdoHistoryBloodTransfusionYes.Disabled = flg2;
+            txtBloodTransfusiondt.Disabled = flg2;            
         }
 
+        #endregion
         protected void btnPrevthreeFreq_Click(object sender, EventArgs e)
         {
             int VisitId = Convert.ToInt32(Session["PatientVisitId"]) > 0 ? Convert.ToInt32(Session["PatientVisitId"]) : 0;
@@ -3233,7 +3284,10 @@ namespace PresentationApp.ClinicalForms
                 string str = ex.Message;
             }
         }
-
+        protected void btnHideClick_Click(object sender, EventArgs e)
+        {
+            showhideInitialOnly();
+        }
 
 
 

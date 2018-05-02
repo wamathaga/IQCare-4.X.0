@@ -148,12 +148,15 @@ public partial class frmPatient_History : BasePage
                         }
                         else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
                             || (theDR["FormName"].ToString() == "Pharmacy")
-                            || (theDR["FormName"].ToString() == "Laboratory")
+                            || (theDR["FormName"].ToString() == "Order Labs")                            
                             || (theDR["FormName"].ToString() == "Paediatric Pharmacy")
                             || (theDR["FormName"].ToString() == "Clinical Encounter")
+                            || (theDR["FormName"].ToString() == "Refill Encounter")
+                            || (theDR["FormName"].ToString() == "Adherence Barriers")
+                            || (theDR["FormName"].ToString() == "Enhance Adherence Counselling")
                             )
                         {
-                            if ((theDR["FormName"].ToString() == "Pharmacy") || (theDR["FormName"].ToString() == "Laboratory") 
+                            if ((theDR["FormName"].ToString() == "Pharmacy") || (theDR["FormName"].ToString() == "Order Labs")
                                 || (theDR["FormName"].ToString() == "Paediatric Pharmacy"))
                             {
                                 if (theDR["CAUTION"].ToString() == "1")
@@ -183,7 +186,42 @@ public partial class frmPatient_History : BasePage
                                     theFrmRoot.ImageUrl = "~/Images/No_16x.ico";
                                 }
                             }
-
+                            if (theDR["FormName"].ToString() == "Refill Encounter")
+                            {
+                                if (theDR["DataQuality"].ToString() == "1")
+                                {
+                                    theFrmRoot.ImageUrl = "~/images/15px-Yes_check.svg.png";
+                                    Session["FormStatus"] = "Completed";
+                                }
+                                else
+                                {
+                                    theFrmRoot.ImageUrl = "~/Images/No_16x.ico";
+                                }
+                            }
+                            if (theDR["FormName"].ToString() == "Adherence Barriers")
+                            {
+                                if (theDR["DataQuality"].ToString() == "1")
+                                {
+                                    theFrmRoot.ImageUrl = "~/images/15px-Yes_check.svg.png";
+                                    Session["FormStatus"] = "Completed";
+                                }
+                                else
+                                {
+                                    theFrmRoot.ImageUrl = "~/Images/No_16x.ico";
+                                }
+                            }
+                            if (theDR["FormName"].ToString() == "Enhance Adherence Counselling")
+                            {
+                                if (theDR["DataQuality"].ToString() == "1")
+                                {
+                                    theFrmRoot.ImageUrl = "~/images/15px-Yes_check.svg.png";
+                                    Session["FormStatus"] = "Completed";
+                                }
+                                else
+                                {
+                                    theFrmRoot.ImageUrl = "~/Images/No_16x.ico";
+                                }
+                            }
                             /*if (Session["Paperless"].ToString() == "1")
                             {
                                 
@@ -527,8 +565,8 @@ public partial class frmPatient_History : BasePage
                 url = string.Format("{0}", "./frmClinical_Nigeria_ARTCareVisitation.aspx");
                 Response.Redirect(url);
                 break;
-            case "Laboratory":
-                //url = string.Format("{0}", "~/./Laboratory/frmLabOrder.aspx");
+            case "Order Labs":
+                //url = string.Format("{0}", "~/./Order Labs/frmLabOrder.aspx");
                 Session["LabOrderID"] = Session["PatientVisitId"];
 
                 if (!Authentication.HasFeatureRight(ApplicationAccess.Laboratory, filteresdDT))
@@ -595,7 +633,8 @@ public partial class frmPatient_History : BasePage
             case "HEI":
                 if (Convert.ToInt32(Session["TechnicalAreaId"]) == 1)
                 {
-                    url = string.Format("{0}", "./frmClinical_KNH_HEI.aspx");
+                    //url = string.Format("{0}", "./frmClinical_KNH_HEI.aspx");
+                    url = string.Format("{0}", "./frmClinical_KNH_HEI_New.aspx");
                     Response.Redirect(url);
                 }
                 break;
@@ -613,10 +652,11 @@ public partial class frmPatient_History : BasePage
                     Response.Redirect(url);
                 }
                 break;
-            case "MEI":
+            case "ANC":// Change MEI TO ANC By Rahmat because it was not redirected [15Feb2018]
                 if (Convert.ToInt32(Session["TechnicalAreaId"]) == 1)
                 {
-                    url = string.Format("{0}", "./frmClinical_KNH_MEI.aspx");
+                    //url = string.Format("{0}", "./frmClinical_KNH_MEI.aspx");
+                    url = string.Format("{0}", "./frmClinical_ANC.aspx");
                     Response.Redirect(url);
                 }
                 break;
@@ -641,6 +681,12 @@ public partial class frmPatient_History : BasePage
                 url = string.Format("{0}", "~/HIVCE/ClinicalEncounter.aspx");
                 Response.Redirect(url);
                 break;
+
+            case "Enhance Adherence Counselling":
+                url = string.Format("{0}", "~/Adherence/EnhanceAdherence.aspx");
+                Response.Redirect(url);
+                break;
+            
             case "Green Card Form":
                 //if (Convert.ToInt32(Session["TechnicalAreaId"]) == 203)
                 //{
@@ -649,6 +695,14 @@ public partial class frmPatient_History : BasePage
                 //}
                 break;
             //default: break;
+            case "Refill Encounter":
+                url = string.Format("{0}", "~/HIVCE/RefillEncounterForm.aspx");
+                Response.Redirect(url);
+                break;
+            case "Adherence Barriers":
+                url = string.Format("{0}", "~/Adherence/AdherenceBarriers.aspx");
+                Response.Redirect(url);
+                break;
 
         }
 

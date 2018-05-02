@@ -2255,11 +2255,14 @@ function AddFamilyMemberHIV() {
         }
         errorField += 'Age ';
     }
-    if ($("#dtLastHIVTestDate").val().length == 0) {
-        if (errorField.length > 1) {
-            errorField += ', ';
+
+    if (ddlHIVStatus != null && data3.text.toUpperCase() != "UNKNOWN") {
+        if ($("#dtLastHIVTestDate").val().length == 0) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'Last HIV Test Date ';
         }
-        errorField += 'Last HIV Test Date ';
     }
 
     if (isNaN(errorField)) {

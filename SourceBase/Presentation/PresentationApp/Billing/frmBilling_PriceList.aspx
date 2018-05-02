@@ -163,10 +163,12 @@
         </asp:UpdatePanel>
         <asp:UpdatePanel ID="divGridComponent" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-            <div class="row" align="center">
- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-           <div id="divPriceList" class="grid" style="width: 99%;">
-                                    <div class="rounded" style="margin-right:5px;">
+                <table cellspacing="6" cellpadding="0" width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="pad5 formbg border">
+                                <div id="divPriceList" class="grid" style="width: 100%;">
+                                    <div class="rounded">
                                         <div class="top-outer">
                                             <div class="top-inner">
                                                 <div class="top">
@@ -177,11 +179,11 @@
                                         </div>
                                         <div class="mid-outer">
                                             <div class="mid-inner">
-                                                <div class="mid" style="height: 280px; overflow: auto">
+                                                <div class="mid" style="height: 335px; overflow: auto">
                                                     <div id="div-PricelistGridview" class="GridView whitebg">
-                                                        <asp:GridView ID="gridPriceList" runat="server" AllowSorting="True" AutoGenerateColumns="False"
-                                                            BorderColor="White" CellPadding="0" GridLines="None" CssClass="table table-bordered table-hover"
-                                                            EmptyDataText="No Data to display" ShowHeaderWhenEmpty="True" Width="100%" 
+                                                        <asp:GridView ID="gridPriceList" runat="server" AllowSorting="True" AutoGenerateColumns="False" 
+                                                            BorderColor="White" BorderWidth="1px" CellPadding="0" GridLines="None" CssClass="table table-bordered table-hover"
+                                                            EmptyDataText="No Data to display" ShowHeaderWhenEmpty="True" Width="100%" BorderStyle="Solid"
                                                             DataKeyNames="ItemID,ItemTypeID,VersionStamp" OnRowCommand="gridPriceList_RowCommand"
                                                             OnRowDataBound="gridPriceList_RowDataBound" PageSize="50" OnRowCreated="gridPriceList_RowCreated"
                                                             AllowPaging="false" Visible="true">
@@ -190,26 +192,42 @@
                                                                     <ItemStyle Width="40%" />
                                                                     <HeaderStyle HorizontalAlign="Left" />
                                                                 </asp:BoundField>
-                                                                <asp:TemplateField HeaderText="Selling Price">
+                                                                <asp:TemplateField HeaderText="Cash Price">
                                                                     <ItemTemplate>
                                                                         <span style='display: <%# HideEdit() %>; white-space: nowrap'>
                                                                             <asp:Label ID="labelPrice" runat="server" Text='<%# Bind("SellingPrice", "{0:N}") %>'></asp:Label>
                                                                         </span><span style='display: <%# ShowInEdit() %>; white-space: nowrap'>
                                                                             <asp:TextBox ID="textPrice" runat="server" Text='<%# Bind("SellingPrice", "{0:N}") %>'
-                                                                                MaxLength="11" Width="150px" CssClass="form-control"></asp:TextBox>
+                                                                                MaxLength="11" Width="100px"></asp:TextBox>
                                                                             <ajaxToolkit:FilteredTextBoxExtender ID="ftePrice" runat="server" TargetControlID="textPrice"
                                                                                 FilterType="Numbers, Custom" ValidChars="." />
                                                                         </span>
                                                                     </ItemTemplate>
-                                                                    <ItemStyle Width="15%" />
+                                                                    <ItemStyle Width="10%" />
                                                                     <HeaderStyle HorizontalAlign="Left" />
                                                                 </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Insurance Price">
+                                                                    <ItemTemplate>
+                                                                        <span style='display: <%# HideEdit() %>; white-space: nowrap'>
+                                                                            <asp:Label ID="labelInsPrice" runat="server" Text='<%# Bind("SellingPriceIns", "{0:N}") %>'></asp:Label>
+                                                                        </span><span style='display: <%# ShowInEdit() %>; white-space: nowrap'>
+                                                                            <asp:TextBox ID="textInsPrice" runat="server" Text='<%# Bind("SellingPriceIns", "{0:N}") %>'
+                                                                                MaxLength="11" Width="100px"></asp:TextBox>
+                                                                            <ajaxToolkit:FilteredTextBoxExtender ID="fteInsPrice" runat="server" TargetControlID="textInsPrice"
+                                                                                FilterType="Numbers, Custom" ValidChars="." />
+                                                                        </span>
+                                                                    </ItemTemplate>
+                                                                    <ItemStyle Width="10%" />
+                                                                    <HeaderStyle HorizontalAlign="Left" />
+                                                                </asp:TemplateField>
+
                                                                 <asp:TemplateField HeaderText="Pricing Type">
                                                                     <ItemTemplate>
                                                                         <span style='display: <%# HideEdit() %>; white-space: nowrap'>
                                                                             <asp:Label ID="labelPriceType" runat="server"></asp:Label>
                                                                         </span><span style='display: <%# ShowInEdit() %>; white-space: nowrap'>
-                                                                            <asp:DropDownList runat="server" ID="ddlPriceType" AutoPostBack="false" Width="150px" CssClass="form-control">
+                                                                            <asp:DropDownList runat="server" ID="ddlPriceType" AutoPostBack="false">
                                                                                 <asp:ListItem Value="Item">Item</asp:ListItem>
                                                                                 <asp:ListItem Value="Dose">Dose</asp:ListItem>
                                                                             </asp:DropDownList>
@@ -225,7 +243,7 @@
                                                                         </span>
                                                                         <div style='display: <%# ShowInEdit() %>; white-space: nowrap'>
                                                                             <asp:TextBox ID="textPriceDate" runat="server" Text='<%# Bind("PriceDate", "{0:dd-MMM-yyyy}") %>'
-                                                                                MaxLength="11" Width="110px" CssClass="form-control"></asp:TextBox>
+                                                                                MaxLength="11" Width="90px"></asp:TextBox>
                                                                             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="textPriceDate"
                                                                                 ErrorMessage="*" Display="None" ValidationExpression="^(0?[1-9]|[12][0-9]|3[01])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(19|20)\d\d$"></asp:RegularExpressionValidator><br />
                                                                             <ajaxToolkit:CalendarExtender ID="calendarButtonExtender" runat="server" TargetControlID="textPriceDate"
@@ -250,7 +268,6 @@
                                                                     <HeaderStyle HorizontalAlign="Left" />
                                                                 </asp:TemplateField>
                                                             </Columns>
-                                                            <HeaderStyle HorizontalAlign="Left" />                                                           
                                                         </asp:GridView>
                                                     </div>
                                                 </div>
@@ -258,11 +275,11 @@
                                         </div>
                                     </div>
                                 </div>
-             </div>
- </div>
- <div class="row" align="center">
- <div class="col-md-12 col-sm-12 col-xs-12 form-group">
- <div id="divAction" style="white-space: nowrap; text-align: center;">
+                                <div class="bottom-outer">
+                                    <div class="bottom-inner">
+                                        <div class="bottom" style="text-align: center">
+                                            <br />
+                                            <div id="divAction" style="white-space: nowrap; text-align: center;">
                                                 <asp:Button ID="buttonSave" runat="server" Text="Save" OnClick="buttonSave_Click"
                                                     CausesValidation="false" CssClass="btn btn-primary" Height="30px" Width="8%"
                                                     Style="text-align: left;" />
@@ -276,15 +293,23 @@
                                                 </label>
                                             </div>
                                             <br />
-                                            <asp:Repeater ID="rptPager" runat="server" Visible="False">
+                                            <asp:Repeater ID="rptPager" runat="server" Visible="true">
                                                 <ItemTemplate>
                                                     <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>'
                                                         Enabled='<%# Eval("Enabled") %>' OnClick="Page_Changed"></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:Repeater>
-             </div>
- </div>
-                
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="form pad5 center" style="white-space: nowrap; text-align: center">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="btnOkAction" EventName="Click" />
@@ -305,16 +330,6 @@
             &nbsp;<asp:Panel ID="pnPopup_Title" runat="server" Style="cursor: move;">
                         <asp:Label ID="lblNotice" runat="server">Price</asp:Label>                        
                     </asp:Panel>
-            <h3>
-            </h3>
-            <h3>
-            </h3>
-            <h3>
-            </h3>
-            <h3>
-            </h3>
-            <h3>
-            </h3>
             <h3>
             </h3>
             <h3>

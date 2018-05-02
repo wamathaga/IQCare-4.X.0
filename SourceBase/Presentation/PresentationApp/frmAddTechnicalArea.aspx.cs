@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Configuration;
 using System.Data;
+using System.Web;
+using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Interface.Clinical;
 using Interface.Security;
 using Application.Common;
+using Application.Interface;
 using Application.Presentation;
 using Interface.Administration;
 using System.Text;
@@ -28,7 +33,7 @@ public partial class frmAddTechnicalArea : BasePage
         //imgDtReEnroll.Attributes.Add("onclick", "w_displayDatePicker('" + txtReEnrollmentDate.ClientID + "');");
         //txtenrollmentDate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
         //txtenrollmentDate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3'); isCheckValidDate('" + Application["AppCurrentDate"] + "', '" + txtenrollmentDate.ClientID + "', '" + txtenrollmentDate.ClientID + "');");
-       // txtReEnrollmentDate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
+        // txtReEnrollmentDate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
         //txtReEnrollmentDate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3'); isCheckValidDate('" + Application["AppCurrentDate"] + "', '" + txtReEnrollmentDate.ClientID + "', '" + txtReEnrollmentDate.ClientID + "');");
 
         //   txtenrollmentDate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3');");
@@ -39,19 +44,20 @@ public partial class frmAddTechnicalArea : BasePage
         btnReEnollPatient.Visible = false;
         if (!IsPostBack)
         {
-            
 
-            LoadPatientDetail();
+
             BindDropdown();
+            LoadPatientDetail();
+
             ClientScript.RegisterStartupScript(this.GetType(), "Changing", "<script>fnChange();</script>");
-            
+
             if (Session["TechnicalAreaName"] != null)
                 ddlTecharea.Items.FindByText(Session["TechnicalAreaName"].ToString()).Selected = true;
 
             //Automatically sets the technical area that you are in and cannot be changed
             string moduleId = String.Empty;
 
-            if(String.IsNullOrEmpty(Convert.ToString(Request.QueryString["mod"])))
+            if (String.IsNullOrEmpty(Convert.ToString(Request.QueryString["mod"])))
                 moduleId = ddlTecharea.SelectedValue.ToString();
             else
                 moduleId = Convert.ToString(Request.QueryString["mod"]);
@@ -62,7 +68,7 @@ public partial class frmAddTechnicalArea : BasePage
                 btnContinue.Visible = false;
                 lblContinue.Visible = false;
                 ddlTecharea.SelectedValue = moduleId;
-                ddlTecharea.Enabled = false;
+                ddlTecharea.Enabled = true;
                 Session["TechnicalAreaName"] = Request.QueryString["srvNm"];
                 Session["TechnicalAreaId"] = moduleId;
 
@@ -95,16 +101,19 @@ public partial class frmAddTechnicalArea : BasePage
         GetValuefromHT = (Hashtable)Session["htPtnRegParameter"];
         if (patientID == 0)
         {
-            //lblname.Text = GetValuefromHT["FirstName"].ToString() + ' ' + GetValuefromHT["MiddleName"].ToString() + ' ' + GetValuefromHT["LastName"].ToString();
+            lblname.Text = GetValuefromHT["FirstName"].ToString() + ' ' + GetValuefromHT["MiddleName"].ToString() + ' ' + GetValuefromHT["LastName"].ToString();
             string Gender = GetValuefromHT["Gender"].ToString() == "16" ? "Male" : "Female";
             Session["PatientSex"] = Gender;
             lblsex.Text = Gender;
             lbldob.Text = GetValuefromHT["DOB"].ToString();
-            DateTime today = DateTime.Today;
-            int age = today.Year - Convert.ToDateTime(GetValuefromHT["DOB"].ToString()).Year;
-            Session["PatientAge"] = age;
-            int ageMonth = today.Month - Convert.ToDateTime(GetValuefromHT["DOB"].ToString()).Month;
-            Session["PatientAgeMonths"] = ageMonth;
+
+            //DateTime today = DateTime.Today;
+            //int age = today.Year - Convert.ToDateTime(GetValuefromHT["DOB"].ToString()).Year;
+            //Session["PatientAge"] = age;
+            //int ageMonth = today.Month - Convert.ToDateTime(GetValuefromHT["DOB"].ToString()).Month;
+            //Session["PatientAgeMonths"] = ageMonth;
+            CalculateYourAge(Convert.ToDateTime(GetValuefromHT["DOB"].ToString()));
+
             ViewState["RegistrationDate"] = GetValuefromHT["RegistrationDate"].ToString();
             //lblIQno.Text = theDS.Tables[0].Rows[0]["IQNumber"].ToString();
             btnContinue.Visible = false;
@@ -117,12 +126,16 @@ public partial class frmAddTechnicalArea : BasePage
         DataSet theDS = ptnMgr.GetPatientRegistration(patientID, 12);
         if (theDS.Tables[0].Rows.Count > 0)
         {
-            //lblname.Text = theDS.Tables[0].Rows[0]["Firstname"].ToString() + ' ' + theDS.Tables[0].Rows[0]["Middlename"].ToString() + ' ' + theDS.Tables[0].Rows[0]["Lastname"].ToString();
+            lblname.Text = theDS.Tables[0].Rows[0]["Firstname"].ToString() + ' ' + theDS.Tables[0].Rows[0]["Middlename"].ToString() + ' ' + theDS.Tables[0].Rows[0]["Lastname"].ToString();
             lblsex.Text = theDS.Tables[0].Rows[0]["sex"].ToString();
             lbldob.Text = theDS.Tables[0].Rows[0]["dob"].ToString();
             lblIQno.Text = theDS.Tables[0].Rows[0]["IQNumber"].ToString();
             Session["PatientSex"] = theDS.Tables[0].Rows[0]["sex"].ToString();
             Session["PatientAge"] = theDS.Tables[0].Rows[0]["AGE"].ToString(); // +"." + theDS.Tables[0].Rows[0]["AgeInMonths"].ToString();
+            if (Convert.ToInt16(theDS.Tables[0].Rows[0]["PatientTypeId"]) > 0)
+            {
+                ddlPatientType.Items.FindByValue(theDS.Tables[0].Rows[0]["PatientTypeId"].ToString()).Selected = true;
+            }
         }
         if (theDS.Tables[2].Rows.Count > 0)
         {
@@ -134,20 +147,44 @@ public partial class frmAddTechnicalArea : BasePage
             {
                 ViewState["RegistrationDate"] = GetValuefromHT["RegistrationDate"].ToString();
             }
-            
+
         }
     }
-
+    //Calculate Year and Month by Rahmat(06-Feb-2018)
+    private void CalculateYourAge(DateTime Dob)
+    {
+        DateTime Now = DateTime.Now;
+        int Years = new DateTime(DateTime.Now.Subtract(Dob).Ticks).Year - 1;
+        DateTime PastYearDate = Dob.AddYears(Years);
+        int Months = 0;
+        for (int i = 1; i <= 12; i++)
+        {
+            if (PastYearDate.AddMonths(i) == Now)
+            {
+                Months = i;
+                break;
+            }
+            else if (PastYearDate.AddMonths(i) >= Now)
+            {
+                Months = i - 1;
+                break;
+            }
+        }
+        Session["PatientAge"] = Years;
+        Session["PatientAgeMonths"] = Months;
+    }
     protected void BindDropdown()
     {
         BindFunctions BindManager = new BindFunctions();
         IPatientRegistration ptnMgr = (IPatientRegistration)ObjectFactory.CreateInstance(ObjFactoryParameter);
         DataSet DSModules = new DataSet();
         DataTable theDT = new DataTable();
+        DataTable dtPatientType = new DataTable();
         if (Convert.ToInt32(Session["AppUserId"]) == 1)
         {
             DSModules = ptnMgr.GetModuleNames(Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["AppUserId"]));
             theDT = DSModules.Tables[0];
+            dtPatientType = DSModules.Tables[4];
             DataRow[] toBeDeleted;
             toBeDeleted = theDT.Select("ModuleName = 'RECORDS'");
             if (toBeDeleted.Length > 0)
@@ -163,6 +200,7 @@ public partial class frmAddTechnicalArea : BasePage
         {
             DSModules = ptnMgr.GetModuleNames(Convert.ToInt32(Session["AppLocationId"]), Convert.ToInt32(Session["AppUserId"]));
             theDT = DSModules.Tables[2];
+            dtPatientType = DSModules.Tables[4];
             DataRow[] toBeDeleted;
             toBeDeleted = theDT.Select("ModuleName = 'RECORDS'");
             if (toBeDeleted.Length > 0)
@@ -179,7 +217,12 @@ public partial class frmAddTechnicalArea : BasePage
             BindManager.BindCombo(ddlTecharea, BindModuleByBusinessRules(theDT, DSModules.Tables[1]), "ModuleName", "ModuleID");
             ptnMgr = null;
         }
+        if (dtPatientType.Rows.Count > 0)
+        {
+            BindManager.BindCombo(ddlPatientType, dtPatientType, "Name", "Id");
 
+        }
+        ptnMgr = null;
     }
     public DataTable BindModuleByBusinessRules(DataTable dt, DataTable dtbusinessrules)
     {
@@ -708,10 +751,10 @@ public partial class frmAddTechnicalArea : BasePage
         String theUrl;
         Session["TechnicalAreaId"] = ddlTecharea.SelectedValue.ToString();
 
-        if (Session["TechnicalAreaName"]!=null && Session["TechnicalAreaName"].ToString() == "Records")
+        if (Session["TechnicalAreaName"] != null && Session["TechnicalAreaName"].ToString() == "Records")
             theUrl = String.Format("./frmFindAddCustom.aspx?srvNm={0}&mod={1}", "Records", 0);
         else
-            theUrl = "ClinicalForms/frmPatient_Home.aspx";
+            theUrl = "./ClinicalForms/frmPatient_Home.aspx";
 
         string strSrvName = ddlTecharea.SelectedItem.Text;
         string moduleid = ddlTecharea.SelectedItem.Value;
@@ -733,7 +776,7 @@ public partial class frmAddTechnicalArea : BasePage
         //btnCancel.OnClientClick = "window.location.href='" + theUrl + "';";
         AjaxControlToolkit.ModalPopupExtender mod = IQCareMsgBox.FindControlFromMaster<AjaxControlToolkit.ModalPopupExtender>("notifyPopupExtender", this.Master);
         mod.Show();
-        if (Session["TechnicalAreaName"]!=null && Session["TechnicalAreaName"].ToString() == "Records")
+        if (Session["TechnicalAreaName"] != null && Session["TechnicalAreaName"].ToString() == "Records")
         {
             string script = "<script language = 'javascript' defer ='defer' id = 'confirm'>\n";
             script += "window.open('./ClinicalForms/frmPatientWaitingList.aspx?srvNm=" + strSrvName + "&mod=" + moduleid + "&PID=" + patientID + "', 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=150,left=150,maximize=yes,resizable=no,width=800,height=500,scrollbars=yes');\n";
@@ -1015,7 +1058,7 @@ public partial class frmAddTechnicalArea : BasePage
         int AutoFieldValue = 1;
 
         if (Convert.ToInt32(Session["PatientId"]) != 0)
-        {            
+        {
             if (theDS.Tables.Count > 4)
             {
                 if (theDS.Tables[4].Rows[0]["AutoField"].ToString() == "")
@@ -1047,21 +1090,21 @@ public partial class frmAddTechnicalArea : BasePage
             if (flag == 1)
             {
                 txtenrollmentDate.Value = ((DateTime)theDS.Tables[2].Rows[0]["StartDate"]).ToString(Session["AppDateFormat"].ToString());
-                if (Session["TechnicalAreaName"] !=null && Session["TechnicalAreaName"].ToString() == "Records")
+                if (Session["TechnicalAreaName"] != null && Session["TechnicalAreaName"].ToString() == "Records")
                     btnSaveContinue.Enabled = false;
                 else
                     btnSaveContinue.Enabled = true;
-                
+
             }
-            
+
             if (theDS.Tables[2].Rows[0]["Enrolchk"].ToString() == "1")
                 ViewState["Enrolldate"] = ((DateTime)theDS.Tables[2].Rows[0]["StartDate"]).ToString(Session["AppDateFormat"].ToString());
             else
                 ViewState["Enrolldate"] = "";
-            
+
             if (Convert.ToInt32(Session["IdentifierFlag"]) == 0 && txtenrollmentDate.Value != "")
                 txtenrollmentDate.Disabled = true;
-            
+
         }
         ////ReEnrollment////
         if (Convert.ToInt32(Session["PatientId"]) == 0)
@@ -1183,6 +1226,8 @@ public partial class frmAddTechnicalArea : BasePage
             if (blankstatus > 0)
             {
                 sqlselect = "UPDATE mst_Patient WITH(ROWLOCK) SET mst_Patient.Status=0, ";
+                sqlselect = sqlselect + "PatientType = " + Convert.ToInt32(ddlPatientType.SelectedValue) + ",";
+
                 DataTable DTModuleIdents = (DataTable)ViewState["ModuleIdentifiers"];
 
                 for (int j = 0; j <= DTModuleIdents.Rows.Count - 1; j++)

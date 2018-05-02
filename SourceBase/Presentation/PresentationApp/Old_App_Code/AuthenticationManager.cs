@@ -1,12 +1,7 @@
 using System;
 using System.Data;
-using System.Configuration;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using Interface.Clinical;
 using Application.Presentation;
 using Application.Common;
@@ -20,8 +15,8 @@ public class AuthenticationManager
 {
     
     #region "Application Parameters"
-    public static string AppVersion = "4.0.0";
-    public static string ReleaseDate = "04-Jul-2017";
+    public static string AppVersion = "4.1.0";
+    public static string ReleaseDate = "15-Mar-2018";
     #endregion
 
 
@@ -174,6 +169,7 @@ public class AuthenticationManager
 
         print.Enabled = HasFunctionRight(FeatureID, TabID, FunctionAccess.Print, (DataTable)System.Web.HttpContext.Current.Session["UserRight"]);
     }
+
     public Boolean CheckDateConstriant(int FacilityId)
     {
         DataSet theDS = new DataSet();

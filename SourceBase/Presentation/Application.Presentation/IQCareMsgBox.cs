@@ -29,11 +29,11 @@ using AjaxControlToolkit;
 
         public static void Show(string Msg, string Style, string Buttons, Control frmName)
         {
-            string theAlert = "";
+            //string theAlert = "";
             switch (Style)
             {
                 case "!":
-                    theAlert = "alert";
+                    //theAlert = "alert";
                     break;
 
             }

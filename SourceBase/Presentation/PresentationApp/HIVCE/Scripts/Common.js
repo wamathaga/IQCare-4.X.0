@@ -239,7 +239,7 @@ function DrawDataTable(ctrlName, arrUI) {
 function DisableDiv(ctrlName) {
     var disDiv;
     var IsControlDisable = false;
-    var ctrl;
+    var ctrl,ctrl1;
     if (ctrlName.id == "chkTransferIn") {
         disDiv = "divTransferIn";
     }
@@ -286,9 +286,9 @@ function DisableDiv(ctrlName) {
     else if (ctrlName.id == "chkGUSystem") {
         disDiv = "divGUSystem";
     }
-    else if (ctrlName.id == "chkTBContactsScreened") {
+    /*else if (ctrlName.id == "chkTBContactsScreened") {
         disDiv = "divTBContactScreenedDetails";
-    }
+    }*/
     else if (ctrlName.id == "chkAlternativeMedicine") {
         ctrl = "txtAlternativeMedicine";
         IsControlDisable = true;
@@ -314,13 +314,28 @@ function DisableDiv(ctrlName) {
         IsControlDisable = true;
     }
 
+    else if (ctrlName.id == "chkDisclosedHIVStatus") {
+        ctrl = "ddlDisclosureStatus";
+        ctrl1 = "ddlDisclosedTo";
+        IsControlDisable = true;
+    }
+    else if (ctrlName.id == "chkGenitoUrinary") {
+        disDiv = "divGEU";
+    }
+
     var ctrlVal = $("#" + ctrlName.id).bootstrapSwitch('state');
     if (IsControlDisable) {
         if (ctrlVal) {
             $("#" + ctrl).prop('disabled', false);
+            if (ctrl1 != null) {
+                $("#" + ctrl1).prop('disabled', false);
+            }
         }
         else {
             $("#" + ctrl).prop('disabled', true);
+            if (ctrl1 != null) {
+                $("#" + ctrl1).prop('disabled', true);
+            }
         }
     }
     else {
@@ -332,6 +347,57 @@ function DisableDiv(ctrlName) {
         else {
             $("#" + disDiv).css("visibility", "hidden");
             $("#" + disDiv).css("display", "none");
+        }
+    }
+}
+
+function CalcualteBMIWithoutZScore(hidAge, txtWeight, txtHeight, txtBMI, lblBMIClassification) {
+    var age = $("#" + hidAge).val();
+    var weight = $("#" + txtWeight).val();
+    var height = $("#" + txtHeight).val();
+    if (weight == "" || height == "") {
+        weight = 0;
+        height = 0;
+        $("#" + txtBMI).val("");
+    }
+    else {
+        var BMI = weight / ((height / 100) * (height / 100));
+        BMI = BMI.toFixed(2);
+        if (isNaN(BMI)) {
+            BMI = 0;
+        }
+        $("#" + txtBMI).val(BMI);
+
+        if (age > 15) {
+            if (BMI < 18.5) {
+                //underweight
+                document.getElementById(lblBMIClassification).innerHTML = 'UnderWeight';
+                document.getElementById(lblBMIClassification).style.color = "red";
+                document.getElementById(txtBMI).style.color = "red";
+                document.getElementById(lblBMIClassification).style.fontWeight = 'bold';
+            }
+
+            if (BMI >= 18.5 && BMI < 25) {
+                document.getElementById(lblBMIClassification).innerHTML = 'Normal';
+                document.getElementById(lblBMIClassification).style.color = "black";
+                document.getElementById(txtBMI).style.color = "black";
+            }
+
+            if (BMI > 25 && BMI < 30) {
+                //OverWeight
+                document.getElementById(lblBMIClassification).innerHTML = 'OverWeight';
+                document.getElementById(lblBMIClassification).style.color = "red";
+                document.getElementById(txtBMI).style.color = "red";
+                document.getElementById(lblBMIClassification).style.fontWeight = 'bold';
+            }
+
+            if (BMI >= 30) {
+                //Obese
+                document.getElementById(lblBMIClassification).innerHTML = 'Obese';
+                document.getElementById(lblBMIClassification).style.color = "red";
+                document.getElementById(txtBMI).style.color = "red";
+                document.getElementById(lblBMIClassification).style.fontWeight = 'bold';
+            }
         }
     }
 }
@@ -970,3 +1036,13 @@ function CalculateBMIZScoreSR() {
         }
     }
 }
+
+
+function OpenCEPopup(url) {
+    var NWin = window.open(url, '', 'height=800,width=800');
+    if (window.focus) {
+        NWin.focus();
+    }
+    return false;
+}
+

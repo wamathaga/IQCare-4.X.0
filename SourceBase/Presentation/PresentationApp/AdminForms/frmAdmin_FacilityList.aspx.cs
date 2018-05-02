@@ -247,7 +247,7 @@ public partial class FacilityMaster_List : LogPage
     {
         try
         {
-            Session["SystemId"] = cmbSystem.SelectedValue;
+            Session["SystemId"] = ConfigurationManager.AppSettings["SystemId"].ToString();
             IIQCareSystem SystemManager = (IIQCareSystem)ObjectFactory.CreateInstance("BusinessProcess.Security.BIQCareSystem, BusinessProcess.Security");
             if (cmbSystem.SelectedValue == "2")
             {

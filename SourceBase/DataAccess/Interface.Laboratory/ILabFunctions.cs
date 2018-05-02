@@ -24,6 +24,7 @@ namespace Interface.Laboratory
         DataSet GetLabs();
         DataSet GetPreDefinedLablist(int SystemId);
         DataSet GetPatientLabTestID(BIQTouchLabFields objLabFields);
+        DataSet GetLabHistory(int PatientID, int LocationID);
 
         /// <summary>
         /// Gets the ordered labs.
@@ -81,12 +82,14 @@ namespace Interface.Laboratory
         public DateTime LabReportByDate { get; set; }
         public int SystemId { get; set; }
         public int UrgentId { get; set; }
+        public int RejectId { get; set; }
+        public int JustificationID { get; set; }
+        public string OtherJustification { get; set; }
         public int Confirmed { get; set; }
         public int Confirmedby { get; set; }
         private int _arvTypeID = 0;
         private int _MutationID = 0;
         private string _OtherMutation = "";
-        public int Justification { get; set; }
 
 
 

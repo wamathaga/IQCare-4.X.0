@@ -874,6 +874,18 @@ namespace BusinessProcess.Clinical
 
         }
 
+        public DataSet GetZScoreNewImplementation(int ptn_pk, string gender, string height)
+        {
+            ClsObject ClsObj = new ClsObject();
+            ClsUtility.Init_Hashtable();
+            ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, ptn_pk.ToString());
+            ClsUtility.AddParameters("@sex", SqlDbType.VarChar, gender.ToString());
+            ClsUtility.AddParameters("@height", SqlDbType.VarChar, height.ToString());
+            DataSet dsZScore = (DataSet)ClsObj.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetZScoresDetails", ClsDBUtility.ObjectEnum.DataSet);
+            return dsZScore;
+
+        }
+
         public DataSet GetAdultFollowUpFormAutoPopulatingData(int ptn_pk)
         {
             lock (this)

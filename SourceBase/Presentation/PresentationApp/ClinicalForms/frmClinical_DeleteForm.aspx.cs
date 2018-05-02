@@ -27,7 +27,7 @@ public partial class frmClinical_DeleteForm : BasePage
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
         {
             IQCareMsgBox.Show("SessionExpired", this);
-            Response.Redirect("~/frmlogin.aspx",true);
+            Response.Redirect("~/frmlogin.aspx", true);
         }
         //RTyagi..04April.07
         /***************** Check For User Rights ****************/
@@ -272,23 +272,31 @@ public partial class frmClinical_DeleteForm : BasePage
             case "HEI":
                 if (Convert.ToInt32(Session["TechnicalAreaId"]) == 1)
                 {
-                    url = string.Format("{0}", "./frmClinical_KNH_HEI.aspx?name=Delete");
+                    //url = string.Format("{0}", "./frmClinical_KNH_HEI.aspx?name=Delete");
+                    url = string.Format("{0}", "./frmClinical_KNH_HEI_New.aspx?name=Delete");
                     Response.Redirect(url);
                 }
                 break;
-            case "MEI":
+            case "ANC":
                 if (Convert.ToInt32(Session["TechnicalAreaId"]) == 1)
                 {
-                    url = string.Format("{0}", "./frmClinical_KNH_MEI.aspx?name=Delete");
+                    //url = string.Format("{0}", "./frmClinical_KNH_MEI.aspx?name=Delete");
+                    url = string.Format("{0}", "./frmClinical_ANC.aspx?name=Delete");
                     Response.Redirect(url);
                 }
                 break;
-
             case "Clinical Encounter":
                 url = string.Format("{0}", "~/HIVCE/ClinicalEncounter.aspx?name=Delete");
                 Response.Redirect(url);
                 break;
-
+            case "Adherence Barriers":
+                url = string.Format("{0}", "~/Adherence/AdherenceBarriers.aspx?name=Delete");
+                Response.Redirect(url);
+                break;
+            case "Enhance Adherence Counselling":
+                url = string.Format("{0}", "~/Adherence/EnhanceAdherence.aspx?name=Delete");
+                Response.Redirect(url);
+                break;
             //default: break;
 
         }
@@ -425,10 +433,9 @@ public partial class frmClinical_DeleteForm : BasePage
             {
 
 
-                if ((theDR["FormName"].ToString() != "Patient Registration") && (theDR["FormName"].ToString() != "HIV-Enrollment") && (theDR["FormName"].ToString() != "Initial Evaluation"))
+                if ((theDR["FormName"].ToString() != "Patient Registration") && (theDR["FormName"].ToString() != "HIV-Enrollment")
+                    && (theDR["FormName"].ToString() != "Initial Evaluation"))
                 {
-
-
                     if (((DateTime)theDR["TranDate"]).Year != 1900)
                     {
                         DQ = "";
@@ -491,7 +498,8 @@ public partial class frmClinical_DeleteForm : BasePage
                                     //theFrmRoot.ImageToolTip = "You are Not Authorized to Access this Functionality";
                                     //theFrmRoot.SelectAction = TreeNodeSelectAction.None;
 
-                                    DataSet formLinking = PatientManager.GetLinkedForms_FormLinking(Convert.ToInt32(Session["TechnicalAreaId"]), Convert.ToInt32(theDR["FeatureID"]));
+                                    DataSet formLinking = PatientManager.GetLinkedForms_FormLinking(Convert.ToInt32(Session["TechnicalAreaId"]),
+                                        Convert.ToInt32(theDR["FeatureID"]));
 
                                     if (formLinking.Tables[0].Rows.Count > 0)
                                     {
@@ -512,7 +520,8 @@ public partial class frmClinical_DeleteForm : BasePage
                                     }
 
                                 }
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Paediatric Pharmacy"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Paediatric Pharmacy"))
                                 {
                                     if (Session["Paperless"].ToString() == "1")
                                     {
@@ -537,7 +546,8 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Laboratory"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Laboratory"))
                                 {
                                     if (theDR["CAUTION"].ToString() == "1")
                                     {
@@ -585,7 +595,8 @@ public partial class frmClinical_DeleteForm : BasePage
                                     //}
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Pharmacy"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Pharmacy"))
                                 {
 
                                     //if ((theDR["FormName"].ToString() == "Pharmacy") && (Convert.ToInt32(Session["TechnicalAreaId"]) > 2))
@@ -682,7 +693,8 @@ public partial class frmClinical_DeleteForm : BasePage
                                     }
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "ART Follow-Up"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "ART Follow-Up"))
                                 {
                                     if (Convert.ToString(Session["TechnicalAreaId"]) == "2")
                                     {
@@ -706,7 +718,8 @@ public partial class frmClinical_DeleteForm : BasePage
                                     }
 
                                 }
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Home Visit"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Home Visit"))
                                 {
 
                                     if (Convert.ToString(Session["TechnicalAreaId"]) == "2")
@@ -732,7 +745,8 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Non-ART Follow-Up"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Non-ART Follow-Up"))
                                 {
                                     if (Convert.ToString(Session["TechnicalAreaId"]) == "2")
                                     {
@@ -759,7 +773,8 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Care Tracking"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Care Tracking"))
                                 {
 
                                     if (Convert.ToString(Session["TechnicalAreaId"]) == "2")
@@ -789,7 +804,8 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Paediatric Pharmacy"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Paediatric Pharmacy"))
                                 {
                                     if (Session["Paperless"].ToString() == "1")
                                     {
@@ -817,7 +833,8 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Initial Evaluation"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Initial Evaluation"))
                                 {
                                     if (Convert.ToString(Session["TechnicalAreaId"]) == "2")
                                     {
@@ -845,7 +862,10 @@ public partial class frmClinical_DeleteForm : BasePage
 
                                 }
 
-                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Clinical Encounter"))
+                                else if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"])
+                                    || (theDR["FormName"].ToString() == "Clinical Encounter")
+                                    || (theDR["FormName"].ToString() == "Adherence Barriers")
+                                    || (theDR["FormName"].ToString() == "Enhance Adherence Counselling"))
                                 {
                                     if (Session["Paperless"].ToString() == "1")
                                     {
@@ -872,7 +892,6 @@ public partial class frmClinical_DeleteForm : BasePage
                                     }
 
                                 }
-
 
                                 else
                                 {

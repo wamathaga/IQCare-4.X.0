@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using System.Collections;
 
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -9,7 +8,6 @@ using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
-using System.Configuration;
 using Interface.Service;
 
 
@@ -1015,7 +1013,7 @@ namespace Application.Presentation
             string strfName = string.Empty;
             DataTable theDT = new DataTable();
             int stpos, enpos;
-            string theTblName = "";
+            //string theTblName = "";
             #endregion
 
             if (theOldData.Tables.Count < 1)

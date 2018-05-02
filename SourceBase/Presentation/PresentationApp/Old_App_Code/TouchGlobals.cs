@@ -2,11 +2,7 @@
 
 //.Net Libs
 using System;
-using System.Data;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web;
 using System.Web.Configuration;
 using Interface.Clinical;
 
@@ -66,10 +62,7 @@ namespace Touch
 "script.src = 'Scripts/keyb/jquery.keyboard.extension-typing.js';" +
 "$('head')[0].appendChild(script); });"; 
 
-            //OnScKeyboard = "$(function(){ $('head')[0].appendChild(\"<script src='Scripts/keyb/jquery.keyboard.js' type='text/javascript'></script>\");" +
-            //            "$('head')[0].appendChild(\"<script type='text/javascript' src='Scripts/keyb/demo/demo.js?reload'></script>\"); " +
-            //            "$('head')[0].appendChild(\"<script src='Scripts/keyb/jquery.keyboard.extension-typing.js' type='text/javascript'></script>\"); });";
-        }
+       }
     }
     /**
     * Calculate Age in C#
@@ -172,71 +165,7 @@ namespace Touch
     //Used for the Form Objects such as the forms themselves
     namespace FormObjects
     {
-        /// <summary>
-        /// Registration form object
-        /// </summary>
-        //public class objRegistration
-        //{
-        //    public objRegistration(){
-        //        MotherPMTCTdrugsYN = -1;
-        //        ChildPMTCTdrugsYN = -1;
-        //    }
-        //    public string FirstName { get; set; }
-        //    public string LastName { get; set; }
-        //    public string DOB { get; set; }
-        //    public int Sex { get; set; }
-        //    public string RegistrationDate { get; set; }
-        //    public string HouseNo { get; set; }
-        //    public string Suburb { get; set; }
-        //    public string District { get; set; }
-        //    public string SubDistrict { get; set; }
-        //    public string TelephoneNo { get; set; }
-        //    public string Addresscomments { get; set; }
-        //    public string PostalAddress { get; set; }
-        //    public string PostalCode { get; set; }
-        //    public string EntryPoint { get; set; }
-        //    public string OtherEntryPoint { get; set; }
-        //    public string CareGiverName { get; set; }
-        //    public string CareGiverDOB { get; set; }
-        //    public decimal CareGiverAge { get; set; }
-        //    public int CareGiverGender { get; set; }
-        //    public int CareGiverRelationship { get; set; }
-        //    public string OtherCareGiver { get; set; }
-        //    public string CareGiverTelephone { get; set; }
-        //    public string MotherName { get; set; }
-        //    public bool MotherAliveYN { get; set; }
-        //    public int MotherPMTCTdrugsYN { get; set; }
-        //    public List<int> MotherPMTCTdrugs { get; set; }
-        //    public int ChildPMTCTdrugsYN { get; set; }
-        //    public List<int> ChildPMTCTdrugs { get; set; }
-        //    public int MotherARTYN { get; set; }
-        //    public int FeedingOption { get; set; }
-        //    public string DateConfirmedHIVPositive { get; set; }
-        //    public string DateEnrolledHIVCare { get; set; }
-        //    public int WHOStageAtEnrollment { get; set; }
-        //    public string TransferInDate { get; set; }
-        //    public int FromDistrict { get; set; }
-        //    public string Facility { get; set; }
-        //    public string DateStart { get; set; }
-        //    public List<int> Regimen { get; set; }
-        //    public string Weight { get; set; }
-        //    public string Height { get; set; }
-        //    public string BMI { get; set; }
-        //    public int WHOStageAtTransfer { get; set; }
-        //    public string PriorART { get; set; }
-        //    public List<int> PriorARTRegimen { get; set; }
-        //    public string PriorARTDateLastUsed { get; set; }
-        //    public List<DrugAllergy> DrugAllergies { get; set; }
-            
-        //    public class DrugAllergy
-        //    {
-        //        public string Allergen { get; set; }
-        //        public string TypeOfReaction { get; set; }
-        //        public string DateOfAllergy { get; set; }
-        //        public string MedicalConditions { get; set; }
-        //    }
-
-        //}
+        
         /// <summary>
         /// Pharmacy form object
         /// </summary>
@@ -261,6 +190,7 @@ namespace Touch
                 Pharmacy = objPharmacy;
             }
         }
+
         public class FormObjects : IEnumerable
         {
             private FormObject[] _form;
@@ -284,6 +214,7 @@ namespace Touch
                 return new FormObjectEnum(_form);
             }
         }
+
         public class FormObjectEnum : IEnumerator
         {
             public FormObject[] _form;

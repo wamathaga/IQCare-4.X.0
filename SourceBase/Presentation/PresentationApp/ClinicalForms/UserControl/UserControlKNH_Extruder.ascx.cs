@@ -29,11 +29,15 @@ namespace PresentationApp.ClinicalForms.UserControl
             loadDrugAllergies();
             loadARVHistory();
             loadPatientDetails();
-            if (Convert.ToBoolean(Session["isKNHEnabled"]))
-            {
-                loadWorkPlan();
-                //Nutrition();
-            }
+            /*
+             * Commented as requested by Wamathaga - Work-Plan
+             * Details: Work plan slider only shows when you enable KNH and are logged in as admin. It should show for all.
+             */
+            //if (Convert.ToBoolean(Session["isKNHEnabled"]))
+            //{
+            loadWorkPlan();
+            //Nutrition();
+            //}
             if (Convert.ToBoolean(Session["isMEIVisible"]))
             {
                 LoadMotherProfile();
@@ -78,6 +82,8 @@ namespace PresentationApp.ClinicalForms.UserControl
             {
                 this.UserControl_VitalsExtruder1.UserControl_ARVHistoryExtruder1.lblLastRegimen.Text = theDS1.Tables[1].Rows[0][0].ToString();
                 this.UserControl_VitalsExtruder1.UserControl_ARVHistoryExtruder1.lblPrevRegimen.Text = theDS1.Tables[2].Rows[0][0].ToString();
+                this.UserControl_VitalsExtruder1.UserControl_ARVHistoryExtruder1.lblChangeRegimentDt.Text = theDS1.Tables[3].Rows[0][0].ToString();
+                
             }
             ARVHistoryDS = WorkPlan.GetPatientDrugHistory(Convert.ToInt32(Session["PatientId"]));
             BindGridARV(ARVHistoryDS.Tables[0]);
@@ -88,7 +94,7 @@ namespace PresentationApp.ClinicalForms.UserControl
             if (theDS.Tables[0].Rows.Count > 0)
             {
                 this.UserControl_VitalsExtruder1.lblSex.Text = theDS.Tables[0].Rows[0]["sex"].ToString();
-
+                this.UserControl_VitalsExtruder1.lblArtStartDt.Text = theDS.Tables[0].Rows[0]["ArtStartDate"].ToString();
                 this.UserControl_VitalsExtruder1.lblDOB.Text = theDS.Tables[0].Rows[0]["dob"].ToString();
                 this.UserControl_VitalsExtruder1.lblDistrict.Text = theDS.Tables[0].Rows[0]["districtname"].ToString();
                 this.UserControl_VitalsExtruder1.lblPhone.Text = theDS.Tables[0].Rows[0]["phone"].ToString();
@@ -119,6 +125,24 @@ namespace PresentationApp.ClinicalForms.UserControl
                     this.UserControl_VitalsExtruder1.IPTED.Visible = true;
                     if (theDS.Tables[13].Rows.Count > 0)
                     {
+                        if (!string.IsNullOrEmpty(theDS.Tables[13].Rows[0]["IPTName"].ToString()))
+                        {
+                            if (theDS.Tables[13].Rows[0]["IPTName"].ToString().ToLower().Contains("completed"))
+                            {
+                                this.UserControl_VitalsExtruder1.IPTEDLable.Visible = true;
+                                this.UserControl_VitalsExtruder1.IPTED.Visible = true;
+                            }
+                            else
+                            {
+                                this.UserControl_VitalsExtruder1.IPTEDLable.Visible = false;
+                                this.UserControl_VitalsExtruder1.IPTED.Visible = false;
+                            }
+                        }
+                        else
+                        {
+                            this.UserControl_VitalsExtruder1.IPTEDLable.Visible = false;
+                            this.UserControl_VitalsExtruder1.IPTED.Visible = false;
+                        }
                         if (!string.IsNullOrEmpty(theDS.Tables[13].Rows[0]["INHStartDate"].ToString()))
                         {
                             this.UserControl_VitalsExtruder1.IPTSD.Text = Convert.ToDateTime(theDS.Tables[13].Rows[0]["INHStartDate"].ToString()).ToString("dd-MMM-yyyy");
@@ -142,6 +166,18 @@ namespace PresentationApp.ClinicalForms.UserControl
                     this.UserControl_VitalsExtruder1.IPTSD.Text = Convert.ToDateTime(theDS.Tables[13].Rows[0]["INHStartDate"].ToString()).ToString("dd-MMM-yyyy");
                     this.UserControl_VitalsExtruder1.IPTED.Text = Convert.ToDateTime(theDS.Tables[13].Rows[0]["INHEndDate"].ToString()).ToString("dd-MMM-yyyy");
                 }
+            }
+
+            if (theDS.Tables[16].Rows.Count > 0)
+            {
+                this.UserControl_VitalsExtruder1.lblPatientClassificationVal.Text = theDS.Tables[16].Rows[0]["PatientClassificationName"].ToString();
+                string differenciatedCareVal = "No";
+                if (Convert.ToInt32(theDS.Tables[16].Rows[0]["IsEnrolDifferenciatedCare"]) == 1)
+                {
+                    differenciatedCareVal = "Yes";
+                }
+                this.UserControl_VitalsExtruder1.lblDifferenciatedCareVal.Text = differenciatedCareVal;
+
             }
 
 

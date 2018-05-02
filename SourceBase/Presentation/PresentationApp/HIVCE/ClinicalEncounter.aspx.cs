@@ -97,6 +97,15 @@ namespace HIVCE.Presentation
                 {
                     this.hidPAYM.Value = Session["patientageinyearmonth"].ToString();
                 }
+                if (!object.Equals(Session["TechnicalAreaName"], null))
+                {
+                    this.hidsrvNm.Value = Session["TechnicalAreaName"].ToString();
+                }
+                if (!object.Equals(Session["TechnicalAreaId"], null))
+                {
+                    this.hidMOD.Value = Session["TechnicalAreaId"].ToString();
+                }
+
                 string tabName = "triage";// ((HtmlInputHidden)this.hidTabName).Value.ToString();
                 if (!object.Equals(Request.QueryString["data"], null))
                 {
@@ -274,6 +283,17 @@ namespace HIVCE.Presentation
                         SendResponse(response);
                     }
 
+                    //
+                    if (Request.QueryString["data"].ToString() == "savetstriage")
+                    {
+
+                        System.IO.StreamReader sr = new System.IO.StreamReader(Request.InputStream);
+                        string jsonString = "";
+                        jsonString = sr.ReadToEnd();
+
+                        response = SaveTSTriageData(jsonString, PatientId, visitPK, locationId, userId);
+                        SendResponse(response);
+                    }
                 }
             }
         }
@@ -302,6 +322,8 @@ namespace HIVCE.Presentation
             int visitId = Convert.ToInt32(Session["PatientVisitId"]);
 
             HtmlButton btnSaveTriage = (HtmlButton)this.ucHIVCETriage1.FindControl("btnSaveTriage");
+            HtmlButton btnSaveFindTriage = (HtmlButton)this.ucHIVCETriage1.FindControl("btnSaveFindTriage");
+
             HtmlButton btnDeleteForm = (HtmlButton)this.ucHIVCETriage1.FindControl("btnDeleteForm");
 
             HtmlButton btnSavePC = (HtmlButton)this.ucPresentingComplaints1.FindControl("btnSavePC");
@@ -309,15 +331,18 @@ namespace HIVCE.Presentation
             HtmlButton btnSaveScreening = (HtmlButton)this.ucScreening1.FindControl("btnSaveScreening");
             HtmlButton btnSaveSystemicReview = (HtmlButton)this.ucSystemicReview1.FindControl("btnSaveSystemicReview");
             HtmlButton btnSaveManagement = (HtmlButton)this.ucManagementx1.FindControl("btnSaveManagement");
+            HtmlButton btnTSSaveManagement = (HtmlButton)this.ucHIVCETriage1.FindControl("btnTSSaveManagement");
 
             if (Request.QueryString["name"] == "Delete")
             {
                 btnSaveTriage.Visible = false;
+                btnSaveFindTriage.Visible = false;
                 btnDeleteForm.Visible = true;
             }
             else
             {
                 btnSaveTriage.Attributes["disabled"] = "true";
+                btnSaveFindTriage.Attributes["disabled"] = "true";
                 btnDeleteForm.Visible = false;
             }
             btnSavePC.Attributes["disabled"] = "true";
@@ -325,6 +350,11 @@ namespace HIVCE.Presentation
             btnSaveScreening.Attributes["disabled"] = "true";
             btnSaveSystemicReview.Attributes["disabled"] = "true";
             btnSaveManagement.Attributes["disabled"] = "true";
+
+            if (!object.Equals(btnTSSaveManagement, null))
+            {
+                btnTSSaveManagement.Attributes["disabled"] = "true";
+            }
 
 
             if (dtTabId.Rows.Count > 0)
@@ -393,6 +423,11 @@ namespace HIVCE.Presentation
                         if (enable)
                         {
                             btnSaveTriage.Attributes.Remove("disabled");
+                            btnSaveFindTriage.Attributes.Remove("disabled");
+                            if (!object.Equals(btnTSSaveManagement, null))
+                            {
+                                btnTSSaveManagement.Attributes.Remove("disabled");
+                            }
                         }
                     }
                     else if (tabName == "presentingcomplaints")
@@ -442,6 +477,10 @@ namespace HIVCE.Presentation
                     btnSaveScreening.Attributes["disabled"] = "true";
                     btnSaveSystemicReview.Attributes["disabled"] = "true";
                     btnSaveManagement.Attributes["disabled"] = "true";
+                    if (!object.Equals(btnTSSaveManagement, null))
+                    {
+                        btnTSSaveManagement.Attributes["disabled"] = "true";
+                    }
                 }
 
 
@@ -633,7 +672,7 @@ namespace HIVCE.Presentation
                     //theDSXML.ReadXml(MapPath("..\\XMLFiles\\AllMasters.con"));
                     //DataView theCodeDV = new DataView(theDSXML.Tables["MST_CODE"]);
                     DataView theCodeDV = new DataView(oCommonData.getAllMSTCode());
-                    theCodeDV.RowFilter = "DeleteFlag=0 and Name in ('WHOStageIConditions','WHOStageIIConditions','WHOStageIIICoditions','WHOStageIVConditions','WHO Stage','GeneralConditions','SkinConditions','ENTConditions','ChestLungsConditions','CardiovascularConditions','AbdomenConditions','CNSConditions')";
+                    theCodeDV.RowFilter = "DeleteFlag=0 and Name in ('WHOStageIConditions','WHOStageIIConditions','WHOStageIIICoditions','WHOStageIVConditions','WHO Stage','GeneralConditions','SkinConditions','ENTConditions','ChestLungsConditions','CardiovascularConditions','AbdomenConditions','CNSConditions','GenitalUrinaryConditions')";
                     DataTable theCodeDT = (DataTable)theUtils.CreateTableFromDataView(theCodeDV);
                     DataTable theDT = new DataTable();
                     if (theCodeDT.Rows.Count > 0)
@@ -1163,7 +1202,7 @@ namespace HIVCE.Presentation
                 DataSet ZScoreDS = new DataSet();
                 IKNHStaticForms KNHS = (IKNHStaticForms)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BKNHStaticForms, BusinessProcess.Clinical");
                 string height = string.IsNullOrEmpty(cl.PatientVitals.Height) == true ? "0" : cl.PatientVitals.Height;
-                ZScoreDS = KNHS.GetZScoreValues(ptn_pk, Session["PatientSex"].ToString(), height.ToString());
+                ZScoreDS = KNHS.GetZScoreNewImplementation(ptn_pk, Session["PatientSex"].ToString(), height.ToString());
 
                 ZScoreDetails zs = new ZScoreDetails();
                 zs.WFA = new ZScore();
@@ -1288,6 +1327,51 @@ namespace HIVCE.Presentation
             return result;
         }
 
+        private string SaveTSTriageData(string nodeJson, int ptn_pk, int visitPK, int locationId, int userId)
+        {
+            string result = string.Empty;
+            ResponseType ObjResponse = new ResponseType();
+            try
+            {
+                HIVCE.Common.Entities.TSTriage triage = SerializerUtil.ConverToObject<HIVCE.Common.Entities.TSTriage>(nodeJson);
+                IClinicalEncounter clinicalencounter = (IClinicalEncounter)ObjectFactory.CreateInstance("HIVCE.BusinessLayer.BLClinicalEncounter, HIVCE.BusinessLayer");
+                triage.Ptn_pk = ptn_pk;
+                triage.Visit_Id = visitPK;
+                triage.LocationId = locationId;
+
+                //result = SerializerUtil.ConverToJson<Triage>(triage);
+                bool flag = true;
+                int visitId;
+                flag = clinicalencounter.SaveUpdateTSTriage(triage, userId, out visitId);
+
+                Session["PatientVisitId"] = visitId.ToString();
+                this.hidVId.Value = visitId.ToString();
+
+                if (flag)
+                {
+                    ObjResponse.Success = EnumUtil.GetEnumDescription(Success.True);
+                }
+                else
+                {
+                    ObjResponse.Success = EnumUtil.GetEnumDescription(Success.False);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("visit already exists"))
+                {
+                    ObjResponse.ErrorMessage = ex.Message;
+                }
+                ObjResponse.Success = EnumUtil.GetEnumDescription(Success.False);
+            }
+            finally
+            {
+            }
+
+            result = SerializerUtil.ConverToJson<ResponseType>(ObjResponse);
+            return result;
+        }
 
         private void SendResponse(string data)
         {

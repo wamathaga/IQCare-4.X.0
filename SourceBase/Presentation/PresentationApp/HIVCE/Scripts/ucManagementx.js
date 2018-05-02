@@ -3,6 +3,8 @@ var arrMMAS8Score = [];
 var arrICDData = [];
 var arrICDBaseData = [];
 var arrICD10 = [];
+var arrNxtAppointment = [];
+var arrPatientClassification = [];
 
 function InitManagementControls(response) {
     window.scrollTo(0, 0);
@@ -76,19 +78,138 @@ function InitManagementControls(response) {
         DisableDiv(this);
     });
 
+    $("#chkSTIScreening").on('switchChange.bootstrapSwitch', function (event, state) {
+        EnableDisableSTIOption(GetSwitchValue("chkSTIScreening"));
+    });
+
+
     $("#dtNextAppointmentDate").datepicker({
         autoclose: true
     });
 
     $("#ddlPurpose").select2();
     $("#ddlMgtSignature").select2();
+    $("#ddlPtnClassification").select2();
+    $("#chkDifferenciatedCare").bootstrapSwitch('state', false);
+
+    $("#divEDC1").css("visibility", "hidden");
+    $("#divEDC1").css("display", "none");
+
+    $("#divEDC2").css("visibility", "hidden");
+    $("#divEDC2").css("display", "none");
+
+    $("#divEDC3").css("visibility", "hidden");
+    $("#divEDC3").css("display", "none");
+
+    $("#ddlPtnClassification").select2().on('change', function (e) {
+        var $this = $(this);
+        EnableDisableDifferenciatedCareDiv($(this).val());
+    });
 
 
-    $('#dtlICD10').dataTable().fnDestroy();
+    $("#ddlDRAPurpose").select2();
+    $("#ddlARTRefillModel").select2();
+    $("#dtDrugRefillAppointmentDate").datepicker({
+        autoclose: true
+    });
+    $('#dtlNextAppointment').dataTable().fnDestroy();
+
     ReInitialiseMtXDatatable();
+    ReInitialiseAppointmentsDatatable();
 
     //GetManagementData();
     BindManagementData(response);
+}
+
+function EnableDisableSTIOption(ctrlValue) {
+    var stiVal;
+    var stiSelected = false;
+    var arrPWP = [];
+    debugger;
+
+    $("#ddlPWP").find("option").each(function (i, opt) {
+        if (jQuery.isEmptyObject(opt) == false) {
+            if (opt.selected) {
+                if ($(opt).text().toLowerCase().indexOf("screening") >= 0) {
+                    stiSelected = true;
+                    if (ctrlValue == 1) {
+                        arrPWP.push({ id: opt.value });
+                    }
+                } else {
+                    arrPWP.push({ id: opt.value });
+
+                }
+            }
+        }
+    });
+
+
+    if (ctrlValue == 0) {
+        $("#ddlPWP").find("option").each(function (i, opt) {
+            if (jQuery.isEmptyObject(opt) == false) {
+                if ($(opt).text().toLowerCase().indexOf("screening") >= 0) {
+                    opt.disabled = true;
+                    if (stiSelected) {
+                        opt.selected = false;
+                    }
+                    stiVal = $(opt).val();
+                }
+            }
+        });
+
+    } else {
+
+        $("#ddlPWP").find("option").each(function (i, opt) {
+            if (jQuery.isEmptyObject(opt) == false) {
+                if ($(opt).text().toLowerCase().indexOf("screening") >= 0) {
+                    opt.disabled = false;
+                    stiVal = $(opt).val();
+                }
+            }
+        });
+
+    }
+
+    if (arrPWP.length > 0) {
+        //$("#ddlPWP").select2().val(arrPWP).trigger("change");
+        BindMultiSelectDropDown("ddlPWP", arrPWP);
+    }
+    else {
+        $("#ddlPWP").select2().val("0").trigger("change");
+    }
+
+}
+
+function EnableDisableDifferenciatedCareDiv() {
+    if ($("#ddlPtnClassification").select2('data').length > 0) {
+        var theSelection = $("#ddlPtnClassification").select2('data')[0];
+
+        if (theSelection.text.toUpperCase().indexOf("STABLE") >= 0) {
+
+            $("#divEDC1").css("visibility", "visible");
+            $("#divEDC1").css("display", "block");
+
+            $("#divEDC2").css("visibility", "visible");
+            $("#divEDC2").css("display", "block");
+
+            $("#divEDC3").css("visibility", "visible");
+            $("#divEDC3").css("display", "block");
+
+        } else {
+
+            $("#divChangeRegimen").css("visibility", "hidden");
+            $("#divChangeRegimen").css("display", "none");
+
+            $("#divARTStop").css("visibility", "hidden");
+            $("#divARTStop").css("display", "none");
+
+            $("#divEligibleART").css("visibility", "hidden");
+            $("#divEligibleART").css("display", "none");
+
+            $("#divRegimenCodes").css("visibility", "hidden");
+            $("#divRegimenCodes").css("display", "none");
+        }
+    }
 }
 
 function CalculateMMAS4Score(ref, val) {
@@ -677,8 +798,13 @@ function BindManagementData(response) {
     CheckDatenAssign(response.AD, "dtNextAppointmentDate", false);
 
     data = $.grep(response.PUR, function (e) { return e.CN == "PUR"; });
-    var vdata = [];
+    var vdata = [], vdata1 = [];
+    debugger;
+
     $.each(data, function (index, value) {
+        if (value.DN.toUpperCase().indexOf("REFILL") >= 0) {
+            vdata1.push({ id: value.DId, text: value.DN });
+        }
         vdata.push({ id: value.DId, text: value.DN });
     });
 
@@ -693,8 +819,20 @@ function BindManagementData(response) {
     $("#ddlPurpose").select2("val", "0");
     $("#ddlPurpose").trigger('change.select2');
 
+    $("#ddlDRAPurpose").select2({
+        //        placeholder: {
+        //            id: '0', // the value of the option
+        //            text: 'Select an option'
+        //        },
+        allowClear: false,
+        data: vdata1
+    });
+    $("#ddlDRAPurpose").trigger('change.select2');
+
+
+
     data = $.grep(response.RC, function (e) { return e.CN == "RegimenCodes"; });
-    var vdata = [];
+    vdata = [];
     $.each(data, function (index, value) {
         vdata.push({ id: value.DId, text: value.DN });
     });
@@ -710,7 +848,7 @@ function BindManagementData(response) {
     $("#ddlRegimenCode").select2("val", "0");
     $("#ddlRegimenCode").trigger('change.select2');
 
-    var vdata = [];
+    vdata = [];
     $.each(response.SIG, function (index, value) {
         vdata.push({ id: value.UserID, text: value.UserName + ' - ' + value.Designation });
     });
@@ -726,17 +864,62 @@ function BindManagementData(response) {
     $("#ddlMgtSignature").select2("val", "0");
     $("#ddlMgtSignature").trigger('change.select2');
 
+    debugger;
+
+    data = $.grep(response.PC, function (e) { return e.CN == "Classification"; });
+    //    vdata = [];
+    //    $.each(data, function (index, value) {
+    //        vdata.push({ id: value.DId, text: value.DN });
+    //    });
+    arrPatientClassification = data;
+
+    //    $("#ddlPtnClassification").select2({
+    //        placeholder: {
+    //            id: '0', // the value of the option
+    //            text: 'Select an option'
+    //        },
+    //        allowClear: true,
+    //        data: vdata
+    //    });
+    //    $("#ddlPtnClassification").select2("val", "0");
+    //    $("#ddlPtnClassification").trigger('change.select2');
+
+
+    data = $.grep(response.ARTRM, function (e) { return e.CN == "ARTRM"; });
+    vdata = [];
+    $.each(data, function (index, value) {
+        vdata.push({ id: value.DId, text: value.DN });
+    });
+
+    $("#ddlARTRefillModel").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: true,
+        data: vdata
+    });
+    $("#ddlARTRefillModel").select2("val", "0");
+    $("#ddlARTRefillModel").trigger('change.select2');
+
+
 
 
     var age = $("#hidDOB").val();
 
     if (age < 14) {
-        $("#div3PositivePrevention").css("visibility", "hidden");
-        $("#div3PositivePrevention").css("display", "none");
+        $("#div3PositivePreventionH").css("visibility", "hidden");
+        $("#div3PositivePreventionH").css("display", "none");
+
+        $("#div3PositivePreventionB").css("visibility", "hidden");
+        $("#div3PositivePreventionB").css("display", "none");
     }
     else {
-        $("#div3PositivePrevention").css("visibility", "visible");
-        $("#div3PositivePrevention").css("display", "block");
+        $("#div3PositivePreventionH").css("visibility", "visible");
+        $("#div3PositivePreventionH").css("display", "block");
+
+        $("#div3PositivePreventionB").css("visibility", "visible");
+        $("#div3PositivePreventionB").css("display", "block");
     }
 
     BindManagementxControls(response);
@@ -769,7 +952,7 @@ function DisableEnableWhyPoor(val, whyCtrlName) {
 $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
     $("#ddlICD").select2({
         matcher: oldMatcher(matchStart)
-    })
+    });
 });
 
 function matchStart(arrICDData, text) {
@@ -895,6 +1078,7 @@ function BindManagementxControls(response) {
         }
     }
 
+    debugger;
     var idGKP;
     $.each(response.KPL, function (index, value) {
         idGKP = value.id;
@@ -903,12 +1087,14 @@ function BindManagementxControls(response) {
     $("input:radio[name=rbgKP][value=" + idGKP + "]").attr('checked', 'checked');
     $("input:radio[name=rbgKP]").iCheck('update');
 
-    if (jQuery.isEmptyObject(idGKP) == false) {
+    if (jQuery.isEmptyObject(idGKP) == false && idGKP > 0) {
         $("#chkKeyPopulation").bootstrapSwitch('state', true);
     }
-
+    debugger;
     BindMultiSelectDropDown("ddlPWP", response.PWPL);
 
+
+    EnableDisableSTIOption(GetSwitchValue("chkSTIScreening"));
 
     if (jQuery.isEmptyObject(response.ICDGV) == false) {
         $.each(response.ICDGV, function (index, value) {
@@ -933,6 +1119,40 @@ function BindManagementxControls(response) {
         DrawDataTable("dtlICD10", arrICD10);
 
     }
+    arrNxtAppointment = [];
+    if (jQuery.isEmptyObject(response.Appointments) == false) {
+        $.each(response.Appointments, function (index, value) {
+            if (jQuery.isEmptyObject(value) == false) {
+
+                // parse JSON formatted date to javascript date object
+                var dtOSD = new Date(parseInt(value.ANAD.substr(6)));
+                // format display date (e.g. 04/10/2012)
+                var displayDate = $.format.date(dtOSD, "dd-MMM-yyyy");
+                arrNxtAppointment.push({
+                    Id: value.Id,
+                    Ptn_Pk: value.Ptn_Pk,
+                    LId: value.LId,
+                    VId: value.VId,
+                    displayDate: displayDate,
+                    ANAD: value.ANAD,
+                    APurpose: value.APurpose,
+                    PurposeN: value.PurposeN,
+                    AT: value.AT,
+                    SA: value.SA,
+                    SAN: value.SAN,
+                    Desc: value.Desc,
+                    Status: value.Status
+
+                });
+            }
+        });
+        debugger;
+
+        DrawDataTable("dtlNextAppointment", arrNxtAppointment);
+
+    }
+
+
 
     $("#txtICDComments").val(response.Comment);
     $("#txtAreaReminders").val(response.AREM);
@@ -940,14 +1160,99 @@ function BindManagementxControls(response) {
 
 
     CheckDatenAssign(response.AD, "dtNextAppointmentDate", false);
+
     $("#ddlPurpose").select2().val(response.AR).trigger("change");
     $("#ddlMgtSignature").select2().val(response.MPA.MGTSIG).trigger("change");
 
     $("#ddlRegimenCode").select2().val(response.RCV).trigger("change");
 
+    var vdata = [];
+    debugger;
+    $("#ddlPtnClassification").select2();
+    var end = new Date();
+    var diff = 1;
+
+
+    if (jQuery.isEmptyObject(response.ARTS) == false) {
+        var dtART = new Date(parseInt(response.ARTS.substr(6)));
+
+        // format display date (e.g. 04/10/2012)
+        var displayARTDate = $.format.date(dtART, "dd-mm-yyyy");
+        var startDay = new Date(displayARTDate);
+        diff = new Date(end - startDay);
+    }
+
+    // get days
+    var days = diff / 1000 / 60 / 60 / 24;
+    var IsEnrollDifferenciatedCare = false;
+
+    $.each(arrPatientClassification, function (index, value) {
+        if (days < 365) {
+            IsEnrollDifferenciatedCare = false;
+            if (value.DN == 'Well') {
+                vdata.push({ id: value.DId, text: value.DN });
+            } else if (value.DN == 'Advance HIV Disease') {
+                vdata.push({ id: value.DId, text: value.DN });
+            }
+        } else {
+            IsEnrollDifferenciatedCare = true;
+            if (value.DN == 'Stable') {
+                vdata.push({ id: value.DId, text: value.DN });
+            } else if (value.DN == 'Unstable') {
+                vdata.push({ id: value.DId, text: value.DN });
+            }
+
+        }
+    });
+
+    $("#ddlPtnClassification").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: true,
+        data: vdata
+    });
+    $("#ddlPtnClassification").select2("val", "0");
+    $("#ddlPtnClassification").trigger('change.select2');
+
+    $("#ddlPtnClassification").select2().val(response.Classification).trigger("change");
+
+    $("#txtServiceArea").val($("#hidsrvNm").val());
+    $("#txtDRASA").val($("#hidsrvNm").val());
+
+    if (IsEnrollDifferenciatedCare) {
+        $("#divEDC1").css("visibility", "visible");
+        $("#divEDC1").css("display", "block");
+
+        $("#divEDC2").css("visibility", "visible");
+        $("#divEDC2").css("display", "block");
+
+        $("#divEDC3").css("visibility", "visible");
+        $("#divEDC3").css("display", "block");
+
+    } else {
+        $("#divEDC1").css("visibility", "hidden");
+        $("#divEDC1").css("display", "none");
+
+        $("#divEDC2").css("visibility", "hidden");
+        $("#divEDC2").css("display", "none");
+
+        $("#divEDC3").css("visibility", "hidden");
+        $("#divEDC3").css("display", "none");
+    }
+
+
+    if (jQuery.isEmptyObject(response.ISEDC) == false) {
+        if (response.ISEDC > 0) {
+            $("#chkDifferenciatedCare").bootstrapSwitch('state', true);
+
+        }
+    }
+    $("#ddlARTRefillModel").select2().val(response.ARTRefillModel).trigger("change");
+
     $.hivce.loader('hide');
 }
-
 
 //
 // Helper functions
@@ -1095,6 +1400,8 @@ function ReInitialiseMtXDatatable(from) {
         "bFilter": false,
         "bInfo": false,
         "autoWidth": true,
+        "destroy": true,
+        "sSearch": false,
         "aoColumns": [
                 { bSortable: false,
                     mRender: function (data, type, full) {
@@ -1128,6 +1435,57 @@ function ReInitialiseMtXDatatable(from) {
                      }
                  }
             ]
+    });
+}
+
+
+function ReInitialiseAppointmentsDatatable() {
+    $('#dtlNextAppointment').DataTable({
+        "aaData": arrNxtAppointment,
+        "bSort": false,
+        "bPaginate": false,
+        "bFilter": false,
+        "bInfo": false,
+        "autoWidth": true,
+        "aoColumns": [
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["Id"];
+                }
+            },
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["displayDate"];
+                }
+            },
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["SAN"];
+                }
+            },
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["PurposeN"];
+                }
+            },
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["Desc"];
+                }
+            },
+            { bSortable: false,
+                mRender: function (data, type, full) {
+                    return full["Status"];
+                }
+            },
+            {
+                bSortable: false,
+                mRender: function (data, type, full) {
+                    return "";
+                    //return "<a class=\"btn btn-app btn-app-small\" onclick=\"DeleteICD10Row('" + full["ICDId"] + "');\"><i class=\"glyphicon glyphicon-trash\"></i></a>";
+                }
+            }
+        ]
     });
 }
 
@@ -1303,6 +1661,16 @@ function PrepareManagementxData() {
         ddlMgtSignature = 0;
     }
 
+    var ddlPtnClassification = $("#ddlPtnClassification").select2("val");
+    if (ddlPtnClassification == null) {
+        ddlPtnClassification = 0;
+    }
+
+    var ddlARTRefillModel = $("#ddlARTRefillModel").select2("val");
+    if (ddlARTRefillModel == null) {
+        ddlARTRefillModel = 0;
+    }
+
     var txtICDComments = $("#txtICDComments").val();
 
 
@@ -1352,11 +1720,15 @@ function PrepareManagementxData() {
         PWP: GetControlMultiSelectValues("ddlPWP"),
         AREM: txtAreaReminders,
         AREF: txtAreaReferrals,
-        NAD: GetDateData("dtNextAppointmentDate", true),
-        Purpose: ddlPurpose,
-        MGTS: ddlMgtSignature,
+        //NAD: GetDateData("dtNextAppointmentDate", true),
+        //Purpose: ddlPurpose,
+        // MGTS: ddlMgtSignature,
         ICDV: arrICD10,
-        ICDC: txtICDComments
+        ICDC: txtICDComments,
+        Classification: ddlPtnClassification,
+        ISEDC: GetSwitchValue("chkSTIScreening"),
+        ARTRefillModel: ddlARTRefillModel,
+        Appointments: arrNxtAppointment
     });
 
     return rowManagementxData[0];
@@ -1393,7 +1765,6 @@ function CheckMXBlankValues() {
     }
 
     var ddlsubsituationInterruption = $("#ddlsubsituationInterruption").select2("val");
-    debugger;
     if (ddlsubsituationInterruption == null) {
         if (errorField.length > 1) {
             errorField += ', ';
@@ -1422,12 +1793,25 @@ function CheckMXBlankValues() {
         }
     }
 
-    if ($("#dtNextAppointmentDate").val().length == 0) {
-        if (errorField.length > 1) {
-            errorField += ', ';
+    var chkKeyPopulation = GetSwitchValue("chkKeyPopulation");
+
+    var rbgKP = $("input:radio[name=rbgKP]:checked").val();
+    var urbgKP = (rbgKP === undefined) ? 0 : rbgKP;
+    if (chkKeyPopulation > 0) {
+        if (urbgKP == 0) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'Key Population ';
         }
-        errorField += 'Next Appointment date ';
     }
+
+    //    if ($("#dtNextAppointmentDate").val().length == 0) {
+    //        if (errorField.length > 1) {
+    //            errorField += ', ';
+    //        }
+    //        errorField += 'Next Appointment date ';
+    //    }
 
 
     if (isNaN(errorField)) {
@@ -1488,4 +1872,97 @@ function PostManagementxData(rowData) {
             //}
         });
     }
+}
+
+function AddAppointment(ref) {
+
+    var ddlP;
+    var data;
+    var dtDate;
+    var desc;
+    var ctrlDT;
+    if (ref == '0') {
+        dtDate = GetDateData("dtNextAppointmentDate", true);
+        ddlP = $("#ddlPurpose").select2("val");
+        data = $("#ddlPurpose").select2('data')[0];
+        desc = $("#txtNADDescription").val();
+        ctrlDT = "dtNextAppointmentDate";
+
+    } else {
+
+        dtDate = GetDateData("dtDrugRefillAppointmentDate", true);
+        ddlP = $("#ddlDRAPurpose").select2("val");
+        data = $("#ddlDRAPurpose").select2('data')[0];
+        desc = $("#txtDRADescription").val();
+        ctrlDT = "dtDrugRefillAppointmentDate";
+    }
+
+
+
+    if (ddlP == null) {
+        customAlert("Please select purpose from the list");
+        return;
+    }
+    if (ref == '0') {
+        if ($("#dtNextAppointmentDate").val().length == 0) {
+            customAlert("Please enter appointment date");
+            return;
+        }
+    } else {
+        if ($("#dtDrugRefillAppointmentDate").val().length == 0) {
+            customAlert("Please enter appointment date");
+            return;
+        }
+    }
+    debugger;
+
+    var chkData = false;
+
+    $.each(arrNxtAppointment, function (index, arrD) {
+        if (jQuery.isEmptyObject(arrD) == false) {
+            if (jQuery.isEmptyObject(arrD.NAD) == false) {
+                var dt = new Date(parseInt(arrD.NAD.substr(6))).toString();
+                //console.log(dt); // Mon Jul 16 2012 15:21:09 GMT+0530 (India Standard Time)
+                dt = dt.substr(0, dt.indexOf('GMT'));
+                //console.log(dt); // Mon Jul 16 2012 15:21:09 
+                osd = convertToJSONDate(dt, true);
+
+                var dtOSD = new Date(parseInt(osd.substr(6)));
+                dtOSD.setHours(0, 0, 0, 0);
+                var dt = new Date(parseInt(dtDate.substr(6)));
+                dt.setHours(0, 0, 0, 0);
+                if (dtOSD.getTime() === dt.getTime()) {
+                    chkData = true;
+                }
+            }
+        }
+    });
+
+    if (chkData == false) {
+
+        arrNxtAppointment.push({
+            Id: 0,
+            Ptn_Pk: 0,
+            LId: 0,
+            VId: 0,
+            displayDate: $("#" + ctrlDT).val(),
+            ANAD: dtDate,
+            APurpose: data.id,
+            PurposeN: data.text,
+            AT: ref,
+            SA: $("#hidMOD").val(),
+            SAN: $("#hidsrvNm").val(),
+            Desc: desc,
+            Status: "--"
+
+        });
+
+        //arrChronicDisorders.push({ PCID: data.id, PC: data.text, OSD: dtOnsetDate, IsActive: IsA, IsAVal: IsAVal, displayDate: $("#dtCCOnsetDate").val(), VId: 0 });
+        //arrChronicDisordersUI.push([data.text, $("#dtCCOnsetDate").val(), IsAVal, data.id]);
+    }
+    else {
+        customAlert("Already exits in the table.");
+    }
+
+    DrawDataTable("dtlNextAppointment", arrNxtAppointment);
 }

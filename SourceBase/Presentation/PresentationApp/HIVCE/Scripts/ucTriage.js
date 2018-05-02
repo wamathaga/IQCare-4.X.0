@@ -28,6 +28,13 @@ function InitTriageControls(response) {
         autoclose: true
     }).datepicker("setDate", "0");
 
+    $("#dtTSNextAppointmentDate").datepicker({
+        autoclose: true
+    });
+
+    $("#ddlTSPurpose").select2();
+    $("#ddlTSMgtSignature").select2();
+
 
     $("#ddlVisitType").select2();
     $("#ddlCareGiven").select2();
@@ -74,6 +81,24 @@ function InitTriageControls(response) {
         EnableDisableReferredFrom();
     });
 
+    $("#divTSDetails").css("display", "none");
+    $("#divTSDetails").css("visibility", "hidden");
+
+    var age = $("#hidDOB").val();
+    if (age > 14) {
+        $("#lblBPMMHG").removeClass().addClass("control-label requiredFieldColor");
+    }
+    else {
+        $("#lblBPMMHG").removeClass().addClass("control-label");
+    }
+
+//    $("#txtNursesComment").on('blur', function () {
+//        debugger;
+//        //$("span.bootstrap-maxlength").empty();
+//        //$("span.bootstrap-maxlength").removeClass("bootstrap-maxlength labelTextBox label");
+//        //$("span.bootstrap-maxlength").removeAttr("style").attr("style", "display:none");
+//    });
+
     BindTriageCombo(response);
     BindControls(response);
 
@@ -98,15 +123,45 @@ function EnableDisableHIVECareDiv(val) {
         var theSelection = $("#ddlVisitType").select2('data')[0];
 
         if (theSelection.text.toUpperCase().indexOf("INITIAL") == -1) {
-            $("#divHIVCare").removeClass().addClass("box box-default box-solid collapsed-box");
-            $("#divHIVCareI").removeClass().addClass("fa fa-plus");
-            $("#divBodyHivCare").css("display", "none");
-            $("#dtHivConfirm").prop('disabled', true);
 
-            $("#divReferredFrom").css("display", "none");
-            $("#divReferredFrom").css("visibility", "hidden");
+            if (theSelection.text.toUpperCase().indexOf("TREATMENT") == -1) {
+                $("#divHIVCare").removeClass().addClass("box box-default box-solid collapsed-box");
+                $("#divHIVCareI").removeClass().addClass("fa fa-plus");
+                $("#divBodyHivCare").css("display", "none");
+                $("#dtHivConfirm").prop('disabled', true);
+
+                $("#divReferredFrom").css("display", "none");
+                $("#divReferredFrom").css("visibility", "hidden");
+
+                $("#divOtherThanTS").css("display", "block");
+                $("#divOtherThanTS").css("visibility", "visible");
+
+                $("#divTSDetails").css("display", "none");
+                $("#divTSDetails").css("visibility", "hidden");
+
+                enableAlreadySavedTabs(currAST);
+            }
+            else {
+                $("#divOtherThanTS").css("display", "none");
+                $("#divOtherThanTS").css("visibility", "hidden");
+
+                $("#divTSDetails").css("display", "block");
+                $("#divTSDetails").css("visibility", "visible");
+
+
+                $('#a_PC').addClass('disabled');
+                $('#a_AH').addClass('disabled');
+                $('#a_S').addClass('disabled');
+                $('#a_SR').addClass('disabled');
+                $('#a_M').addClass('disabled');
+
+            }
+
         }
         else {
+            $("#divOtherThanTS").css("display", "block");
+            $("#divOtherThanTS").css("visibility", "visible");
+
             $("#divHIVCare").removeClass().addClass("box box-default box-solid");
             $("#divHIVCareI").removeClass().addClass("fa fa-minus");
             $("#divBodyHivCare").css("display", "block");
@@ -114,6 +169,11 @@ function EnableDisableHIVECareDiv(val) {
 
             $("#divReferredFrom").css("display", "block");
             $("#divReferredFrom").css("visibility", "visible");
+
+            $("#divTSDetails").css("display", "none");
+            $("#divTSDetails").css("visibility", "hidden");
+
+            enableAlreadySavedTabs(currAST);
         }
 
     }
@@ -339,6 +399,41 @@ function BindTriageCombo(response) {
     });
     $("#ddlReferredFrom").select2("val", "0");
     $("#ddlReferredFrom").trigger('change.select2');
+
+
+    data = [];
+    $.each(response.UDL, function (index, value) {
+        data.push({ id: value.UserID, text: value.UserName + ' - ' + value.Designation });
+    });
+
+    $("#ddlTSMgtSignature").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: true,
+        width: 'resolve',
+        data: data
+    });
+    $("#ddlTSMgtSignature").select2("val", "0");
+    $("#ddlTSMgtSignature").trigger('change.select2');
+
+    data = $.grep(response.PUR, function (e) { return e.CN == "PUR"; });
+    var vdata = [];
+    $.each(data, function (index, value) {
+        vdata.push({ id: value.DId, text: value.DN });
+    });
+
+    $("#ddlTSPurpose").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: true,
+        data: vdata
+    });
+    $("#ddlTSPurpose").select2("val", "0");
+    $("#ddlTSPurpose").trigger('change.select2');
 }
 
 
@@ -440,7 +535,7 @@ function BindControls(response) {
     $("#txtWAgeZScore").val(response.PV.WFA);
     $("#txtHAgeZScore").val(response.PV.WFH);
     $("#txtBMIZScore").val(response.PV.BMIz);
-    $("#txtNursesComment").val(response.PV.NC)
+    $("#txtNursesComment").val(response.PV.NC);
     $("#txtSP").val(response.PV.SP);
 
     $("#hidL").val(response.L);
@@ -475,6 +570,10 @@ function BindControls(response) {
 
     $("#txtReferredFrom").val(response.RFO);
     $("#ddlReferredFrom").val(response.RF).trigger("change");
+
+    CheckDatenAssign(response.AD, "dtTSNextAppointmentDate", false);
+    $("#ddlTSPurpose").select2().val(response.AR).trigger("change");
+    $("#ddlTSMgtSignature").select2().val(response.MGTS).trigger("change");
 
 
     GetZScoreDetails();
@@ -531,19 +630,38 @@ function CalcualteBMIzScore() {
 function VisibilityZScore() {
     var hidPAYM = $("#hidPAYM").val();
 
-    if (hidPAYM >= 5 && hidPAYM <= 15) {
-        $("#divWA").css("visibility", "visible");
-        $("#divWA").css("display", "block");
-        $("#divWAV").css("visibility", "visible");
-        $("#divWAV").css("display", "block");
-        $("#divHA").css("visibility", "visible");
-        $("#divHA").css("display", "block");
-        $("#divHAV").css("visibility", "visible");
-        $("#divHAV").css("display", "block");
+    if (hidPAYM >= 0 && hidPAYM <= 19) {
+
+        if (hidPAYM >= 0 && hidPAYM <= 5) {
+
+            $("#divWA").css("visibility", "visible");
+            $("#divWA").css("display", "block");
+            $("#divWAV").css("visibility", "visible");
+            $("#divWAV").css("display", "block");
+            $("#divHA").css("visibility", "visible");
+            $("#divHA").css("display", "block");
+            $("#divHAV").css("visibility", "visible");
+            $("#divHAV").css("display", "block");
+        } else {
+            $("#divWA").css("visibility", "hidden");
+            $("#divWA").css("display", "none");
+            $("#divWAV").css("visibility", "hidden");
+            $("#divWAV").css("display", "none");
+            $("#divHA").css("visibility", "hidden");
+            $("#divHA").css("display", "none");
+            $("#divHAV").css("visibility", "hidden");
+            $("#divHAV").css("display", "none");
+        }
         $("#divBMIZ").css("visibility", "visible");
         $("#divBMIZ").css("display", "block");
         $("#divBMIZV").css("visibility", "visible");
         $("#divBMIZV").css("display", "block");
+        
+
+        $("#divBMILable").css("visibility", "hidden");
+        $("#divBMILable").css("display", "none");
+        $("#divBMIText").css("visibility", "hidden");
+        $("#divBMIText").css("display", "none");
     }
     else {
         $("#divWA").css("visibility", "hidden");
@@ -558,6 +676,11 @@ function VisibilityZScore() {
         $("#divBMIZ").css("display", "none");
         $("#divBMIZV").css("visibility", "hidden");
         $("#divBMIZV").css("display", "none");
+
+        $("#divBMILable").css("visibility", "visible");
+        $("#divBMILable").css("display", "block");
+        $("#divBMIText").css("visibility", "visible");
+        $("#divBMIText").css("display", "block");
     }
 
 }
@@ -620,15 +743,43 @@ function CheckTriBlankValues() {
             }
         }
     }
-    //    var transferIn = GetSwitchValue("chkTransferIn");
-    //    if (transferIn > 0) {
-    //        if ($("#dtTransferDate").val().length == 0) {
-    //            if (errorField.length > 1) {
-    //                errorField += ', ';
-    //            }
-    //            errorField += 'Transfer date ';
-    //        }
-    //    }
+
+    var transferIn = GetSwitchValue("chkTransferIn");
+    if (transferIn > 0) {
+
+        var ddlTransferFrom = $("#ddlFacility").select2("val");
+
+        if (ddlTransferFrom == null) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'Facility transfer from ';
+        }
+
+        if ($("#dtDateStatedArt").val().length == 0) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'ART start date ';
+        }
+
+        var ddlARTStartRegimen = $("#ddlARTStartRegimen").select2("val");
+        if (ddlARTStartRegimen == null) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'First line regimen ';
+        }
+
+        var ddlCurrentRegimen = $("#ddlCurrentRegimen").select2("val");
+        if (ddlCurrentRegimen == null) {
+            if (errorField.length > 1) {
+                errorField += ', ';
+            }
+            errorField += 'Current regimen ';
+        }
+    }
+
 
     if ($("#txtHeight").val().length == 0 || $("#txtHeight").val() == "0") {
         if (errorField.length > 1) {
@@ -667,8 +818,40 @@ function CheckTriBlankValues() {
     return errorMsg;
 }
 
+function CheckTSTriBlankValues() {
+    var ddlCtrl = $("#ddlVisitType").select2("val");
+    var data = $("#ddlVisitType").select2('data')[0];
+    errorMsg = '';
+    var errorField = '';
 
-function SaveTriageData() {
+    if ($("#dtVisitDate").val().length == 0) {
+        if (errorField.length > 1) {
+            errorField += ', ';
+        }
+        errorField += 'Visit date ';
+    }
+
+    if (ddlCtrl == null) {
+        if (errorField.length > 1) {
+            errorField += ', ';
+        }
+        errorField += 'Visit type ';
+    }
+
+    if ($("#dtTSNextAppointmentDate").val().length == 0) {
+        if (errorField.length > 1) {
+            errorField += ', ';
+        }
+        errorField += 'Next Appointment date ';
+    }
+
+    if (isNaN(errorField)) {
+        errorMsg = errorField + 'cannot be blank.';
+    }
+    return errorMsg;
+}
+
+function SaveTriageData(IsFind) {
 
     activePage = getPageName() + '.aspx';
     var action = "savetriage";
@@ -695,20 +878,20 @@ function SaveTriageData() {
                     bootbox.confirm("Initial visit already exists on day " + displayDate + ", do you want to create another initial visit?", function (e) {
                         if (e) {
                             //debugger;
-                            PostTriageData();
+                            PostTriageData(IsFind);
                             isPreviousTabSave = true;
                         }
                     });
                 }
                 else {
-                    PostTriageData();
+                    PostTriageData(IsFind);
                     isPreviousTabSave = true;
                 }
             }
             else {
                 if (visitType != null) {
                     if (visitTypeData.text.toUpperCase().indexOf("INITIAL") > -1) {
-                        PostTriageData();
+                        PostTriageData(IsFind);
                         isPreviousTabSave = true;
                     }
                     else {
@@ -718,13 +901,69 @@ function SaveTriageData() {
             }
         }
         else {
-            PostTriageData();
+            PostTriageData(IsFind);
             isPreviousTabSave = true;
         }
     }
 }
 
-function PostTriageData() {
+function SaveTSTriageData() {
+
+    activePage = getPageName() + '.aspx';
+    var action = "savetstriage";
+    var errorMsg = CheckTSTriBlankValues();
+    if (isNaN(errorMsg)) {
+        customAlert(errorMsg);
+        return;
+    }
+    else {
+        var hidEIVID = $("#hidEIVID").val();
+        var hidEIVD = $("#hidEIVD").val();
+
+        if ($("#hidVId").val() == 0) {
+            var visitType = $("#ddlVisitType").select2("val");
+            var visitTypeData = $("#ddlVisitType").select2('data')[0];
+
+            if ($("#hidEIVD").val().length > 0) {
+                if (visitTypeData.text.toUpperCase().indexOf("INITIAL") >= 0) {
+                    // parse JSON formatted date to javascript date object
+                    var dtOSD = new Date(parseInt(hidEIVD.substr(6)));
+
+                    // format display date (e.g. 04/10/2012)
+                    var displayDate = $.format.date(dtOSD, "dd-MMM-yyyy");
+                    bootbox.confirm("Initial visit already exists on day " + displayDate + ", do you want to create another initial visit?", function (e) {
+                        if (e) {
+                            //debugger;
+                            PostTSTriageData();
+                            isPreviousTabSave = true;
+                        }
+                    });
+                }
+                else {
+                    PostTSTriageData();
+                    isPreviousTabSave = true;
+                }
+            }
+            else {
+                if (visitType != null) {
+                    if (visitTypeData.text.toUpperCase().indexOf("INITIAL") > -1) {
+                        PostTSTriageData();
+                        isPreviousTabSave = true;
+                    }
+                    else {
+                        customAlert(initialTypeMessage);
+                    }
+                }
+            }
+        }
+        else {
+            PostTSTriageData();
+            isPreviousTabSave = true;
+        }
+    }
+}
+
+function PostTriageData(IsFind) {
 
     activePage = getPageName() + '.aspx';
     var action = "savetriage";
@@ -747,10 +986,84 @@ function PostTriageData() {
             var res = response.Success;
             var msg = response.EM;
             if (res == "true") {
+
                 GetTriageData();
                 customAlert("Triage tab " + dataSuccessMessage.toLowerCase());
-                GetNextPage("tab_2");
+                if (IsFind) {
+                    var srvNm = $("#hidsrvNm").val();
+                    var mod = $("#hidMOD").val();
+                    var url = "../frmFindAddCustom.aspx?srvNm=" + srvNm + "&mod=" + mod;
+                    window.location.assign(url);
+                }
+                else {
+                    GetNextPage("tab_2");
+                }
 
+            }
+            else {
+
+                if (res == "false") {
+                    if (msg != null) {
+                        if (msg.toLowerCase().indexOf("visit already exists") >= 0) {
+                            //string contains hello
+                            customAlert(msg);
+                        }
+                        else {
+                            customAlert(errorMessage);
+                        }
+                    }
+                    else {
+                        customAlert(errorMessage);
+                    }
+                }
+                else {
+                    customAlert(res);
+                }
+            }
+
+            //$.eva.loader('hide');
+        },
+        error: function (msg) {
+            //ShowErrorMessage(msg);
+        }
+    });
+}
+
+
+function PostTSTriageData() {
+    var IsFind = true;
+
+    activePage = getPageName() + '.aspx';
+    var action = "savetstriage";
+    var rowData1 = PrepareSaveTSTriageData();
+    $.hivce.loader('show');
+    var responseObject = null;
+    $.ajax({
+        type: "POST",
+        //url: "ClinicalEncounter.aspx?data=" + action,
+        url: activePage + "?data=" + action,
+        data: JSON.stringify(rowData1),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        async: true,
+        cache: false,
+        beforeSend: function () {
+        },
+        success: function (response) {
+            console.log(response);
+            var res = response.Success;
+            var msg = response.EM;
+            if (res == "true") {
+
+                GetTriageData();
+                customAlert("Triage tab " + dataSuccessMessage.toLowerCase());
+                var srvNm = $("#hidsrvNm").val();
+                var mod = $("#hidMOD").val();
+                var url = "../frmFindAddCustom.aspx?srvNm=" + srvNm + "&mod=" + mod;
+                window.location.assign(url);
+                //                else {
+                //                    GetNextPage("tab_2");
+                //                }
             }
             else {
 
@@ -812,6 +1125,40 @@ function PrepareSaveTriageData() {
         FN: formName,
         RF: ddlReferredFrom,
         RFO: $("#txtReferredFrom").val()
+    });
+
+    console.log(rowData);
+    return rowData[0];
+}
+
+function PrepareSaveTSTriageData() {
+    var localdtformat = true, formName = '';
+
+    //alert(GetDateData("dtVisitDate", localdtformat));
+
+    if (~activePage.indexOf('Green')) { formName = 'Green Card Form'; }
+    else if (~activePage.indexOf('Clinical')) { formName = 'Clinical Encounter'; }
+
+    var dtTSNextAppointmentDate = GetDateData("dtTSNextAppointmentDate", true);
+    var ddlTSPurpose = $("#ddlTSPurpose").select2("val");
+    if (ddlTSPurpose == null) {
+        ddlTSPurpose = 0;
+    }
+
+    var ddlTSMgtSignature = $("#ddlTSMgtSignature").select2("val");
+    if (ddlTSMgtSignature == null) {
+        ddlTSMgtSignature = 0;
+    }
+
+    rowData = [];
+    rowData.push({ Ptn_Pk: 0,
+        LId: 0,
+        VId: 0,
+        OV: GetOVData(localdtformat),
+        FN: formName,
+        NAD: GetDateData("dtTSNextAppointmentDate", true),
+        Purpose: ddlTSPurpose,
+        MGTS: ddlTSMgtSignature
     });
 
     console.log(rowData);

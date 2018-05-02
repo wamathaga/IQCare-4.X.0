@@ -15,7 +15,11 @@
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(RegisterJQuery);
     </script>
     <script type="text/javascript">
-
+        function OnANCClose() {
+            debugger;
+            window.opener.LabPopUpClosed();
+            window.close();
+        }
         function Close() {
             var curl = document.URL;
             var w = window.opener;
@@ -121,7 +125,7 @@
                             <div class="box box-primary box-solid">
                                 <div class="box-header">
                                     <h3 class="box-title">
-                                        Laboratory</h3>
+                                        Order Labs</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding" style="overflow: hidden; margin-left: 5px;">
@@ -208,49 +212,61 @@
                                                 </NoRecordsTemplate>--%>
                                             <Columns>
                                                 <telerik:GridTemplateColumn HeaderText="Laboratory Test Name" HeaderStyle-Font-Bold="true">
-                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="32%" />
+                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="25%" Font-Bold="True" />
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblLabTestName" runat="server" Text='<%# Eval("SubTestName") %>'></asp:Label>
                                                         <asp:Label ID="lblLabSubTestID" runat="server" Visible="false" Text='<%# Eval("SubTestId") %>'></asp:Label>
                                                         <asp:Label ID="lblLabTestID" runat="server" Visible="false" Text='<%# Eval("LabTestId") %>'></asp:Label>
                                                     </ItemTemplate>
-                                                    <HeaderStyle Font-Bold="True"></HeaderStyle>
+                                                  
                                                 </telerik:GridTemplateColumn>
                                                 <telerik:GridTemplateColumn HeaderText="Units" HeaderStyle-Font-Bold="true">
-                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="8%" />
+                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="10%" Font-Bold="True" />
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblLabTestUom" runat="server" Text='<%# Eval("UnitName") %>'></asp:Label>
                                                     </ItemTemplate>
-                                                    <HeaderStyle Font-Bold="True"></HeaderStyle>
+                                                   
                                                 </telerik:GridTemplateColumn>
                                                 <telerik:GridTemplateColumn HeaderText="Test Type" HeaderStyle-Font-Bold="true">
-                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="9%" />
+                                                    <HeaderStyle Font-Size="10px" Wrap="False" Width="18%" Font-Bold="True" />
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblLabTestType" runat="server" Text='<%# Eval("LabDepartmentName") %>'></asp:Label>
                                                     </ItemTemplate>
-                                                    <HeaderStyle Font-Bold="True"></HeaderStyle>
+                                                  
                                                 </telerik:GridTemplateColumn>
-
-                                                  <telerik:GridTemplateColumn HeaderText="Justification" HeaderStyle-Font-Bold="true">
-                                                   <HeaderStyle Font-Size="10px" Wrap="False" Width="19%" />
-                                                    <ItemTemplate>
-                                                        <asp:DropDownList runat="server" ID="ddlJustification">
-                                                        <asp:ListItem Text="--Select--" Value="0" />
-                                                        <asp:ListItem Text="Baseline" Value="1" />
-                                                        <asp:ListItem Text="Routine" Value="2" />
-                                                        <asp:ListItem Text="Confirmatory" Value="3" />
-                                                        <asp:ListItem Text="Suspected Drug resistance/Rx Failure" Value="4" />
-                                                        <asp:ListItem Text="Repeat (Previous Sample Rejected)" Value="5" />
-                                                        <asp:ListItem Text="Other" Value="6" />
-                                                        </asp:DropDownList>
-                                                    </ItemTemplate>
-                                                </telerik:GridTemplateColumn>
-
                                                 <telerik:GridTemplateColumn HeaderText="Urgent" HeaderStyle-Font-Bold="true">
+                                                  <HeaderStyle Font-Size="10px" Wrap="False" Width="5%" Font-Bold="True" />
                                                     <ItemTemplate>
-                                                        <asp:CheckBox runat="server" ID="chkUrgent"></asp:CheckBox>
+                                                        <asp:CheckBox runat="server" ID="chkUrgent" Checked='<%# (Convert.ToBoolean(Eval("UrgentFlag")) == true)? true: false %>'></asp:CheckBox>
+                                                    </ItemTemplate>
+                                                     
+                                                </telerik:GridTemplateColumn>
+                                                <telerik:GridTemplateColumn HeaderText="Justification" HeaderStyle-Font-Bold="true">
+                                                <HeaderStyle Font-Size="10px" Wrap="False" Width="18%" Font-Bold="True" />
+                                                <ItemTemplate>
+                                                  
+
+                                                    <telerik:RadComboBox ID="ddlJustification" runat="server" AutoPostBack="true" Skin="Windows7"
+                                                                        EnableLoadOnDemand="true" OnSelectedIndexChanged="ddlJustification_SelectedIndexChanged">
+                                                                    </telerik:RadComboBox>
+
+                                                    <telerik:RadTextBox runat="server" ID="txtJustification" visible="false" Skin="Metro"  Text='<%# Eval("JustificationOther")%>'></telerik:RadTextBox>
+
+                                                  
+                                                </ItemTemplate>
+
+
+                                                
+                                            </telerik:GridTemplateColumn>
+                                             
+                                             
+                                             <telerik:GridTemplateColumn HeaderText="Rejected/Repeat" HeaderStyle-Font-Bold="true">
+                                               <HeaderStyle Font-Size="10px" Wrap="False" Width="10%" Font-Bold="True"/>
+                                                  <ItemTemplate>
+                                                        <asp:CheckBox runat="server" ID="chkReject" Checked='<%# (Convert.ToBoolean(Eval("RejectFlag")) == true)? true: false %>'></asp:CheckBox>
                                                     </ItemTemplate>
                                                 </telerik:GridTemplateColumn>
+
 
                                                 <telerik:GridTemplateColumn HeaderText="" HeaderStyle-Font-Bold="true">
                                                     <ItemTemplate>
@@ -261,6 +277,7 @@
                                                 </telerik:GridTemplateColumn>
                                                 
                                             </Columns>
+
                                             <NestedViewSettings>
                                                 <ParentTableRelation>
                                                     <telerik:GridRelationFields DetailKeyField="SubTestId" MasterKeyField="SubTestId" />
@@ -314,6 +331,8 @@
                                                                     <asp:Label ID="lblMaxBoundaryVal" runat="server" Visible="false" Text='<%# Eval("MaxBoundaryValue") %>'></asp:Label>
                                                                     <asp:Label ID="lblTestResultId" runat="server" Visible="false" Text='<%# Eval("TestResultId") %>'></asp:Label>
                                                                     <asp:Label ID="lblTestResults" runat="server" Visible="false" Text='<%# Eval("TestResults") %>'></asp:Label>
+                                                                    
+                                                                    
                                                                     <telerik:RadGrid AutoGenerateColumns="false" ID="RadGridArvMutation" runat="server"
                                                                         Width="100%" PageSize="5" AllowSorting="true" AllowPaging="true" AllowMultiRowSelection="false"
                                                                         ClientSettings-Selecting-AllowRowSelect="true" ClientSettings-Resizing-AllowColumnResize="true"

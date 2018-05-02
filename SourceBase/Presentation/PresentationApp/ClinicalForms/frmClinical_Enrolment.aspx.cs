@@ -1583,8 +1583,8 @@ public partial class ClinicalForms_frmClinical_Enrolment : BasePage
                 }
 
                 DataView theDecodeDV = new DataView(oCommonData.getAllMSTDecodeIn("14,16,17"));
-                theDV.RowFilter = "CodeID=14 and (SystemID=1 or SystemID=0)";
-                if (theDV.Table != null)
+                theDecodeDV.RowFilter = "CodeID=14 and (SystemID=1 or SystemID=0)";
+                if (theDecodeDV.Table != null)
                 {
                     theDT = (DataTable)theUtils.CreateTableFromDataView(theDecodeDV);
                     BindManager.BindCombo(ddtimetravelledUnits, theDT, "Name", "ID");
@@ -1595,22 +1595,22 @@ public partial class ClinicalForms_frmClinical_Enrolment : BasePage
                 /*******/
                 //theDV = new DataView(theDSXML.Tables["mst_Decode"]);
                 theDecodeDV.RowFilter = "CodeID=16 and SystemID=1";
-                if (theDV.Table != null)
+                if (theDecodeDV.Table != null)
                 {
                     theDT = (DataTable)theUtils.CreateTableFromDataView(theDecodeDV);
                     BindManager.BindCheckedList(cblbarrierstocare2, theDT, "Name", "ID");
-                    theDV.Dispose();
+                    theDecodeDV.Dispose();
                     theDT.Clear();
                 }
                 /*******/
                 //theDV = new DataView(theDSXML.Tables["Mst_Decode"]);
                 theDecodeDV.RowFilter = "CodeID=17 and SystemID=1";
                 ViewState["tblpatientRefEdit"] = null;
-                if (theDV.Table != null)
+                if (theDecodeDV.Table != null)
                 {
                     theDT = (DataTable)theUtils.CreateTableFromDataView(theDecodeDV);
                     ViewState["tblpatientRefEdit"] = theDT;
-                    theDV.Dispose();
+                    theDecodeDV.Dispose();
                 }
 
             }

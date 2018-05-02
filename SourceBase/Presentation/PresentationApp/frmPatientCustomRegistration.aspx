@@ -5,7 +5,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
     <script type="text/javascript">
         function RegisterJQuery() {
-            $('#TxtDOB').datepicker({ autoclose: true });
+            $('#TxtDOB').datepicker({
+                autoclose: true
+            });
             //.blur('changeDate', function () {
             //                debugger;
             //                if (jQuery.isEmptyObject($('#TxtDOB')) == false) {
@@ -22,18 +24,36 @@
         $(document).ready(RegisterJQuery);
         //Calling RegisterJQuery when the page is doing postback (asp.net)
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(RegisterJQuery);
+       
     </script>
     <script language="javascript" type="text/javascript">
         debugger;
+        function calculate_age_Exact() {
+            var myDOB = document.getElementById('<%=TxtDOB.ClientID %>').value;
+            if (myDOB != "") {
+                today_date = new Date();
+                var txtDT1 = 'ctl00_IQCareContentPlaceHolder_TxtDOB';
+                var txtDT2 = 'ctl00_IQCareContentPlaceHolder_txtSysDate';
+                CalcualteAge(0, 0, txtDT1, txtDT2);
+            }
+        }
         function CalcualteAge(txtAge, txtmonth, txtDT1, txtDT2) {
-            var YR1 = document.getElementById(txtDT1).value.toString().substr(7, 4);
-            var YR2 = document.getElementById(txtDT2).value.toString().substr(7, 4);
-
-            var mm1 = document.getElementById(txtDT1).value.toString().substr(3, 3);
-            var mm2 = document.getElementById(txtDT2).value.toString().substr(3, 3);
-
-            var dd1 = document.getElementById(txtDT1).value.toString().substr(0, 2);
-            var dd2 = document.getElementById(txtDT2).value.toString().substr(0, 2);
+            var YR1 = "0";
+            var YR2 = "0";
+            var mm1 = "0";
+            var mm2 = "0";
+            var dd1 = "0";
+            var dd2 = "0";
+            if (txtDT1 != "undefined") {
+                YR1 = document.getElementById(txtDT1).value.toString().substr(7, 4);
+                mm1 = document.getElementById(txtDT1).value.toString().substr(3, 3);
+                dd1 = document.getElementById(txtDT1).value.toString().substr(0, 2);
+            }
+            if (txtDT2 != "undefined") {
+                YR2 = document.getElementById(txtDT2).value.toString().substr(7, 4);
+                mm2 = document.getElementById(txtDT2).value.toString().substr(3, 3);
+                dd2 = document.getElementById(txtDT2).value.toString().substr(0, 2);
+            }
 
             var nmm1;
             switch (mm1.toLowerCase()) {
@@ -96,28 +116,27 @@
             var val2 = Math.round((dateDiff("d", dt1, dt2, "", "") / 365));
             if (val2 > val1) {
                 if (dt1.length < 11) {
-                    document.getElementById(txtAge).value = Math.round((dateDiff("d", dt1, dt2, "", "") / 365)) - 1;
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentYears').value = Math.round((dateDiff("d", dt1, dt2, "", "") / 365)) - 1;
                     var yr = Math.round(dateDiff("d", dt1, dt2, "", "") / 365) - 1;
 
-                    document.getElementById(txtmonth).value = Math.round((dateDiff("d", dt1, dt2, "", "") - (365 * yr)) / 30);
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentMonths').value = Math.round((dateDiff("d", dt1, dt2, "", "") - (365 * yr)) / 30);
                 }
                 else {
-                    document.getElementById(txtAge).value = "";
-                    document.getElementById(txtmonth).value = "";
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentYears').value = "";
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentMonths').value = "";
                 }
             }
             else {
                 if (dt1.length < 11) {
-                    document.getElementById(txtAge).value = Math.round((dateDiff("d", dt1, dt2, "", "") / 365));
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentYears').value = Math.round((dateDiff("d", dt1, dt2, "", "") / 365));
                     var yr = Math.round(dateDiff("d", dt1, dt2, "", "") / 365);
-                    document.getElementById(txtmonth).value = Math.round((dateDiff("d", dt1, dt2, "", "") - (365 * yr)) / 30);
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentMonths').value = Math.round((dateDiff("d", dt1, dt2, "", "") - (365 * yr)) / 30);
                 }
                 else {
-                    document.getElementById(txtAge).value = "";
-                    document.getElementById(txtmonth).value = "";
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentYears').value = "";
+                    document.getElementById('ctl00_IQCareContentPlaceHolder_txtageCurrentMonths').value = "";
                 }
             }
-
             //            if (document.getElementById(txtAge).value < 15) {
             //                document.getElementById('Adult Patient Demographic Information').style.display = 'none';
             //                document.getElementById('Paediatric Patient Demographic Information').style.display = 'block';
@@ -125,7 +144,7 @@
             //            else {
             //                document.getElementById('Adult Patient Demographic Information').style.display = 'block';
             //                document.getElementById('Paediatric Patient Demographic Information').style.display = 'none';
-            //            }
+            //            }          
         }
         function jsAreaClose(id) {
             document.getElementById(id).style.display = 'none';
@@ -154,6 +173,7 @@
             if (document.getElementById('ctl00_IQCareContentPlaceHolder_img' + result) != null) {
                 document.getElementById('ctl00_IQCareContentPlaceHolder_' + result).disabled = true;
             }
+
         }
 
         //        function chkLength() {
@@ -189,8 +209,9 @@
                 }
             }
         }
+       
     </script>
-    <div class="content-wrapper">
+    <div class="content-wrapper">       
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12">
@@ -241,7 +262,7 @@
                                         <div class="row">
                                             <div class="col-md-5 col-sm-12 col-xs-12 form-group">
                                                 <label class="control-label">
-                                                    Patient First Name:</label>
+                                                    First Name:</label>
                                             </div>
                                             <div class="col-md-5 col-sm-12 col-xs-12 form-group">
                                                 <asp:TextBox ID="txtfirstName" MaxLength="50" runat="server" class="form-control"></asp:TextBox>
@@ -306,12 +327,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-1 col-sm-12 col-xs-12 form-group text-nowrap">
-                                                <input id="rbtndobPrecExact" onmouseup="up(this);" onfocus="up(this);" onclick="down(this)"
+                                                <input id="rbtndobPrecExact" onmouseup="up(this);" onfocus="up(this);calculate_age_Exact();" onclick="down(this);calculate_age_Exact();"
                                                     type="radio" value="1" name="dobPrecision" runat="server">
                                                 <span class="smalllabel">Exact </span>
                                             </div>
                                             <div class="col-md-1 col-sm-12 col-xs-12 form-group text-nowrap">
-                                                <input id="rbtndobPrecEstimated" onmouseup="up(this);" onfocus="up(this);" onclick="down(this)"
+                                                <input id="rbtndobPrecEstimated" onmouseup="up(this);" onfocus="up(this);" onclick="down(this);calculate_age_Exact();"
                                                     type="radio" value="0" name="dobPrecision" runat="server">
                                                 <span class="smalllabel">Estimated</span>
                                             </div>
@@ -585,4 +606,5 @@
             </div>
         </div>
     </div>
+   
 </asp:Content>

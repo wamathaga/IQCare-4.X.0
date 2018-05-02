@@ -13,7 +13,7 @@
         $('#txtresultmothergiven').datepicker({ autoclose: true });
         $('#txtDateImmunised').datepicker({ autoclose: true });
         $('#txtTreatmentDate').datepicker({ autoclose: true });
-        
+
     }
     //Calling RegisterJQuery when document is ready (Page loaded first time)
     $(document).ready(RegisterJQuery);

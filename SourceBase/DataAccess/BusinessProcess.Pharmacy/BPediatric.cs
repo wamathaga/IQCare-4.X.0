@@ -32,12 +32,12 @@ namespace BusinessProcess.Pharmacy
                 return (DataSet)PediatricManager.ReturnObject(ClsUtility.theParams, "pr_Pharmacy_GetPediatricDetails_Constella", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
-        public int SavePredefineList(string name,DataTable dt,int UserId)
+        public int SavePredefineList(string name, DataTable dt, int UserId)
         {
             int theRowAffected = 0;
             lock (this)
             {
-                
+
                 ClsObject PediatricManager = new ClsObject();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -82,6 +82,15 @@ namespace BusinessProcess.Pharmacy
                 ClsUtility.AddParameters("@PatientID", SqlDbType.Int, PatientID.ToString());
                 ClsUtility.AddParameters("@password", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
                 return (DataSet)PediatricManager.ReturnObject(ClsUtility.theParams, "pr_Pharmacy_GetDrugGenericDetails", ClsDBUtility.ObjectEnum.DataSet);
+            }
+        }
+
+        public DataSet GetDrugDetails()
+        {
+            lock (this)
+            {
+                ClsObject PediatricManager = new ClsObject();
+                return (DataSet)PediatricManager.ReturnObject(ClsUtility.theParams, "pr_Pharmacy_GetDrugDetails", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
 
@@ -155,7 +164,7 @@ namespace BusinessProcess.Pharmacy
             }
 
         }
-        
+
         #endregion
 
         #region "Save Paediatric Details"
@@ -236,7 +245,7 @@ namespace BusinessProcess.Pharmacy
                             theRegimen = theRegimen + "/" + s;
                 }
                 #endregion
-               
+
                 ClsUtility.Init_Hashtable();
                 ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, patientID.ToString());
                 ClsUtility.AddParameters("@ptn_pharmacy_pk", SqlDbType.Int, PharmacyID.ToString());
@@ -301,7 +310,7 @@ namespace BusinessProcess.Pharmacy
                     ClsUtility.AddParameters("@morning", SqlDbType.Decimal, theDT.Rows[i]["Morning"].ToString());
                     ClsUtility.AddParameters("@noon", SqlDbType.Decimal, theDT.Rows[i]["Noon"].ToString());
                     ClsUtility.AddParameters("@evening", SqlDbType.Decimal, theDT.Rows[i]["Evening"].ToString());
-                    ClsUtility.AddParameters("@night", SqlDbType.Decimal, theDT.Rows[i]["Night"].ToString()); 
+                    ClsUtility.AddParameters("@night", SqlDbType.Decimal, theDT.Rows[i]["Night"].ToString());
                     ClsUtility.AddParameters("@Duration", SqlDbType.Decimal, theDT.Rows[i]["Duration"].ToString());
                     ClsUtility.AddParameters("@OrderedQuantity", SqlDbType.Decimal, theDT.Rows[i]["QtyPrescribed"].ToString());
                     if (theDT.Rows[i]["QtyDispensed"].ToString() == "")
@@ -381,7 +390,7 @@ namespace BusinessProcess.Pharmacy
                 if (this.Connection != null)
                     DataMgr.ReleaseConnection(this.Connection);
             }
- 
+
         }
 
 
@@ -539,12 +548,12 @@ namespace BusinessProcess.Pharmacy
                     theQuery = theQuery.Replace("#99#", patientID.ToString());
                     theQuery = theQuery.Replace("#88#", LocationID.ToString());
                     theQuery = theQuery.Replace("#55#", PharmacyID.ToString());
-                    theQuery = theQuery.Replace("#44#", "'"+OrderedByDate.ToString()+"'");
+                    theQuery = theQuery.Replace("#44#", "'" + OrderedByDate.ToString() + "'");
                     ClsUtility.AddParameters("@QryString", SqlDbType.VarChar, theQuery);
                     int RowsAffected = (Int32)PediatricManager.ReturnObject(ClsUtility.theParams, "pr_General_Dynamic_Insert", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                 }
 
-                
+
                 DataMgr.CommitTransaction(this.Transaction);
                 DataMgr.ReleaseConnection(this.Connection);
                 return PharmacyID;
@@ -552,7 +561,7 @@ namespace BusinessProcess.Pharmacy
             }
             catch
             {
-                DataMgr.RollBackTransation(this.Transaction); 
+                DataMgr.RollBackTransation(this.Transaction);
                 throw;
             }
             finally
@@ -666,7 +675,7 @@ namespace BusinessProcess.Pharmacy
                             }
                             theRegimen = theRegimen.Trim();
                         }
-                      
+
                     }
 
                     foreach (var ValueDrug in Value.Druginfo)
@@ -746,7 +755,7 @@ namespace BusinessProcess.Pharmacy
 
 
         public int UpdatePaediatricDetail(int patientID, int LocationID, int PharmacyID, DataTable theDT, DataSet theDrgMst, int OrderedBy, int DispensedBy, int Signature, int EmployeeID, int OrderType, int UserID, decimal Height, decimal Weight, int FDC, int ProgID, int ProviderID, DateTime OrderedByDate, DateTime ReportedByDate, DataTable theCustomFieldData, int PeriodTaken)
-         {
+        {
             ClsObject PediatricManager = new ClsObject();
             try
             {
@@ -756,7 +765,7 @@ namespace BusinessProcess.Pharmacy
 
                 PediatricManager.Connection = this.Connection;
                 PediatricManager.Transaction = this.Transaction;
-                
+
 
                 /************   Delete Previous Records **********/
 
@@ -798,7 +807,7 @@ namespace BusinessProcess.Pharmacy
                     else
                     {
                         DataView theDV = new DataView(theDrgMst.Tables[4]);
-                        theDV.RowFilter = "GenericId = " + theDT.Rows[i]["GenericId"] + " and DrugTypeID = 37";     
+                        theDV.RowFilter = "GenericId = " + theDT.Rows[i]["GenericId"] + " and DrugTypeID = 37";
                         if (theDV.Count > 0)
                         {
                             if (theRegimen == "")
@@ -822,7 +831,7 @@ namespace BusinessProcess.Pharmacy
                 /************  Insert Paediatric Details ***********/
 
                 ClsUtility.Init_Hashtable();
-                
+
                 ClsUtility.AddParameters("@ptn_pharmacy_pk", SqlDbType.Int, PharmacyID.ToString());
                 ClsUtility.AddParameters("@OrderedBy", SqlDbType.Int, OrderedBy.ToString());
                 ClsUtility.AddParameters("@DispensedBy", SqlDbType.Int, DispensedBy.ToString());
@@ -838,7 +847,7 @@ namespace BusinessProcess.Pharmacy
                 {
                     ClsUtility.AddParameters("@ReportedByDate", SqlDbType.DateTime, ReportedByDate.ToString());
                 }
-                
+
                 ClsUtility.AddParameters("@UserID", SqlDbType.Int, UserID.ToString());
                 ClsUtility.AddParameters("PeriodTaken", SqlDbType.Int, PeriodTaken.ToString());
 
@@ -889,7 +898,7 @@ namespace BusinessProcess.Pharmacy
                         MsgBuilder theMsg = new MsgBuilder();
                         theMsg.DataElements["MessageText"] = "Error in Saving Pharmacy Details. Try Again..";
                         AppException.Create("#C1", theMsg);
-                    
+
                     }
                 }
 
@@ -937,7 +946,7 @@ namespace BusinessProcess.Pharmacy
                     DataMgr.ReleaseConnection(this.Connection);
             }
         }
-      
+
         #endregion
 
         #region "Delete Pediatric Form"

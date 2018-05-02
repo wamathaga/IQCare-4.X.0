@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections;
-using System.ComponentModel;
+using System.Configuration;
 using System.Data;
-using System.Drawing;
-using System.Windows.Forms;
-using Application.Common;
-using Application.Presentation;
 
 
-    namespace Application.Presentation
-    {
+namespace Application.Presentation
+{
     /// <summary>
     /// This class is applicable only with windows application of IQCare.
     /// </summary>
@@ -25,9 +19,8 @@ using Application.Presentation;
         public static DateTime dtmAppVersion;
 
         #region "Application Paramete>rs"
-        public static string AppVersion = "4.0.0";
-        public static string ReleaseDate = "04-Jul-2017";    
-    //#new update
+        public static string AppVersion = "4.1.0";
+        public static string ReleaseDate = "15-Mar-2018";
         #endregion
 
         #region "Public Variables"
@@ -245,19 +238,19 @@ using Application.Presentation;
         ///<returns></returns>
         public static string GetPath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["ImagePath"]);
+            return (ConfigurationManager.AppSettings["ImagePath"]);
         }
         public static string weburl()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["webfindaddpatientUrl"]);
+            return (ConfigurationManager.AppSettings["webfindaddpatientUrl"]);
         }
         public static string IQCareHelpweburl()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["IQCareHelpPath"]);
+            return (ConfigurationManager.AppSettings["IQCareHelpPath"]);
         }
         public static string PresentationImagePath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["PresentationImagePath"]);
+            return (ConfigurationManager.AppSettings["PresentationImagePath"]);
         }
         /// <summary>
         /// This function is used to get the full path of image folder
@@ -265,20 +258,20 @@ using Application.Presentation;
         ///<returns></returns>
         public static string GetXMLPath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["XMLFilesPath"]);
+            return (ConfigurationManager.AppSettings["XMLFilesPath"]);
         }
 
         public static string GetExcelPath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["ExcelFilesPath"]);
+            return (ConfigurationManager.AppSettings["ExcelFilesPath"]);
         }
         public static string GetReportPath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["ReportsPath"]);
+            return (ConfigurationManager.AppSettings["ReportsPath"]);
         }
         public static string GetFieldvalidationReportPath()
         {
-            return (System.Configuration.ConfigurationSettings.AppSettings["Rptfieldvalidation"]);
+            return (ConfigurationManager.AppSettings["Rptfieldvalidation"]);
         }
 
     }

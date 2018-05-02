@@ -8,10 +8,11 @@
     .MenuLevel2
     {
         font-size: 13px;
-        font-weight: bold;       
+        font-weight: bold;
         text-align: center; /* set width if needed.*/
         width: 100%;
     }
+    
     .MenuLevel2hover
     {
         color: #777;
@@ -37,6 +38,7 @@
         border-radius: 5px;
         overflow: hidden;
     }
+    
     .SubMenu a
     {
         color: #777;
@@ -52,6 +54,7 @@
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
     }
+    
     .PharmacyDispensinghover
     {
         color: #777;
@@ -59,9 +62,19 @@
         text-decoration: none;
         width: 100%;
     }
+    
     .PharmacyDispensing a
     {
         color: #777;
+    }
+    .hrFor2ndMenu
+    {
+        display: block;
+        height: 0px;
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 1em 0;
+        padding: 0;
     }
 </style>
 <div runat="server" class="container-fluid" id="divmenu2">
@@ -121,7 +134,31 @@
         function openWaitingList() {//ope ning patients waiting list
             window.open("../ClinicalForms/frmPatientWaitingList.aspx", 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=150,left=150,maximize=yes,resizable=no,width=800,height=500,scrollbars=yes');
         }
-        
+        function openDrugHistory() {
+            window.open('../PharmacyDispense/frmPharmacy_DrugHistory.aspx', '_blank', 'height=500,width=1100,scrollbars=yes');
+        }
+        function openLabHistory() {
+            window.open('../Laboratory/frmLaboratoryHistory.aspx', '_blank', 'height=500,width=1100,scrollbars=yes');
+        }
+        //
+        function PopupCenterL2(title, w, h) {
+            // Fixes dual-screen position Most browsers Firefox            
+            var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+            var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+            var top = ((height / 2) - (h / 2)) + dualScreenTop;
+
+            var myurl = "../ClinicalForms/frmNAFDAC.aspx";
+            var newWindow = window.open(myurl, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+            // Puts focus on the newWindow
+            if (window.focus) {
+                newWindow.focus();
+            }
+        }         
     </script>
 </div>
 <div class="navbar bg-default">
@@ -143,6 +180,23 @@
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-file-text-o fa-lg text-muted' aria-hidden='true'></i> <span class='text-muted'>Create New Form</span>"
                         Selectable="False" Value="mnuCreateNewForm">
+                        <asp:MenuItem Text="Treatment Preparation" Value="mnuTreatmentPreparation" NavigateUrl="~/HIVCE/TreatmentPreparation.aspx?add=0">
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="Alcohol Depression Screening" Value="mnuAlcoholDepressionScreening"
+                            NavigateUrl="~/HIVCE/AlcoholDepressionScreening.aspx?add=0"></asp:MenuItem>
+                        <asp:MenuItem Text="ART Readiness Assessment" Value="mnuARTReadinessAssessment" NavigateUrl="~/HIVCE/ARTReadinessAssessment.aspx?add=0">
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="Adherence Barriers" Value="mnuAB" NavigateUrl="~/Adherence/AdherenceBarriers.aspx?add=0" />
+                        <asp:MenuItem Text="Enhance Adherence Counselling" Value="mnuEAC" NavigateUrl="~/Adherence/EnhanceAdherence.aspx?add=0" />
+
+                        <asp:MenuItem Text="PrEP" Value="mnuPrEP" NavigateUrl="~/PrEP/PrEP.aspx" />
+
+                        <asp:MenuItem Text="Transition" Value="mnuTransition" NavigateUrl="~/HIVCE/Transition.aspx?add=0">
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="<span class='hrFor2ndMenu'></span>"></asp:MenuItem>
+                        <asp:MenuItem Text="Pharmacy" Value="mnuPharmacy" NavigateUrl="../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx" />
+                        <asp:MenuItem Text="Order Labs" Value="mnuLabOrderDynm" />
+                        <asp:MenuItem Text="<span class='hrFor2ndMenu'></span>"></asp:MenuItem>
                         <asp:MenuItem Text="DCC Adult Initial Evaluation" Value="mnuknhDCCadultIE" NavigateUrl="~/ClinicalForms/frmClinical_KNH_AdultIE.aspx" />
                         <asp:MenuItem Text="DCC Revised Adult Follow up Form" Value="mnuknhDCCadultFU" NavigateUrl="~/ClinicalForms/frmClinical_RevisedAdultfollowup.aspx" />
                         <asp:MenuItem Text="Nigeria Adult Initial Evaluation" Value="mnunigadultIE" NavigateUrl="~/ClinicalForms/frmClinical_Nigeria_AdultIE.aspx" />
@@ -154,14 +208,14 @@
                         <asp:MenuItem Text="Initial Evaluation" Value="mnuInitEval" NavigateUrl="~/ClinicalForms/frmClinical_InitialEvaluation.aspx" />
                         <asp:MenuItem Text="ART Follow-up" Value="mnuFollowupART" NavigateUrl="~/ClinicalForms/frmClinical_ARTFollowup.aspx" />
                         <asp:MenuItem Text="Non-ART Follow-up" Value="mnuNonARTFollowUp" NavigateUrl="~/ClinicalForms/frmClinical_NonARTFollowUp.aspx" />
-                        <asp:MenuItem Text="Pharmacy" Value="mnuPharmacy" NavigateUrl="../PharmacyDispense/frmPharmacyDispense_PatientOrder.aspx" />
-                        <asp:MenuItem Text="Lab Order Tests" Value="mnuLabTest" NavigateUrl="~/Laboratory/frm_LabTestResults.aspx" />
+                        <asp:MenuItem Text="Lab Sample Collection & Results" Value="mnuLabTest" NavigateUrl="~/Laboratory/frm_LabTestResults.aspx" />
                         <asp:MenuItem Text="Home Visit" Value="mnuHomeVisit" NavigateUrl="~/Scheduler/frmScheduler_HomeVisit.aspx" />
                         <asp:MenuItem Text="Prior ART/HIV Care" Value="mnuPriorARTHIVCare" />
                         <asp:MenuItem Text="ART Card Visitation" Value="mnuARTCardVisitation" NavigateUrl="~/ClinicalForms/frmClinical_Nigeria_ARTCareVisitation.aspx" />
                         <asp:MenuItem Text="ART Card Summary" Value="mnuARTCardSummary" NavigateUrl="~/ClinicalForms/frmClinical_Nigeria_ARTCareSummary.aspx" />
-                        <asp:MenuItem Text="HEI Form" Value="mnuHEIForm" NavigateUrl="~/ClinicalForms/frmClinical_KNH_HEI.aspx" />
-                        <asp:MenuItem Text="MEI Form" Value="mnuMEIForm" NavigateUrl="~/ClinicalForms/frmClinical_KNH_MEI.aspx" />
+                        <%--<asp:MenuItem Text="HEI Form" Value="mnuHEIForm" NavigateUrl="~/ClinicalForms/frmClinical_KNH_HEI.aspx" />--%>
+                        <asp:MenuItem Text="HEI Form" Value="mnuHEIForm" NavigateUrl="~/ClinicalForms/frmClinical_KNH_HEI_New.aspx" />
+                        <asp:MenuItem Text="ANC Postnatal Form" Value="mnuMEIForm" NavigateUrl="~/ClinicalForms/frmClinical_ANC.aspx" />
                         <asp:MenuItem Text="ART Care" Value="mnuARTCare"></asp:MenuItem>
                         <asp:MenuItem Text="HIV Care/ART Encounter" Value="mnuHIVCareARTEncounter"></asp:MenuItem>
                         <asp:MenuItem Text="ART History" Value="mnuARTHistory"></asp:MenuItem>
@@ -170,18 +224,10 @@
                         <asp:MenuItem Text="Adult Follow up" Value="mnuRvsdAdult" />
                         <asp:MenuItem Text="Paediatric Follow up" Value="mnuPaediatricFollowup" />
                         <asp:MenuItem Text="Express" Value="mnuRvsdExpressForm" />
-                        <asp:MenuItem Text="Laboratory" Value="mnuLabOrderDynm" />
                         <asp:MenuItem NavigateUrl="~/ClinicalForms/frmPatientConsumables.aspx" Text="Consumables Issuance"
                             Value="mnuConsumablesIssuance" />
-                        <asp:MenuItem Text="Treatment Preparation" Value="mnuTreatmentPreparation" NavigateUrl="~/HIVCE/TreatmentPreparation.aspx?add=0">
-                        </asp:MenuItem>
-                        <asp:MenuItem Text="Alcohol Depression Screening" Value="mnuAlcoholDepressionScreening"
-                            NavigateUrl="~/HIVCE/AlcoholDepressionScreening.aspx?add=0"></asp:MenuItem>
-                        <asp:MenuItem Text="ART Readiness Assessment" Value="mnuARTReadinessAssessment" NavigateUrl="~/HIVCE/ARTReadinessAssessment.aspx?add=0">
-                        </asp:MenuItem>
-                        <asp:MenuItem Text="Transition" Value="mnuTransition" NavigateUrl="~/HIVCE/Transition.aspx?add=0">
-                        </asp:MenuItem>
                         <asp:MenuItem Text="Clinical Encounter" Value="mnuHIVCE" NavigateUrl="~/HIVCE/ClinicalEncounter.aspx?add=0" />
+                        <asp:MenuItem Text="Refill Encounter Form" Value="mnuREF" NavigateUrl="~/HIVCE/RefillEncounterForm.aspx?add=0" />
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-exchange text-muted fa-lg' aria-hidden='true'></i><span class='text-muted'>Additional Forms</span>"
                         Value="Additional Forms" Selectable="False">
@@ -190,6 +236,10 @@
                         <asp:MenuItem Text="Follow-up Education" Value="mnuFollowupEducation"></asp:MenuItem>
                         <asp:MenuItem Text="Exposed Infant Follow-up" Value="mnuExposedInfant"></asp:MenuItem>
                         <asp:MenuItem Text="Allergy Information" Value="mnuAllergyInformation"></asp:MenuItem>
+                        <asp:MenuItem Text="ADR Reporting" Value="mnuNAFDAC"></asp:MenuItem>
+                        <asp:MenuItem Text="Free Text" Value="mnuFreeText"></asp:MenuItem>
+                        <asp:MenuItem Text="Clinical Summary" Value="mnuClinicalSummaryAdd"></asp:MenuItem>
+                        <asp:MenuItem Text="Client Intake Form" Value="mnuCIF" NavigateUrl="~/HTS/ClientIntakeForm.aspx" />
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-folder-open text-muted fa-lg' aria-hidden='true'></i> <span class='text-muted'>Existing Forms<span>"
                         Value="mnuExistingForms"></asp:MenuItem>
@@ -202,17 +252,23 @@
                         <asp:MenuItem Text="Patient Blue Card" Value="mnuPatientBlueCard" NavigateUrl="javascript:openBluecard();"
                             Target="_self"></asp:MenuItem>
                         <asp:MenuItem Text="Debit Note" Value="mnuDebitNote"></asp:MenuItem>
-                        <asp:MenuItem Text="Patient Profile Summary" Value="mnuClinicalSummary" NavigateUrl="javascript:openClinicalSummary();"
+                        <%-- <asp:MenuItem Text="Patient Profile Summary" Value="mnuClinicalSummary" NavigateUrl="javascript:openClinicalSummary();"
+                            Target="_self"></asp:MenuItem>--%>
+                        <asp:MenuItem Text="Patient Profile Summary" Value="mnuClinicalSummary"></asp:MenuItem>
+                        <asp:MenuItem Text="Drug History" Value="mnuDrugHistory" NavigateUrl="javascript:openDrugHistory();"
                             Target="_self"></asp:MenuItem>
+                        <asp:MenuItem Text="Lab History" Value="mnuLabHistory" NavigateUrl="javascript:openLabHistory();"
+                            Target="_self"></asp:MenuItem>
+                        <asp:MenuItem Text="Clinical Encounter OI/Chronic Disease" Value="mnuCEPS" NavigateUrl="~/Reports/frmPatientCEOIChronicDisease.aspx">
+                        </asp:MenuItem>
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-clock-o text-muted fa-lg' aria-hidden='true'></i> <span class='text-muted'>Appointments</span>"
-                        Value="mnuScheduleAppointment"></asp:MenuItem>                          
+                        Value="mnuScheduleAppointment"></asp:MenuItem>
                     <asp:MenuItem Text="<i class='glyphicon glyphicon-transfer text-muted fa-lg' aria-hidden='true'></i> <span class='text-muted'>Transfer</span>"
                         Value="mnuPatientTransfer" NavigateUrl="~/ClinicalForms/frmClinical_Transfer.aspx">
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-home text-muted fa-lg' aria-hidden='true'></i> <span class='text-muted'>Patient Home</span>"
-                        Value="mnuPatientHome" NavigateUrl="~/ClinicalForms/frmPatient_Home.aspx">
-                    </asp:MenuItem>
+                        Value="mnuPatientHome" NavigateUrl="~/ClinicalForms/frmPatient_Home.aspx"></asp:MenuItem>
                     <asp:MenuItem NavigateUrl="javascript:openWaitingList();" Text="<i class='fa fa-building-o text-muted fa-lg' aria-hidden='true'></i> <span class='text-muted'>Waiting List</span>"
                         Value="mnuWaitingList"></asp:MenuItem>
                 </Items>
@@ -234,6 +290,8 @@
                     </asp:MenuItem>
                     <asp:MenuItem NavigateUrl="~/PharmacyDispense/frmPharmacy_ReferenceMaterials.aspx"
                         Text="Reference Materials" Value="Reference Materials"></asp:MenuItem>
+                    <asp:MenuItem NavigateUrl="javascript:PopupCenterL2('International Quality Care Patient Management and Monitoring System','1000','650');"
+                        Text="ADR Reporting" Value="ADR Reporting"></asp:MenuItem>
                 </Items>
             </asp:Menu>
         </div>
@@ -248,35 +306,40 @@
 <asp:Label ID="lblpntStatus" CssClass="textstylehidden" runat="server" Visible="false"
     Text=""></asp:Label>
 <div id="divPatientInfo123" class="contentpad">
-    <asp:Panel ID="PanelPatiInfo" class="border center formbg" runat="server" Width="100%" Style="margin-left:25px;">
-    <div class="row" align="center">
-   
- <div class="col-md-2 col-sm-12 col-xs-12 form-group text-nowrap">
-             <label class="control-label">Patient Name:</label>  <asp:Label ID="lblpatientname" runat="server"></asp:Label>
-             </div>
-            
-             <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap">
-              <label class="control-label">IQ Number:</label> <asp:Label ID="lblIQnumber" runat="server"></asp:Label>
-             </div>
-             
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap">
-             <label class="control-label">Age:</label>  <asp:Label ID="lblAge" runat="server"></asp:Label>
-             </div>
-               <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap" id="Tr1" runat="server">
-               <asp:Panel ID="thePnlIdent" runat="server">
-                        </asp:Panel>
-               </div>
-               <div class="col-md-1 col-sm-12 col-xs-12 form-group align-right text-nowrap" style="width:50px;">
-                </div>
-               <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap" id="Tr2" runat="server">
-               <asp:Panel ID="thePnlBill" runat="server">
-                        </asp:Panel>
-               </div>
-               
-            
-            
- </div>
-        
+    <asp:Panel ID="PanelPatiInfo" class="border center formbg" runat="server" Width="100%"
+        Style="margin-left: 25px;">
+        <div class="row" align="center">
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group text-nowrap">
+                <label class="control-label">
+                    Patient Name:</label>
+                <asp:Label ID="lblpatientname" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap">
+                <label class="control-label">
+                    IQ Number:</label>
+                <asp:Label ID="lblIQnumber" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap">
+                <label class="control-label">
+                    Age:</label>
+                <asp:Label ID="lblAge" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap">
+                <label class="control-label">
+                    Gender:</label>
+                <asp:Label ID="lblGender" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap" id="Tr1"
+                runat="server">
+                <asp:Panel ID="thePnlIdent" runat="server">
+                </asp:Panel>
+            </div>
+            <div class="col-md-2 col-sm-12 col-xs-12 form-group align-right text-nowrap" id="Tr2"
+                runat="server">
+                <asp:Panel ID="thePnlBill" runat="server">
+                </asp:Panel>
+            </div>
+        </div>
     </asp:Panel>
     <uc1:UserControl_Alerts ID="UserControl_Alerts1" runat="server" />
 </div>

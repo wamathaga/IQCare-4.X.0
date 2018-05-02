@@ -35,43 +35,47 @@
                     </div>
                 </div>
                 <div id="divTBContactScreened" class="row">
-                    <div class="col-md-4 col-sm-12 col-xs-12 form-group" id="divContactsScreened">
-                        <label for="inputEmail3" class="control-label">
-                            Contact Screened for TB</label>
-                        <input id="chkTBContactsScreened" name="switch-size" type="checkbox" checked data-size="small"
-                            data-on-text="Yes" data-off-text="No">
-                    </div>
-                </div>
-                <div id="divTBContactScreenedDetails" class="row">
-                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                        <label for="inputEmail3" class="control-label">
-                            TB Regimen</label>
-                        <select class="form-control select2" data-placeholder="Select" id="ddlTBRegimen"
-                            style="width: 100%;">
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                        <label for="inputEmail3" class="control-label">
-                            Start Date</label>
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group" id="div2">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-xs-12 form-group" id="divContactsScreened">
+                                <label for="inputEmail3" class="control-label">
+                                    Contact Screened for TB</label>
+                                <input id="chkTBContactsScreened" name="switch-size" type="checkbox" checked data-size="small"
+                                    data-on-text="Yes" data-off-text="No">
                             </div>
-                            <input type="text" class="form-control" id="dtTBStartDate" style="padding: 13px 12px;"
-                                data-date-format="dd-M-yyyy">
                         </div>
-                    </div>
-                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                        <label for="inputEmail3" class="control-label">
-                            Rx Duration</label>
-                        <select class="form-control select2" data-placeholder="Select" id="ddlRxDuration"
-                            style="width: 100%;">
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                        <label for="inputEmail3" class="control-label">
-                            TB Treatment #</label>
-                        <input type="number" class="form-control" id="txtTBTreatment" placeholder="TB Registration No" />
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    TB Regimen</label>
+                                <select class="form-control select2" data-placeholder="Select" id="ddlTBRegimen"
+                                    style="width: 100%;">
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Start Date</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control" id="dtTBStartDate" style="padding: 13px 12px;"
+                                        data-date-format="dd-M-yyyy">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Rx Duration</label>
+                                <select class="form-control select2" data-placeholder="Select" id="ddlRxDuration"
+                                    style="width: 100%;">
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    TB Treatment #</label>
+                                <input type="number" class="form-control" id="txtTBTreatment" placeholder="TB Registration No" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.panel -->
@@ -100,8 +104,71 @@
                 Eligible for IPT this Visit
             </div>
             <div class="col-md-10 col-sm-12 col-xs-12 form-group">
-                <input id="chkEligibleForIPT" name="switch-size" type="checkbox" data-size="small" data-on-text="Yes"
-                    data-off-text="No">
+                <input id="chkEligibleForIPT" name="switch-size" type="checkbox" data-size="small"
+                    data-on-text="Yes" data-off-text="No">
+            </div>
+        </div>
+        <div class="row" id="div1">
+            <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+            </div>
+            <div class="col-md-10 col-sm-12 col-xs-12 form-group">
+                <div class="callout callout-info" style="background-color: #929594 !important; border-color: #929594 !important;
+                    padding: 5px; margin: 0 0 10px 0 !important;">
+                    <p style="font-size: 14px;">
+                        IPT Client Work Up</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label" style="font-size: 14px !important;">
+                            ASK FOR</label>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Yellow colored urine</label>
+                            </div>
+                            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                <input id="chkYellowColoredUrine" name="switch-size" type="checkbox" checked data-size="small"
+                                    data-on-text="Yes" data-off-text="No">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Numbness/Burning sensation in the hands/feet</label>
+                            </div>
+                            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                <input id="chkNumbnessBurning" name="switch-size" type="checkbox" checked data-size="small"
+                                    data-on-text="Yes" data-off-text="No">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        <label for="inputEmail3" class="control-label" style="font-size: 14px !important;">
+                            EXAMINE FOR</label>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Yellowness of eyes</label>
+                            </div>
+                            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                <input id="chkYellownessEyes" name="switch-size" type="checkbox" checked data-size="small"
+                                    data-on-text="Yes" data-off-text="No">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12 col-xs-12 form-group">
+                                <label for="inputEmail3" class="control-label">
+                                    Tenderness in the right upper quadrant of the abdomen</label>
+                            </div>
+                            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                <input id="chkTenderness" name="switch-size" type="checkbox" checked data-size="small"
+                                    data-on-text="Yes" data-off-text="No">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-12 col-xs-12 form-group">
             </div>
         </div>
         <div class="row" id="divIPTOptions">
@@ -146,16 +213,32 @@
                 <div id="divIPTContraindication">
                     <label for="inputEmail3" class="control-label">
                         IPT Contraindication</label>
-                    <select class="form-control select2" data-placeholder="Select" id="ddlIPTContraindication"
-                        style="width: 100%;">
-                    </select>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            <select class="form-control select2" data-placeholder="Select" id="ddlIPTContraindication"
+                                style="width: 100%;">
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            <input type="text" class="form-control" id="txtIPTContraindication" placeholder="Other Reason"
+                                maxlength="150" />
+                        </div>
+                    </div>
                 </div>
                 <div id="divIPTDiscontinued">
                     <label for="inputEmail3" class="control-label">
                         IPT Discontinued</label>
-                    <select class="form-control select2" data-placeholder="Select" id="ddlIPTDiscontinued"
-                        style="width: 100%;">
-                    </select>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            <select class="form-control select2" data-placeholder="Select" id="ddlIPTDiscontinued"
+                                style="width: 100%;">
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            <input type="text" class="form-control" id="txtIPTDiscontinued" placeholder="Other Reason"
+                                maxlength="150" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.row -->

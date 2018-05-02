@@ -18,7 +18,7 @@ public partial class frmLogOff : LogPage
 
         Session["UserRight"] = null;
         Session["UserFeatures"] = null;
-        Session["SystemId"] = 1;
+        Session["SystemId"] = "";
             
         #endregion
         

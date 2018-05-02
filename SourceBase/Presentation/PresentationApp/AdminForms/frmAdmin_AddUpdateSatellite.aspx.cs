@@ -1,18 +1,7 @@
 using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-
 using Interface.Administration;
 using Application.Common;
-using Application.Interface;
-using Interface.Security;
 using Application.Presentation;
 
 public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
@@ -30,6 +19,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
         }
     }
     #endregion
+
     #region "Validate Function"
     private Boolean ValidateSaveField()
     {
@@ -144,6 +134,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
         return true;
     }
     #endregion
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["AppLocation"] == null || Session.Count == 0 || Session["AppUserID"].ToString() == "")
@@ -153,12 +144,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
         }
         lblTitle.Text = Request.QueryString["name"];
         
-        //(Master.FindControl("lblRoot") as Label).Text = " » Customize Lists";
-        //(Master.FindControl("lblMark") as Label).Visible = false;
-        //(Master.FindControl("lblheader") as Label).Text = "Satellite";
-        //(Master.FindControl("levelOneNavigationUserControl1").FindControl("lblRoot") as Label).Text = "Customize Lists";
-        //(Master.FindControl("levelOneNavigationUserControl1").FindControl("lblheader") as Label).Text = " >> Satellite";
-        
+      
         if (!IsPostBack)
         {
             ViewState["redirect"] = Request.QueryString["Redirect"];
@@ -190,6 +176,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
             }
         }
     }
+
     protected void btnSave_Click(object sender, EventArgs e)
     {
         try
@@ -200,16 +187,13 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
             {
                 Flag = 0;
                 if (ValidateSaveField() == false)
-                {
                     return;
-                }
+                
             }
             else
             {
                 if (ValidateUpdateField() == false)
-                {
                     return;
-                }
 
             }
             ISatellite SatelliteMgr = (ISatellite)ObjectFactory.CreateInstance("BusinessProcess.Administration.BSatellite, BusinessProcess.Administration");
@@ -227,6 +211,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
             //SatelliteMgr = null;
         }
     }
+
     protected void btnReset_Click(object sender, EventArgs e)
     {
         txtSatelliteID.Text = "";
@@ -234,6 +219,7 @@ public partial class AdminForms_frmAdmin_AddUpdateSatellite : LogPage
         txtPriority.Text = "";
         ddStatus.SelectedValue = "0";
     }
+
     protected void btnClose_Click(object sender, EventArgs e)
     {
         redirect();

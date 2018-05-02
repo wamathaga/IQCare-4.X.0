@@ -29,7 +29,7 @@ namespace IQCare.Web.Billing
         /// <summary>
         /// The items per page
         /// </summary>
-        int ItemsPerPage = 50;
+        int ItemsPerPage = 100;
 
         /// <summary>
         /// The authentication
@@ -448,10 +448,12 @@ namespace IQCare.Web.Billing
                   }
 
                   */
+
                 string str = "Item";
                 if (!rowView.PricedPerItem.Value) str = "Dose";
                 Label lbl = e.Row.FindControl("labelPriceType") as Label;
                 TextBox txtPrice = e.Row.FindControl("textPrice") as TextBox;
+                TextBox txtPriceIns = e.Row.FindControl("textInsPrice") as TextBox;
 
                 if (lbl != null) lbl.Text = str;
                 DropDownList ddl = e.Row.FindControl("ddlPriceType") as DropDownList;
@@ -465,6 +467,7 @@ namespace IQCare.Web.Billing
                 string priceChange = @"$find('" + control.ClientID + "')._textbox.set_Value('" + DateTime.Now.ToString("dd-MMM-yyyy") + "');";
                 txtPrice.Attributes.Add("onChange", priceChange);
                 ddl.Attributes.Add("onChange", priceChange);
+                txtPriceIns.Attributes.Add("onChange", priceChange);
             }
         }
 
@@ -475,8 +478,7 @@ namespace IQCare.Web.Billing
         /// <param name="e">The <see cref="GridViewRowEventArgs"/> instance containing the event data.</param>
         protected void gridPriceList_RowCreated(object sender, GridViewRowEventArgs e)
         {
-            gridPriceList.Columns[2].Visible = this.ddlItemType.SelectedItem.Text == "Pharmaceuticals";
-
+            gridPriceList.Columns[3].Visible = this.ddlItemType.SelectedItem.Text == "Pharmaceuticals";
         }
 
         /// <summary>
@@ -519,12 +521,14 @@ namespace IQCare.Web.Billing
                     TextBox txtPrice = gridRow.FindControl("textPrice") as TextBox;
                     if (txtPrice.Text.Trim() == "") continue;
 
-                    Label lblPrice = gridRow.FindControl("labelPrice") as Label;
+                    TextBox txtPriceIns = gridRow.FindControl("textInsPrice") as TextBox;
+                    if (txtPriceIns.Text.Trim() == "") continue;
 
+                    Label lblPrice = gridRow.FindControl("labelPrice") as Label;
                     TextBox txtPriceDate = gridRow.FindControl("textPriceDate") as TextBox;
+                    Label lblPriceIns = gridRow.FindControl("labelInsPrice") as Label;
 
                     Label lblPriceDate = gridRow.FindControl("labelPriceDate") as Label;
-
                     Label lblPriceType = gridRow.FindControl("labelPriceType") as Label;
 
                     DropDownList ddlPriceMode = null;
@@ -546,6 +550,10 @@ namespace IQCare.Web.Billing
 
                     Decimal? newPrice;
                     newPrice = Decimal.Parse(txtPrice.Text);
+
+                    Decimal? newpriceIns;
+                    newpriceIns = Decimal.Parse(txtPriceIns.Text);
+
                     DateTime dtDateTime;
                     string tmp = txtPriceDate.Text.ToString();
 
@@ -559,14 +567,14 @@ namespace IQCare.Web.Billing
 
                     bool hasChanged = false;
                     bool priceChanged = txtPrice.Text != lblPrice.Text;
-
+                    bool InsurancePriceChanged = txtPriceIns.Text != lblPriceIns.Text;
                     bool priceDateChanged = lblPriceDate.Text != txtPriceDate.Text;
 
-                    if ((priceChanged || priceModeChanged) && !priceDateChanged)
+                    if ((priceChanged || priceModeChanged || InsurancePriceChanged) && !priceDateChanged)
                     {
                         hasChanged = false;
                     }
-                    else if ((priceChanged || priceModeChanged) && priceDateChanged)
+                    else if ((priceChanged || priceModeChanged || InsurancePriceChanged) && priceDateChanged)
                     {
                         hasChanged = true;
                     }
@@ -579,6 +587,7 @@ namespace IQCare.Web.Billing
                             VersionStamp = _version,
                             PriceDate = newPriceDate,
                             SellingPrice = newPrice,
+                            SellingPriceIns = newpriceIns,
                             PricedPerItem = pricePerItem,
                             Active = active
                         });
@@ -593,7 +602,7 @@ namespace IQCare.Web.Billing
                                   join ss in submittedSet on cs.ItemID equals ss.ItemID
                                   where cs.ItemTypeID == ss.ItemTypeID && cs.VersionStamp == ss.VersionStamp
                                   &&
-                                  (cs.SellingPrice != ss.SellingPrice || cs.PriceDate != ss.PriceDate || cs.PricedPerItem != ss.PricedPerItem || cs.Active != ss.Active)
+                                  (cs.SellingPrice != ss.SellingPrice || cs.PriceDate != ss.PriceDate || cs.PricedPerItem != ss.PricedPerItem || cs.Active != ss.Active || cs.SellingPriceIns != ss.SellingPriceIns)
                                   select new SaleItem
                                   {
                                       ItemID = cs.ItemID,
@@ -601,6 +610,7 @@ namespace IQCare.Web.Billing
                                       PriceDate = ss.PriceDate,
                                       PricedPerItem = ss.PricedPerItem,
                                       SellingPrice = ss.SellingPrice,
+                                      SellingPriceIns = ss.SellingPriceIns,
                                       VersionStamp = cs.VersionStamp,
                                       Active = ss.Active
                                   }
@@ -655,8 +665,8 @@ namespace IQCare.Web.Billing
                 IItemMaster objProgramlist = (IItemMaster)ObjectFactory.CreateInstance("BusinessProcess.Administration.BItemMaster, BusinessProcess.Administration");
                 DataTable theDT = objProgramlist.GetItemTypes;
                 DataView theDV = new DataView(theDT);
-                //theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Consumables' OR ItemName = 'Pharmaceuticals' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
-                theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
+                theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Consumables' OR ItemName = 'Pharmaceuticals' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
+                //theDV.RowFilter = "DeleteFlag= 0 And (ItemName = 'Billables' OR ItemName = 'Lab Tests' OR ItemName = 'Visit Type' OR ItemName= 'Ward Admission' ) ";
                 theDV.Sort = "ItemName Asc";
                 ddlItemType.DataTextField = "ItemName";
                 ddlItemType.DataValueField = "ItemTypeID";
@@ -764,13 +774,8 @@ namespace IQCare.Web.Billing
                     // xmlDoc.LoadXml(docX.ToString());
                     DateTime? printPriceDate;
 
-                    printPriceDate = textPriceListDate.Text.Trim() == "1900-01-01" ? DateTime.Now : DateTime.Parse(textPriceListDate.Text);
+                    printPriceDate = textPriceListDate.Text.Trim() == "" ? DateTime.Now : DateTime.Parse(textPriceListDate.Text);
                     xmlDoc.LoadXml(BillingManager.GetPriceListXML(Session["AppLocation"].ToString(), Session["AppUserName"].ToString(),printPriceDate));
-                    
-                    //DateTime dateFromStringGlob = DateTime.Parse(printPriceDate.ToString(), System.Globalization.CultureInfo.InvariantCulture);  
-                    //DateTime dateFromStringGlob = new DateTime(printPriceDate.Value.Year, printPriceDate.Value.Month, printPriceDate.Value.Day, 0, 0, 0, 0);
-                    //xmlDoc.LoadXml(BillingManager.GetPriceListXML(Session["AppLocation"].ToString(), Session["AppUserName"].ToString(), dateFromStringGlob));
-
                     //Create an XML declaration. 
                     XmlDeclaration xmldecl;
                     xmldecl = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);

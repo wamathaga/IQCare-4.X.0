@@ -69,6 +69,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application.BusinessProcess\Application.BusinessProcess.csproj">
+      <Project>{7E4C94BA-1706-49DE-BF5E-B5CA7170899E}</Project>
+      <Name>Application.BusinessProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess.Base\DataAccess.Base.csproj">
       <Project>{254BD540-00D8-46A2-9D35-39E8920B5750}</Project>
       <Name>DataAccess.Base</Name>
@@ -80,6 +84,14 @@
     <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
       <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>
       <Name>DataAccess.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities.Common\Entities.Common.csproj">
+      <Project>{CB7EE2AC-D7BD-4777-99DA-EFC4EB585668}</Project>
+      <Name>Entities.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface.Clinical\Interface.Clinical.csproj">
+      <Project>{6CB08200-E2E0-44B3-B877-2564F2E4A4EA}</Project>
+      <Name>Interface.Clinical</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interface.Service\Interface.Service.csproj">
       <Project>{931D6A00-5F40-4BA6-80B4-3FA8D4D92FA9}</Project>

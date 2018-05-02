@@ -80,20 +80,7 @@
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="padding: 4px;">
-                                            <label  class="control-label" for="Careendedstatus" id="lblCareendedstatus" runat="server">
-                                                Patient Status:</label>
-                                        </td>
-                                        <td style="padding: 4px;">
-                                            <asp:DropDownList ID="ddCareEndedStatus" runat="server" class="form-control" Style="height: inherit;
-                                                width: 250px;">
-                                                <asp:ListItem Value="" Selected="True">Any</asp:ListItem>
-                                                <asp:ListItem Value="0">Active</asp:ListItem>
-                                                <asp:ListItem Value="1">Care Ended</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
+                                    
                                 </table>
                             </td>
                             <td valign="top">
@@ -132,6 +119,19 @@
                                                 Style="height: inherit; width: 200px;"></asp:TextBox>
                                             <ajaxToolkit:FilteredTextBoxExtender ID="FTEFName" runat="server" FilterType="UppercaseLetters, LowercaseLetters"
                                                 TargetControlID="txtfirstname" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 4px;">
+                                            <label  class="control-label" for="Careendedstatus" id="lblCareendedstatus" runat="server">
+                                                Patient Status:</label>
+                                        </td>
+                                        <td style="padding: 4px;">
+                                            <asp:DropDownList ID="ddCareEndedStatus" runat="server" class="form-control" Style="height: inherit; width: 200px;">
+                                                <asp:ListItem Value="" Selected="True">Any</asp:ListItem>
+                                                <asp:ListItem Value="0">Active</asp:ListItem>
+                                                <asp:ListItem Value="1">Care Ended</asp:ListItem>
+                                            </asp:DropDownList>
                                         </td>
                                     </tr>
                                 </table>

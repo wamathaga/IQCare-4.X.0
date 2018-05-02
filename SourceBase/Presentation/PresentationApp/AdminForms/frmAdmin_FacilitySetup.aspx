@@ -35,12 +35,17 @@
                                         Width="350px"></asp:TextBox>
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <label class="control-label required">
-                                        National Id:</label>
+                                   <%-- <label class="control-label required">
+                                        National Id:</label>--%>
+                                         <label id="lblPOS" runat="server" class="required" for="lblPOS">                                    
+                                       Facility MFL Code:
+                                        </label>
+
                                 </div>
                                 <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <asp:TextBox ID="txtNationalId" runat="server" MaxLength="50" class="form-control"
-                                        Width="350px"></asp:TextBox>
+                                   <%-- <asp:TextBox ID="txtNationalId" runat="server" MaxLength="50" class="form-control"
+                                        Width="350px"></asp:TextBox>--%>
+                                         <asp:TextBox ID="txtLPTF" MaxLength="5" runat="server" class="form-control" Width="350px">11111</asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">
@@ -56,11 +61,11 @@
                                         Width="350px">695</asp:TextBox>--%>
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <label id="lblPOS" runat="server" class="required" for="lblPOS">
-                                        Facility number:</label>
+                                  <label id="lblFaclogo" runat="server" for="lblPOS">
+                                        Facility Logo:</label>
                                 </div>
                                 <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <asp:TextBox ID="txtLPTF" MaxLength="5" runat="server" class="form-control" Width="350px">11111</asp:TextBox>
+                                   <input id="Filelogo" style="width: 350px" type="file" runat="server" class="form-control" />
                                 </div>
                             </div>
                             <div class="row">
@@ -72,11 +77,11 @@
                                     <asp:TextBox ID="txtSatelliteID" runat="server" CssClass="form-control" Width="350px"></asp:TextBox>
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <label id="lblFaclogo" runat="server" for="lblPOS">
-                                        Facility Logo:</label>
+                                 <label id="lbltele" runat="server" for="lbltele" class="required">
+                                        Facility Telephone:</label>
                                 </div>
                                 <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <input id="Filelogo" style="width: 350px" type="file" runat="server" class="form-control" />
+                                   <asp:TextBox ID="txtFactele" runat="server" CssClass="form-control" Width="350"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">
@@ -84,17 +89,11 @@
                                     <label id="lblFacAddress" runat="server" class="required" for="lblFacAddress">
                                         Facility Address:</label>
                                 </div>
-                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <asp:TextBox ID="txtFacAddress" Rows="4" TextMode="MultiLine" Width="350" runat="server"
+                                <div class="col-md-10 col-sm-12 col-xs-12 form-group">
+                                    <asp:TextBox ID="txtFacAddress" Rows="2" TextMode="MultiLine" Width="96%" runat="server"
                                         Style="resize: none;" CssClass="form-control"></asp:TextBox>
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <label id="lbltele" runat="server" for="lbltele" class="required">
-                                        Facility Telephone:</label>
-                                </div>
-                                <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <asp:TextBox ID="txtFactele" runat="server" CssClass="form-control" Width="350"></asp:TextBox>
-                                </div>
+                               
                             </div>
                             <div class="row">
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
@@ -134,7 +133,7 @@
                                         Pharmacy Footer Text:</label>
                                 </div>
                                 <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                    <asp:TextBox ID="txtpharmfoottext" Rows="6" TextMode="MultiLine" CssClass="form-control"
+                                    <asp:TextBox ID="txtpharmfoottext" Rows="5" TextMode="MultiLine" CssClass="form-control"
                                         Style="width: 350px; resize: none;" runat="server"></asp:TextBox>
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">

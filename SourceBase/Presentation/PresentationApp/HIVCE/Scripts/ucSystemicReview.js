@@ -1,4 +1,8 @@
-﻿function InitSystemicReviewControls(response) {
+﻿var arrWHoStage = [];
+var arrCWHoStage = [];
+
+
+function InitSystemicReviewControls(response) {
     window.scrollTo(0, 0);
     $("#ddlGeneralExamination").select2();
     $("#ddlSkin").select2();
@@ -9,6 +13,8 @@
     $("#ddlCNS").select2();
     $("#ddlGUSystem").select2();
     $("#ddlCurrentWhoStage").select2();
+    $("#ddlGenitoUrinary").select2();
+    
 
     $("#chkSkin").bootstrapSwitch('state', false);
     $("#chkENT").bootstrapSwitch('state', false);
@@ -17,6 +23,7 @@
     $("#chkAbdomen").bootstrapSwitch('state', false);
     $("#chkCNS").bootstrapSwitch('state', false);
     $("#chkGUSystem").bootstrapSwitch('state', false);
+    $("#chkGenitoUrinary").bootstrapSwitch('state', false);
 
     $('input[type="checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
         DisableDiv(this);
@@ -42,6 +49,10 @@
     $("#" + disDiv).css("display", "none");
 
     disDiv = "divCNS";
+    $("#" + disDiv).css("visibility", "hidden");
+    $("#" + disDiv).css("display", "none");
+
+    disDiv = "divGEU";
     $("#" + disDiv).css("visibility", "hidden");
     $("#" + disDiv).css("display", "none");
 
@@ -162,8 +173,26 @@ function BindWhoStage(response) {
 
     data = $.grep(collections, function (e) { return e.CN == "ENTConditions"; });
     vdata = [];
+
     $.each(data, function (index, value) {
         if (value.DN.toLowerCase() !== "other") {
+            if (value.DN.toLowerCase() == "normal") {
+                vdata.push({ id: value.DId, text: value.DN });
+          }
+        }
+    });
+
+    $("#ddlENT").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: false,
+        data: vdata
+    });
+
+    $.each(data, function (index, value) {
+        if (value.DN.toLowerCase() !== "other" && value.DN.toLowerCase() !== "normal") {
             vdata.push({ id: value.DId, text: value.DN });
         }
     });
@@ -255,6 +284,25 @@ function BindWhoStage(response) {
     $("#ddlCNS").select2("val", "0");
     $("#ddlCNS").trigger('change.select2');
 
+    data = $.grep(collections, function (e) { return e.CN == "GenitalUrinaryConditions"; });
+    vdata = [];
+    $.each(data, function (index, value) {
+        if (value.DN.toLowerCase() !== "other") {
+            vdata.push({ id: value.DId, text: value.DN });
+        }
+    });
+
+    $("#ddlGenitoUrinary").select2({
+        placeholder: {
+            id: '0', // the value of the option
+            text: 'Select an option'
+        },
+        allowClear: false,
+        data: vdata
+    });
+    $("#ddlGenitoUrinary").select2("val", "0");
+    $("#ddlGenitoUrinary").trigger('change.select2');
+
 
     data = $.grep(collections, function (e) { return e.CN == "WHOStageIConditions"; });
     if (jQuery.isEmptyObject(data) == false) {
@@ -272,7 +320,7 @@ function BindWhoStage(response) {
          { bSortable: false,
              mRender: function (data, type, full) {
                  var str = "<input type=\"hidden\" runat=\"server\" id=\"hidRowId\" value=\"" + full["DId"] + "\"  />";
-                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" />";
+                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" title=\"1\" />";
                  return str;
              }
          },
@@ -316,7 +364,7 @@ function BindWhoStage(response) {
          { bSortable: false,
              mRender: function (data, type, full) {
                  var str = "<input type=\"hidden\" runat=\"server\" id=\"hidRowId\" value=\"" + full["DId"] + "\"  />";
-                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" />";
+                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" title=\"2\"/>";
                  return str;
              }
          },
@@ -360,7 +408,7 @@ function BindWhoStage(response) {
          { bSortable: false,
              mRender: function (data, type, full) {
                  var str = "<input type=\"hidden\" runat=\"server\" id=\"hidRowId\" value=\"" + full["DId"] + "\"  />";
-                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" />";
+                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" title=\"3\"/>";
                  return str;
              }
          },
@@ -404,7 +452,7 @@ function BindWhoStage(response) {
          { bSortable: false,
              mRender: function (data, type, full) {
                  var str = "<input type=\"hidden\" runat=\"server\" id=\"hidRowId\" value=\"" + full["DId"] + "\"  />";
-                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" />";
+                 str = str + "<input type=\"checkbox\" id=\"chkAchieved" + full["DId"] + "\" class=\"flat-red\" title=\"4\"/>";
                  return str;
              }
          },
@@ -437,6 +485,7 @@ function BindWhoStage(response) {
     $.each(data, function (index, value) {
         vdata.push({ id: value.DId, text: value.DN });
     });
+    arrCWHoStage = vdata;
 
     $("#ddlCurrentWhoStage").select2({
         placeholder: {
@@ -455,9 +504,11 @@ function BindWhoStage(response) {
     });
     $('input').on('ifChecked', function (event) {
         $(this).closest("input").attr('checked', true);
+        WhoStageCheckBoxClick(this, false);
     });
     $('input').on('ifUnchecked', function (event) {
         $(this).closest("input").attr('checked', false);
+        WhoStageCheckBoxClick(this, true);
     });
 
     $('input[data-date-format="dd-M-yyyy"]').datepicker({
@@ -515,6 +566,13 @@ function BindWhoStage(response) {
         }
     }
 
+    BindMultiSelectDropDown("ddlGenitoUrinary", response.GEU);
+    if (jQuery.isEmptyObject(response.GEU) == false) {
+        if (response.GEU.length > 0) {
+            $("#chkGenitoUrinary").bootstrapSwitch('state', true);
+        }
+    }
+
     AssignDataTableData("dtlStageI", response.WSS, "WHOStageIConditions");
     AssignDataTableData("dtlStageII", response.WSS, "WHOStageIIConditions");
     AssignDataTableData("dtlStageIII", response.WSS, "WHOStageIIICoditions");
@@ -537,9 +595,92 @@ function BindWhoStage(response) {
     GetZScoreDetailsSR();
 
     CalcualteBMI('hidPAYM', 'txtSRWeight', 'txtSRHeight', 'txtSRBMI', 'lblSRBMIClassification');
+
+    var bmiText = $("#lblSRBMIClassification").text();
+
+    if (bmiText != null) {
+        if (bmiText.toUpperCase().indexOf("OBESE") >= 0) {
+            $("input:radio[name=NutritionGroup][value=941]").attr('checked', 'checked');
+            $("input:radio[name=NutritionGroup]").iCheck('update');
+        }
+        else if (bmiText.toUpperCase().indexOf("OVERWEIGHT") >= 0) {
+            $("input:radio[name=NutritionGroup][value=941]").attr('checked', 'checked');
+            $("input:radio[name=NutritionGroup]").iCheck('update');
+        }
+        else if (bmiText.toUpperCase().indexOf("NORMAL") >= 0) {
+            $("input:radio[name=NutritionGroup][value=939]").attr('checked', 'checked');
+            $("input:radio[name=NutritionGroup]").iCheck('update');
+        }
+
+    }
+
+
     VisibilityZScoreSR();
 
     //$.hivce.loader('hide');
+}
+
+function WhoStageCheckBoxClick(ctrlName, isDelete) {
+    debugger;
+    var chk = $.grep(arrWHoStage, function (e) { return e == ctrlName.title; });
+
+    if (jQuery.isEmptyObject(chk) == true) {
+        arrWHoStage.push(ctrlName.title);
+    }
+
+
+    if (isDelete) {
+        var cName = "WHOStage";
+        if (ctrlName.title == "1") {
+            cName = "dtlStageI";
+        }
+        else if (ctrlName.title == "2") {
+            cName = "dtlStageII";
+        }
+        else if (ctrlName.title == "3") {
+            cName = "dtlStageIII";
+        }
+        else if (ctrlName.title == "4") {
+            cName = "dtlStageIV";
+        }
+
+        var isExists = false;
+        var rows = $("#" + cName).dataTable().fnGetNodes();
+        for (var i = 0; i < rows.length; i++) {
+            // Get HTML of 3rd column (for example)
+            var col0 = $(rows[i]).find("td:eq(0)").html();
+            var hidV = $(col0).filter("#hidRowId").val();
+            var chkVal = $("#chkAchieved" + hidV).iCheck('update')[0].checked;
+            var col2 = $(rows[i]).find("td:eq(2)").html();
+            var col3 = $(rows[i]).find("td:eq(3)").html();
+
+            if (chkVal) {
+                isExists = true;
+            }
+        }
+
+        if (!isExists) {
+            arrWHoStage = jQuery.grep(arrWHoStage, function (value) {
+                return value != ctrlName.title;
+            });
+        }
+
+    }
+
+    if (arrWHoStage.length == 0) {
+        var ddlValue = $.grep(arrCWHoStage, function (e) { return e.text == "N/A"; });
+        if (jQuery.isEmptyObject(ddlValue) == false) {
+            $("#ddlCurrentWhoStage").select2().val(ddlValue[0].id).trigger("change");
+        }
+    }
+    else {
+        var maxValue = Math.max.apply(Math, arrWHoStage);
+        var ddlValue = $.grep(arrCWHoStage, function (e) { return e.text == maxValue; });
+        if (jQuery.isEmptyObject(ddlValue) == false) {
+            $("#ddlCurrentWhoStage").select2().val(ddlValue[0].id).trigger("change");
+        }
+    }
+
 }
 
 
@@ -585,19 +726,37 @@ function CalcualteBMIzScoreSR() {
 function VisibilityZScoreSR() {
     var hidPAYM = $("#hidPAYM").val();
 
-    if (hidPAYM >= 5 && hidPAYM <= 15) {
-        $("#divWA1").css("visibility", "visible");
-        $("#divWA1").css("display", "block");
-        $("#divWAV1").css("visibility", "visible");
-        $("#divWAV1").css("display", "block");
-        $("#divHA1").css("visibility", "visible");
-        $("#divHA1").css("display", "block");
-        $("#divHAV1").css("visibility", "visible");
-        $("#divHAV1").css("display", "block");
+    if (hidPAYM >= 0 && hidPAYM <= 19) {
+
+        if (hidPAYM >= 0 && hidPAYM <= 5) {
+            $("#divWA1").css("visibility", "visible");
+            $("#divWA1").css("display", "block");
+            $("#divWAV1").css("visibility", "visible");
+            $("#divWAV1").css("display", "block");
+            $("#divHA1").css("visibility", "visible");
+            $("#divHA1").css("display", "block");
+            $("#divHAV1").css("visibility", "visible");
+            $("#divHAV1").css("display", "block");
+        } else {
+            $("#divWA1").css("visibility", "hidden");
+            $("#divWA1").css("display", "none");
+            $("#divWAV1").css("visibility", "hidden");
+            $("#divWAV1").css("display", "none");
+            $("#divHA1").css("visibility", "hidden");
+            $("#divHA1").css("display", "none");
+            $("#divHAV1").css("visibility", "hidden");
+            $("#divHAV1").css("display", "none");
+        }
+
         $("#divBMIZ1").css("visibility", "visible");
         $("#divBMIZ1").css("display", "block");
         $("#divBMIZV1").css("visibility", "visible");
         $("#divBMIZV1").css("display", "block");
+
+        $("#divSRBMILable").css("visibility", "hidden");
+        $("#divSRBMILable").css("display", "none");
+        $("#divSRBMIText").css("visibility", "hidden");
+        $("#divSRBMIText").css("display", "none");
     }
     else {
         $("#divWA1").css("visibility", "hidden");
@@ -612,6 +771,11 @@ function VisibilityZScoreSR() {
         $("#divBMIZ1").css("display", "none");
         $("#divBMIZV1").css("visibility", "hidden");
         $("#divBMIZV1").css("display", "none");
+
+        $("#divSRBMILable").css("visibility", "visible");
+        $("#divSRBMILable").css("display", "block");
+        $("#divSRBMIText").css("visibility", "visible");
+        $("#divSRBMIText").css("display", "block");
     }
 
 }
@@ -685,7 +849,8 @@ function PrepareSystemicReviewData() {
         NAC: $("#txtAreaNutritionComment").val(),
         WSS: arrDatatable,
         WS: ddlCurrentWhoStage,
-        NC: uNutritionCounseling
+        NC: uNutritionCounseling,
+        GEU: GetControlMultiSelectValues("ddlGenitoUrinary")
     });
 
     return rowSystemicReviewData[0];

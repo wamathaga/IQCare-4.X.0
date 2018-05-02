@@ -137,6 +137,17 @@ namespace HIVCE.Common.Entities
         [DataMember(Name = "RFO", Order = 22)]
         public string ReferredFromOther { get; set; }
 
+        [DataMember(Name = "AD", Order = 23)]
+        public DateTime? AppDate { get; set; }
+
+        [DataMember(Name = "AR", Order = 24)]
+        public string AppReason { get; set; }
+
+        [DataMember(Name = "MGTS", Order = 25)]
+        public int MgtSignature { get; set; }
+
+        [DataMember(Name = "PUR", Order = 26)]
+        public List<CodeDeCodeTables> Purpose = new List<CodeDeCodeTables>();
     }
 
     [Serializable]
@@ -179,6 +190,36 @@ namespace HIVCE.Common.Entities
 
     }
 
+    [Serializable]
+    [DataContract(Name = "CETST")]
+    public class TSTriage
+    {
+
+        [DataMember(Name = "Ptn_Pk", Order = 1)]
+        public int Ptn_pk { get; set; }
+
+        [DataMember(Name = "LId", Order = 2)]
+        public int LocationId { get; set; }
+
+        [DataMember(Name = "VId", Order = 3)]
+        public int Visit_Id { get; set; }
+
+        [DataMember(Name = "OV", Order = 4)]
+        public OrdVisit OrdVisit = new OrdVisit();
+
+        [DataMember(Name = "FN", Order = 5)]
+        public string FormName { get; set; }
+
+        [DataMember(Name = "NAD", Order = 6)]
+        public DateTime? NextAppointmentDate { get; set; }
+
+        [DataMember(Name = "Purpose", Order = 7)]
+        public int Purpose { get; set; }
+
+        [DataMember(Name = "MGTS", Order = 8)]
+        public int MgtSignature { get; set; }
+
+    }
 
     [Serializable]
     [DataContract(Name = "OV")]
@@ -508,6 +549,8 @@ namespace HIVCE.Common.Entities
         public string Notes { get; set; }
         [DataMember(Name = "VNT", Order = 8)]
         public string VNotes { get; set; }
+        [DataMember(Name = "ValN", Order = 9)]
+        public string ValueName { get; set; }
     }
 
     [Serializable]
@@ -929,7 +972,7 @@ namespace HIVCE.Common.Entities
 
         [DataMember(Name = "RCV", Order = 38)]
         public int RegimenCodeValue { get; set; }
-        
+
     }
 
 
@@ -1261,7 +1304,7 @@ namespace HIVCE.Common.Entities
 
         [DataMember(Name = "HRB")]
         public List<HRB> HRB = new List<HRB>();
-        
+
         [DataMember(Name = "RCV")]
         public int RegimenCodeValue { get; set; }
     }
@@ -1388,6 +1431,24 @@ namespace HIVCE.Common.Entities
 
         [DataMember(Name = "EFIPT")]
         public int? EligibleForIPT { get; set; }
+
+        [DataMember(Name = "IPTWPYCU")]
+        public int? IPTWPYellowColoredUrine { get; set; }
+
+        [DataMember(Name = "IPTWPNB")]
+        public int? IPTWPNumbnessBurning { get; set; }
+
+        [DataMember(Name = "IPTWPYE")]
+        public int? IPTWPYellownessEyes { get; set; }
+
+        [DataMember(Name = "IPTWPT")]
+        public int? IPTWPTenderness { get; set; }
+
+        [DataMember(Name = "ORDec")]
+        public string OtherReasonDeclinedIPT { get; set; }
+
+        [DataMember(Name = "ORDis")]
+        public string OtherReasonDiscontinuedIPT { get; set; }
     }
 
 
@@ -1457,8 +1518,11 @@ namespace HIVCE.Common.Entities
         [DataMember(Name = "WS", Order = 16)]
         public int WHOStage { get; set; }
 
-        [DataMember(Name = "Collection")]
+        [DataMember(Name = "Collection", Order = 17)]
         public List<CodeDeCodeTables> Collections = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "GEU", Order = 18)]
+        public List<DBMultiSelectSelcted> GenitoUrinary = new List<DBMultiSelectSelcted>();
     }
 
     [Serializable]
@@ -1476,6 +1540,9 @@ namespace HIVCE.Common.Entities
 
         [DataMember(Name = "DF2")]
         public DateTime? DateField2 { get; set; }
+
+        [DataMember(Name = "ValN")]
+        public string ValueName { get; set; }
     }
     #endregion
 
@@ -1644,6 +1711,26 @@ namespace HIVCE.Common.Entities
         [DataMember(Name = "RVID", Order = 37)]
         public int RegimenVisitId { get; set; }
 
+        [DataMember(Name = "PC", Order = 38)]
+        public List<CodeDeCodeTables> PatientClassifications = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "ARTRM", Order = 39)]
+        public List<CodeDeCodeTables> ARTRefillModels = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "Appointments", Order = 40)]
+        public List<Appointment> Appointments = new List<Appointment>();
+
+        [DataMember(Name = "Classification", Order = 41)]
+        public int? PatientClassification { get; set; }
+
+        [DataMember(Name = "ISEDC", Order = 42)]
+        public int? IsEnrolDifferenciatedCare { get; set; }
+
+        [DataMember(Name = "ARTRefillModel", Order = 43)]
+        public int? ARTRefillModel { get; set; }
+
+
+
     }
 
     #region ManagementDB
@@ -1747,6 +1834,18 @@ namespace HIVCE.Common.Entities
         [DataMember(Name = "RCV", Order = 31)]
         public int RegimenCodeValue { get; set; }
 
+        [DataMember(Name = "Classification", Order = 32)]
+        public int? PatientClassification { get; set; }
+
+        [DataMember(Name = "ISEDC", Order = 33)]
+        public int? IsEnrolDifferenciatedCare { get; set; }
+
+        [DataMember(Name = "ARTRefillModel", Order = 34)]
+        public int? ARTRefillModel { get; set; }
+
+        [DataMember(Name = "Appointments", Order = 35)]
+        public List<Appointment> Appointments = new List<Appointment>();
+
     }
 
     [Serializable]
@@ -1836,5 +1935,231 @@ namespace HIVCE.Common.Entities
     }
 
     #endregion
+
+    [Serializable]
+    [DataContract]
+    public class Appointment
+    {
+
+        [DataMember(Name = "Id", Order = 1)]
+        public int Id { get; set; }
+
+        [DataMember(Name = "Ptn_Pk", Order = 1)]
+        public int Ptn_pk { get; set; }
+
+        [DataMember(Name = "LId", Order = 2)]
+        public int LocationId { get; set; }
+
+        [DataMember(Name = "VId", Order = 3)]
+        public int Visit_Id { get; set; }
+
+        [DataMember(Name = "ANAD", Order = 4)]
+        public DateTime? AppointmentDate { get; set; }
+
+        [DataMember(Name = "APurpose", Order = 5)]
+        public int? Purpose { get; set; }
+
+        [DataMember(Name = "PurposeN", Order = 6)]
+        public string PurposeName { get; set; }
+
+        [DataMember(Name = "AT", Order = 7)]
+        public int? AppointmentType { get; set; }
+
+        [DataMember(Name = "SA", Order = 8)]
+        public int? ServiceArea { get; set; }
+
+        [DataMember(Name = "SAN", Order = 9)]
+        public string ServiceAreaName { get; set; }
+
+        [DataMember(Name = "Desc", Order = 10)]
+        public string Description { get; set; }
+
+        [DataMember(Name = "Status", Order = 11)]
+        public string Status { get; set; }
+
+    }
+
+    [Serializable]
+    [DataContract(Name = "RE")]
+    public class RefillEncounter
+    {
+
+        [DataMember(Name = "Ptn_Pk", Order = 1)]
+        public int Ptn_pk { get; set; }
+
+        [DataMember(Name = "LId", Order = 2)]
+        public int LocationId { get; set; }
+
+        [DataMember(Name = "VT", Order = 3)]
+        public List<CodeDeCodeTables> VisitTypes = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "OV", Order = 4)]
+        public OrdVisit OrdVisit = new OrdVisit();
+
+        [DataMember(Name = "PV", Order = 5)]
+        public PatientVitals PatientVitals = new PatientVitals();
+
+        [DataMember(Name = "RC", Order = 6)]
+        public List<CodeDeCodeTables> RegimenCodes = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "PC", Order = 7)]
+        public List<CodeDeCodeTables> PresentingComplaints = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "PS", Order = 8)]
+        public List<CodeDeCodeTables> PregnancyStatus = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "FPMS", Order = 9)]
+        public List<CodeDeCodeTables> FamilyPlanningMethods = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "RNFP", Order = 10)]
+        public List<CodeDeCodeTables> ReasonNotFamilyPlanning = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "DDV", Order = 11)]
+        public List<CodeDeCodeTables> DropdownValues = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "PUR", Order = 12)]
+        public List<CodeDeCodeTables> Purpose = new List<CodeDeCodeTables>();
+
+        [DataMember(Name = "Appointments", Order = 13)]
+        public List<Appointment> Appointments = new List<Appointment>();
+
+        [DataMember(Name = "RCV", Order = 14)]
+        public int RegimenCodeValue { get; set; }
+
+        [DataMember(Name = "RVID", Order = 15)]
+        public int RegimenVisitId { get; set; }
+
+        [DataMember(Name = "VId", Order = 16)]
+        public int Visit_Id { get; set; }
+
+        [DataMember(Name = "PCT", Order = 17)]
+        public List<MultiSelectTable> PCT = new List<MultiSelectTable>();
+
+        [DataMember(Name = "LMP", Order = 18)]
+        public DateTime? LMP { get; set; }
+
+        [DataMember(Name = "Pregnant", Order = 19)]
+        public int Pregnant { get; set; }
+
+        [DataMember(Name = "BS", Order = 20)]
+        public int BreastStatus { get; set; }
+
+        [DataMember(Name = "FPM", Order = 21)]
+        public int FamilyPlanningMethod { get; set; }
+
+        [DataMember(Name = "FPS", Order = 22)]
+        public int FamilyPlanningStatus { get; set; }
+
+        [DataMember(Name = "NFP", Order = 23)]
+        public int NoFamilyPlanning { get; set; }
+
+        [DataMember(Name = "PWPL", Order = 24)]
+        public List<DBMultiSelectSelcted> PWPList = new List<DBMultiSelectSelcted>();
+
+        [DataMember(Name = "ISFM", Order = 25)]
+        public int IsForgotMed { get; set; }
+
+        [DataMember(Name = "NMD", Order = 26)]
+        public int NoMissedDoses { get; set; }
+
+        [DataMember(Name = "Drugs", Order = 27)]
+        public string Drugs { get; set; }
+
+        [DataMember(Name = "AREM", Order = 28)]
+        public string AreaReminders { get; set; }
+
+        [DataMember(Name = "OPC", Order = 29)]
+        public string OtherPresentingComplaints { get; set; }
+    }
+
+    [Serializable]
+    [DataContract(Name = "REDB")]
+    public class RefillEncounterDB
+    {
+
+        [DataMember(Name = "Ptn_Pk", Order = 1)]
+        public int Ptn_pk { get; set; }
+
+        [DataMember(Name = "LId", Order = 2)]
+        public int LocationId { get; set; }
+
+        [DataMember(Name = "VId", Order = 3)]
+        public int Visit_Id { get; set; }
+
+        [DataMember(Name = "OV", Order = 4)]
+        public OrdVisit OrdVisit = new OrdVisit();
+
+        [DataMember(Name = "PV", Order = 5)]
+        public PatientVitals PatientVitals = new PatientVitals();
+
+        [DataMember(Name = "PCT", Order = 6)]
+        public List<MultiSelectTable> PCT = new List<MultiSelectTable>();
+
+        [DataMember(Name = "LMP", Order = 7)]
+        public DateTime? LMP { get; set; }
+
+        [DataMember(Name = "Pregnant", Order = 8)]
+        public int Pregnant { get; set; }
+
+        [DataMember(Name = "BS", Order = 9)]
+        public int BreastStatus { get; set; }
+
+        [DataMember(Name = "FPM", Order = 10)]
+        public int FamilyPlanningMethod { get; set; }
+
+        [DataMember(Name = "FPS", Order = 11)]
+        public int FamilyPlanningStatus { get; set; }
+
+        [DataMember(Name = "NFP", Order = 12)]
+        public int NoFamilyPlanning { get; set; }
+
+        [DataMember(Name = "PWP", Order = 13)]
+        public List<DBMultiSelectSelcted> PWP = new List<DBMultiSelectSelcted>();
+
+        [DataMember(Name = "ISFM", Order = 14)]
+        public int IsForgotMed { get; set; }
+
+        [DataMember(Name = "NMD", Order = 15)]
+        public int NoMissedDoses { get; set; }
+
+        [DataMember(Name = "Drugs", Order = 16)]
+        public string Drugs { get; set; }
+
+        [DataMember(Name = "AREM", Order = 17)]
+        public string AreaReminders { get; set; }
+
+        [DataMember(Name = "Appointments", Order = 18)]
+        public List<Appointment> Appointments = new List<Appointment>();
+
+        [DataMember(Name = "OPC", Order = 19)]
+        public string OtherPresentingComplaints { get; set; }
+    }
+
+
+    [Serializable]
+    [DataContract(Name = "OICD")]
+    public class OIChronicDiseaseData
+    {
+
+        [DataMember(Name = "CDT", Order = 1)]
+        public List<MultiSelectTable> CDT = new List<MultiSelectTable>();
+
+        [DataMember(Name = "WHOS", Order = 2)]
+        public List<WHOStage> WHOStages = new List<WHOStage>();
+
+        [DataMember(Name = "WS", Order = 3)]
+        public int WHOStage { get; set; }
+
+        [DataMember(Name = "WSN", Order = 4)]
+        public string WHOStageName { get; set; }
+
+        [DataMember(Name = "ICDGV", Order = 5)]
+        public List<ICD> ICDGridValues = new List<ICD>();
+
+        [DataMember(Name = "Collection", Order = 6)]
+        public List<CodeDeCodeTables> Collections = new List<CodeDeCodeTables>();
+    }
+
+
 }
 

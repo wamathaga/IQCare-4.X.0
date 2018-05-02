@@ -84,24 +84,6 @@ public partial class ClinicalForms_frmFamilyInformation {
     protected global::System.Web.UI.WebControls.Panel thePnlIdent;
     
     /// <summary>
-    /// regthisclinic control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList regthisclinic;
-    
-    /// <summary>
-    /// btnfind control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Button btnfind;
-    
-    /// <summary>
     /// txtfname control.
     /// </summary>
     /// <remarks>
@@ -208,6 +190,15 @@ public partial class ClinicalForms_frmFamilyInformation {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnadd;
+    
+    /// <summary>
+    /// btnfind control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button btnfind;
     
     /// <summary>
     /// grdFamily control.

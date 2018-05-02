@@ -157,6 +157,60 @@ namespace PresentationApp.ClinicalForms.UserControl {
         public global::System.Web.UI.WebControls.Label IPTED;
         
         /// <summary>
+        /// ARTDateLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label ARTDateLabel;
+        
+        /// <summary>
+        /// lblArtStartDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblArtStartDt;
+        
+        /// <summary>
+        /// lblPatientClassification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblPatientClassification;
+        
+        /// <summary>
+        /// lblPatientClassificationVal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblPatientClassificationVal;
+        
+        /// <summary>
+        /// lblDifferenciatedCare control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblDifferenciatedCare;
+        
+        /// <summary>
+        /// lblDifferenciatedCareVal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        public global::System.Web.UI.WebControls.Label lblDifferenciatedCareVal;
+        
+        /// <summary>
         /// UserControl_AllergyExtruder1 control.
         /// </summary>
         /// <remarks>

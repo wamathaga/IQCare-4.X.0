@@ -4649,7 +4649,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                         objdView.ID = "Dview_" + dr["SectionID"].ToString();
                         objdView.AutoGenerateColumns = false;
 
-                        objdView.CssClass = "datatable";
+                        objdView.CssClass = "table table-bordered table-hover";
                         objdView.SelectedIndexChanging += new GridViewSelectEventHandler(objdView_SelectedIndexChanging);
                         objdView.RowDeleting += new GridViewDeleteEventHandler(grdView_RowDeleted);
                         objdView.RowDataBound += new GridViewRowEventHandler(grdView_RowDataBound);
@@ -4657,7 +4657,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
                         objdView.BorderWidth = 1;
                         objdView.GridLines = GridLines.None;
                         objdView.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
-                        objdView.RowStyle.CssClass = "row";
+                        //objdView.RowStyle.CssClass = "row"; //KK. commented out this as it seem to conflict with bootstrap
                         objdView.Width = Unit.Percentage(100);
 
                         foreach (DataColumn c in theDT.Columns)
@@ -5157,7 +5157,7 @@ public partial class frmClinical_CustomForm : BasePage, ICallbackEventHandler
     private void CreateTab(DataTable theDT)
     {
         tabcontainer = new AjaxControlToolkit.TabContainer();
-        tabcontainer.CssClass = "ajax__tab_technorati-theme";
+        tabcontainer.CssClass = "ajax__myTab";  //Ken - better display of the tab control
         //tabcontainer.Height = Unit.Pixel(200);
         foreach (DataRow theDR in theDT.Rows)
         {

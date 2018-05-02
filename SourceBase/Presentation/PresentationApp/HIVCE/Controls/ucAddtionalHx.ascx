@@ -94,13 +94,19 @@
                                         Comment:</label>
                                     <input type="text" class="form-control" id="txtComment" placeholder="Comment">
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
                                         &nbsp;
                                     </label>
                                     <button type="button" class="btn btn-block btn-primary btn-sm" style="width: 50px;"
                                         id="btnAddMilestones" onclick="AddMilestones();">
                                         Add</button>
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                                    <a class="btn btn-social-icon btn-adn btn-sm" style="margin-top: 20px;" onclick="window.open(this.href, 'myWindowName', 'width=800, height=600'); return false;"
+                                        onkeypress="window.open(this.href, 'myWindowName', 'width=800, height=600'); return false;"
+                                        href="<%= ResolveUrl("~/HIVCE/Milestones.pdf") %>"><i class="fa fa-adn"></i>
+                                    </a>
                                 </div>
                             </div>
                             <!-- /.row -->
@@ -206,7 +212,7 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
                                         Neonatal History Notes:</label>
-                                    <textarea class="form-control" rows="6" placeholder="Neonatal History Notes" id="txtNeonatalNotes"></textarea>
+                                    <textarea class="form-control" rows="6" placeholder="Neonatal History Notes" id="txtNeonatalNotes" maxlength="1000"></textarea>
                                 </div>
                                 <!-- /.box -->
                             </div>
@@ -244,6 +250,11 @@
                             <label for="inputEmail3" class="control-label">
                             </label>
                         </div>
+                        <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                            <a class="btn btn-social-icon btn-adn btn-sm" target="_blank" onclick="window.open(this.href, 'myWindowName', 'width=800, height=600'); return false;"
+                                onkeypress="window.open(this.href, 'myWindowName', 'width=800, height=600'); return false;"
+                                href="<%= ResolveUrl("~/HIVCE/Tanners.pdf") %>"><i class="fa fa-adn"></i></a>
+                        </div>
                         <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                             <label for="inputEmail3" class="control-label">
                                 Last screened on:</label>
@@ -256,7 +267,7 @@
                             <label for="inputEmail3" class="control-label">
                                 Next screened on:</label>
                         </div>
-                        <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                        <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                             <input type="text" class="form-control" id="dtNextScreenedOn" placeholder="Next screened on"
                                 data-date-format="dd-M-yyyy">
                         </div>
@@ -269,7 +280,7 @@
                         </div>
                         <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                             <label for="inputEmail3" id="lblMOrF" class="control-label">
-                                F Breasts:</label>
+                                F Breasts / Genitalia:</label>
                             <select class="form-control select2" data-placeholder="Select" id="ddlMOrF" style="width: 100%;">
                             </select>
                         </div>
@@ -297,7 +308,7 @@
                                         Date
                                     </th>
                                     <th style="width: 150px;">
-                                        F Breasts
+                                        F Breasts / Genitalia
                                     </th>
                                     <th style="width: 150px;">
                                         Public Hair
@@ -415,7 +426,7 @@
                         <input id="chkAlternativeMedicine" name="switch-size" type="checkbox" checked data-size="small"
                             data-on-text="Yes" data-off-text="No">
                         </br> if yes explain </br>
-                        <textarea class="form-control" rows="2" placeholder="Alternative Medicines" id="txtAlternativeMedicine"></textarea>
+                        <textarea class="form-control" rows="2" placeholder="Alternative Medicines" id="txtAlternativeMedicine" maxlength="1000"></textarea>
                     </div>
                 </div>
                 <!-- /.row -->

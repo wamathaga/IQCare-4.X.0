@@ -318,7 +318,8 @@ namespace BusinessProcess.SCM
 
         public DataTable SavePharmacyDispense_Web(Int32 PatientId, Int32 LocationId, Int32 StoreId, Int32 UserId, int dispensedBy, string DispDate,
           Int32 OrderType, Int32 ProgramId, string theRegimen, Int32 OrderId, DataTable theDT, string PharmacyRefillDate, Int32 DataStatus,
-            int orderedBy, string orderDate, string deleteScript, int regimenLine = 0, int regimenCode = 0, int therapyPlan = 0)
+            int orderedBy, string orderDate, string deleteScript, int regimenLine = 0, int regimenCode = 0, int therapyPlan = 0
+            , int patientClassification = 0, int isEnrolDifferenciatedCare = 0)
         {
             string Morning, Midday, Evening, Night;
             DataTable thePharmacyDT = new DataTable();
@@ -381,6 +382,9 @@ namespace BusinessProcess.SCM
                 ClsUtility.AddParameters("@RegimenLine", SqlDbType.Int, regimenLine.ToString());
                 ClsUtility.AddParameters("@RegimenCode", SqlDbType.Int, regimenCode.ToString());
                 ClsUtility.AddParameters("@TherapyPlan", SqlDbType.Int, therapyPlan.ToString());
+
+                ClsUtility.AddParameters("@PatientClassification", SqlDbType.Int, patientClassification.ToString());
+                ClsUtility.AddParameters("@IsEnrolDifferenciatedCare", SqlDbType.Int, isEnrolDifferenciatedCare.ToString());
 
                 thePharmacyDT = (DataTable)theManager.ReturnObject(ClsUtility.theParams, "pr_SCM_SavePharmacyDispenseOrder_Web", ClsDBUtility.ObjectEnum.DataTable);
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 
 namespace Interface.Service
@@ -29,5 +26,6 @@ namespace Interface.Service
         DataTable getAllDivision();
         DataTable getAllARTSponsor();
         DataTable getAllHivDisclosure();
+        DataTable getAllProvinceByCountry(int CountryID);
     }
 }

@@ -574,7 +574,7 @@ public partial class ClinicalForms_frmClinical_InitialFollowupVisit : LogPage
             }
         }
 
-        if (Session["TechnicalAreaId"].ToString() == "203" || Session["TechnicalAreaId"].ToString() == "4")
+        if (Session["TechnicalAreaId"].ToString() == "4")
         {
             btnSave.Enabled = false;
             btnDataQualityCheck.Enabled = false;

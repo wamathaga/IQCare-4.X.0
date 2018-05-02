@@ -650,14 +650,24 @@ namespace PresentationApp.ClinicalForms
                 //Infant Feeding Option
                 theDVDecode = new DataView(theDS.Tables["mst_pmtctdecode"]);
 
-                if ((Convert.ToInt32(thePatientDS.Tables[0].Rows[0]["AgeInMonths"]) > 6) && (Convert.ToInt32(thePatientDS.Tables[0].Rows[0]["AgeInMonths"]) <= 24))
+                //if ((Convert.ToInt32(thePatientDS.Tables[0].Rows[0]["AgeInMonths"]) > 6) && (Convert.ToInt32(thePatientDS.Tables[0].Rows[0]["AgeInMonths"]) <= 24))
+                //{
+                //    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Exclusive substitute feeding (ESF)', 'Other','less than 6/12 EBF','less than 6/12 ERF','less than 6/12 Mixed feeding','greater than 6/12 breast feeding','greater than 6/12 Not breastfeeding')";
+                //}
+                //else
+                //{
+                //    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Exclusive breast feeding - (EBF)','Replacement feeding - (EBMS)','Mixed feeding (MF)','less than 6/12 EBF','less than 6/12 ERF','less than 6/12 Mixed feeding','greater than 6/12 breast feeding','greater than 6/12 Not breastfeeding')";
+                //}
+                //Change by Rahmat[01Mar2018] after discussed by Devang and Wamathaga.
+                if ((Convert.ToInt32(thePatientDS.Tables[0].Rows[0]["AgeInMonths"]) < 6))
                 {
-                    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Exclusive substitute feeding (ESF)', 'Other')";
+                    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Exclusive Breast Feeding','Replacement Feeding','Mixed Feeding','Other')";
                 }
                 else
                 {
-                    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Exclusive breast feeding - (EBF)','Replacement feeding - (EBMS)','Mixed feeding (MF)')";
+                    theDVDecode.RowFilter = "CodeName='FeedingOption' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and NAME IN ('Breastfeeding','Not Breastfeeding','Other')";
                 }
+
                 theDVDecode.Sort = "SRNo";
                 if (theDVDecode.Table != null)
                 {
@@ -691,7 +701,7 @@ namespace PresentationApp.ClinicalForms
 
                 //Duration Period
                 theDVDecode = new DataView(theDS.Tables["mst_pmtctdecode"]);
-                theDVDecode.RowFilter = "CodeName='Immunisationperiod' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and Name NOT IN ('Birth')";
+                theDVDecode.RowFilter = "CodeName='Immunisationperiod' and (DeleteFlag = 0 or DeleteFlag IS NULL) and SystemId in(0,1) and Name NOT IN ('Birth','6 weeks','10 weeks','14 weeks','3 Months','15 Months')";
                 theDVDecode.Sort = "SRNo";
                 if (theDVDecode.Table != null)
                 {
@@ -1193,6 +1203,7 @@ namespace PresentationApp.ClinicalForms
             PatientID = Convert.ToInt32(Session["PatientId"]);
             visitPK = Convert.ToInt32(Session["PatientVisitId"]);
             Hashtable htparam = htableKNHHEIParameters();
+
             visitPK = KNHHEIManager.Save_Update_KNHHEI(PatientID, visitPK, LocationID, htparam, theDSforChklist, Convert.ToInt32(Session["AppUserId"]), DataQuality);
             Session["PatientVisitId"] = visitPK;
         }

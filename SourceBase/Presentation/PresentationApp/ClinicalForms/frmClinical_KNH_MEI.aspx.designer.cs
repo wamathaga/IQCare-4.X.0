@@ -1129,6 +1129,15 @@ namespace PresentationApp.ClinicalForms {
         protected global::AjaxControlToolkit.TabPanel TabPnlClinicalReview;
         
         /// <summary>
+        /// btnHideClick control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnHideClick;
+        
+        /// <summary>
         /// pnl1PreviousObstreticsHistory control.
         /// </summary>
         /// <remarks>

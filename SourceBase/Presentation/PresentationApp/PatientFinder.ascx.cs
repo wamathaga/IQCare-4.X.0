@@ -319,8 +319,8 @@ namespace IQCare.Web
         {
             get
             {
-                if (!this.FilterByServiceLines) return "none";
-                if (!this.IncludeEnrollement) return "none";
+                if (!this.FilterByServiceLines) return "";
+                if (!this.IncludeEnrollement) return "";
                 return "";
             }
         }
@@ -370,10 +370,11 @@ namespace IQCare.Web
                 if (Session["TechnicalAreaId"] == null) { Session["TechnicalAreaId"] = "0"; }
                 this.BindIdentifierDropdown(Session["TechnicalAreaId"].ToString());
                 this.PopulateFacilityList();
-                if (this.FilterByServiceLines)
-                {
-                    this.PopulateServiceDropdown();
-                }
+                PopulateServiceDropdown();
+                //if (this.FilterByServiceLines)
+                //{
+                //    this.PopulateServiceDropdown();
+                //}
                 if (this.AutoLoadRecords)
                 {
                     this.PopulatePatientList();
@@ -595,10 +596,14 @@ namespace IQCare.Web
 
             DataTable theDT = new DataTable();
             theDT = DSModules.Tables[0];
-
-            if (theDT.Rows.Count > 0)
+            DataView theDV = new DataView(theDT);
+            theDV.RowFilter = "ModuleId NOT IN(206,207,7)";
+            IQCareUtils theModUtils = new IQCareUtils();
+            DataTable theNewDT = new DataTable();
+            theNewDT = theModUtils.CreateTableFromDataView(theDV);
+            if (theNewDT.Rows.Count > 0)
             {
-                BindManager.BindCombo(ddlServices, theDT, "ModuleName", "ModuleID");
+                BindManager.BindCombo(ddlServices, theNewDT, "ModuleName", "ModuleID");
                 ptnMgr = null;
             }
         }

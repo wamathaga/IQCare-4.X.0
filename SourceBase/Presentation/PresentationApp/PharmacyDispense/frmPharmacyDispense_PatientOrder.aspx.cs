@@ -310,6 +310,9 @@ namespace PresentationApp.PharmacyDispense
             dr["Unit"] = SelectedDrug["DispensingUnit"].ToString();
             dr["BatchNo"] = string.Empty;
             dr["BatchId"] = string.Empty;
+            dr["BatchQty"] = SelectedDrug["BatchQty"].ToString();
+            dr["SellingPrice"] = SelectedDrug["SellingPrice"].ToString();
+            dr["BatchQty"] = SelectedDrug["BatchQty"].ToString();
             dr["ExpiryDate"] = Convert.ToDateTime(SelectedDrug["ExpiryDate"]).ToString("dd-MMM-yyyy");
             dr["Morning"] = SelectedDrug["MorDose"].ToString();
             dr["Midday"] = SelectedDrug["MidDose"].ToString();
@@ -343,6 +346,7 @@ namespace PresentationApp.PharmacyDispense
                 DataSet dsBatches = thePharmacyManager.GetDrugBatchDetails(DrugId, Convert.ToInt32(HttpContext.Current.Session["StoreID"]));
                 DropDownList ddlBatchNo = (DropDownList)gvrow.FindControl("ddlBatchNo");
                 Label lblExpiryDate = (Label)gvrow.FindControl("lblExpiryDate");
+                HiddenField hBatchQty = (HiddenField)gvrow.FindControl("hBatchQty");
 
                 ddlBatchNo.DataSource = dsBatches;
                 ddlBatchNo.DataTextField = "BatchQty";
@@ -355,10 +359,16 @@ namespace PresentationApp.PharmacyDispense
                                       where Convert.ToInt32(tmp["Batchid"]) == batchID
                                       select tmp["ExpiryDate"]).FirstOrDefault();
                     lblExpiryDate.Text = Convert.ToDateTime(ExpiryDate.ToString()).ToString("dd-MMM-yyyy");
+
+                    var BatchQty = (from DataRow tmp in dsBatches.Tables[0].Rows
+                                    where Convert.ToInt32(tmp["Batchid"]) == batchID
+                                    select tmp["BatchQty"]).FirstOrDefault();//quantity replace by BatchQty (Rahmat: 10Feb2018)
+                    hBatchQty.Value = BatchQty.ToString();
                 }
                 else
                 {
                     lblExpiryDate.Text = "";
+                    hBatchQty.Value = "0";
                 }
             }
             Session["StoreID"] = ddlDispensingStore.SelectedValue.ToString();
@@ -455,6 +465,8 @@ namespace PresentationApp.PharmacyDispense
 
             theDT = dsPharmacyVitals.Tables[9];
             BindManager.BindCombo(ddlDispensingStore, theDT, "Name", "id");
+            ddlDispensingStore.SelectedIndex = 1;
+            HttpContext.Current.Session["StoreID"] = ddlDispensingStore.SelectedValue;
 
             theDT = dsPharmacyVitals.Tables[10];
             //BindManager.BindCombo(ddlPrescribedBy, theDT, "Name", "EmployeeId");
@@ -464,11 +476,11 @@ namespace PresentationApp.PharmacyDispense
             //BindUserDropdown(ddlDispensedBy, string.Empty);
 
             BindUserDropdown(ddlPrescribedBy, Session["AppUserId"].ToString());
-           
+
             BindUserDropdown(ddlDispensedBy, Session["AppUserId"].ToString());
             if (Convert.ToInt16(Session["Paperless"]) == 1)
             {
-               
+
                 ddlDispensedBy.SelectedValue = "0";
 
             }
@@ -483,6 +495,20 @@ namespace PresentationApp.PharmacyDispense
             {
                 if (dsPharmacyVitals.Tables[13].Rows.Count > 0) ddlWHOStage.SelectedValue = dsPharmacyVitals.Tables[13].Rows[0]["id"].ToString();
             }
+
+            /*Patient Classification  */
+            theDT = dsPharmacyVitals.Tables[14];
+            BindManager.BindCombo(ddlPtnClassification, theDT, "NAME", "ID");
+
+            if (dsPharmacyVitals.Tables[15].Rows.Count > 0)
+            {
+                DataTable dtRow = new DataTable();
+                dtRow = dsPharmacyVitals.Tables[15];
+
+                this.ddlPtnClassification.SelectedValue = dtRow.Rows[0]["PatientClassification"].ToString();
+                //mgt.IsEnrolDifferenciatedCare = string.IsNullOrEmpty(dtRow.Rows[0]["IsEnrolDifferenciatedCare"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["IsEnrolDifferenciatedCare"]) : 0;
+            }
+
         }
 
         private void addAttributes()
@@ -564,6 +590,7 @@ namespace PresentationApp.PharmacyDispense
                 txtRefillQty1.MaxLength = 4;
 
                 Label lblExpiryDate = (Label)e.Row.FindControl("lblExpiryDate");
+                HiddenField hBatchQty = (HiddenField)e.Row.FindControl("hBatchQty");
                 txtMorning.Attributes.Add("onkeyup", "chkDecimal('" + txtMorning.ClientID + "');");
                 txtMidday.Attributes.Add("onkeyup", "chkDecimal('" + txtMidday.ClientID + "');");
                 txtEvening.Attributes.Add("onkeyup", "chkDecimal('" + txtEvening.ClientID + "');");
@@ -588,12 +615,17 @@ namespace PresentationApp.PharmacyDispense
                     var ExpiryDate = (from DataRow tmp in dsBatches.Tables[0].Rows
                                       where Convert.ToInt32(tmp["Batchid"]) == batchID
                                       select tmp["ExpiryDate"]).FirstOrDefault();
+                    var BatchQty = (from DataRow tmp in dsBatches.Tables[0].Rows
+                                    where Convert.ToInt32(tmp["Batchid"]) == batchID
+                                    select tmp["Quantity"]).FirstOrDefault();
 
                     lblExpiryDate.Text = Convert.ToDateTime(ExpiryDate.ToString()).ToString("dd-MMM-yyyy");
+                    hBatchQty.Value = BatchQty.ToString();
                 }
                 else
                 {
                     lblExpiryDate.Text = "";
+                    hBatchQty.Value = "0";
                 }
 
 
@@ -1056,6 +1088,8 @@ namespace PresentationApp.PharmacyDispense
                     Label lblDrugName = (Label)gvRow.FindControl("lblDrugName");
                     TextBox txtQtyDispensed = (TextBox)gvRow.FindControl("txtQtyDispensed");
                     DropDownList ddlBatchNo = (DropDownList)gvRow.FindControl("ddlBatchNo");
+                    HiddenField hBatchQty = (HiddenField)gvRow.FindControl("hBatchQty");
+
                     if ((ddlBatchNo.SelectedValue == null || ddlBatchNo.SelectedValue == "" || ddlBatchNo.SelectedValue == "0"))
                     {
                         if (Session["SCMModule"] != null)
@@ -1194,6 +1228,44 @@ namespace PresentationApp.PharmacyDispense
 
             }
 
+            //Check for Mbungoni to avoid ordering or dispensing if avaialble quantity is not enough
+            //--------------------------------------------------------------------
+            bool error1 = false;
+            string Messege1 = "";
+            string msg1 = "The prescribed or dispense amount is more than the available quantity for: ";
+            foreach (GridViewRow gvRow in gvDispenseDrugs.Rows)
+            {
+                Label lblDrugName = (Label)gvRow.FindControl("lblDrugName");
+                TextBox txtQtyDispensed = (TextBox)gvRow.FindControl("txtQtyDispensed");
+                DropDownList ddlBatchNo = (DropDownList)gvRow.FindControl("ddlBatchNo");
+                HiddenField hBatchQty = (HiddenField)gvRow.FindControl("hBatchQty");
+                TextBox txtQtyPrescribed = (TextBox)gvRow.FindControl("txtQtyPrescribed");
+
+                if (txtQtyDispensed.Text.Length > 0)
+                {
+                    if (txtQtyDispensed.Text != null && Convert.ToDecimal(txtQtyDispensed.Text) > 0 && Convert.ToDecimal(txtQtyDispensed.Text) > Convert.ToDecimal(hBatchQty.Value))
+                    {
+                        Messege1 += Messege1 + lblDrugName.Text + "</br>";
+                        error1 = true;
+                    }
+                }
+                else if (txtQtyPrescribed.Text != null && Convert.ToDecimal(txtQtyPrescribed.Text) > 0 && Convert.ToDecimal(txtQtyPrescribed.Text) > Convert.ToDecimal(hBatchQty.Value))
+                {
+                    Messege1 += Messege1 + lblDrugName.Text + "</br>";
+                    error1 = true;
+                }
+            }
+            if (error1)
+            {
+                MsgBuilder theBuilder = new MsgBuilder();
+                theBuilder.DataElements["MessageText"] = msg1 + Messege1;
+                IQCareMsgBox.Show("#C1", theBuilder, this);
+                Label lblError = new Label();
+                lblError.Text = (Master.FindControl("lblError") as Label).Text;
+                return false;
+            }
+            //---------------------------------------------------------------
+
 
             IQCareMsgBox.HideMessage(this);
             return true;
@@ -1247,6 +1319,8 @@ namespace PresentationApp.PharmacyDispense
                             int iStoreID = Convert.ToInt32(ddlDispensingStore.SelectedValue);
                             string NextAppointmentDate = txtNextApptDate.Text;
                             int therapyPlan = Convert.ToInt32(ddlTreatmentPlan.SelectedValue);
+                            int ptnClassification = Convert.ToInt32(ddlPtnClassification.SelectedValue);
+                            int isEnrolDifferenciatedCare = Convert.ToInt32(this.hidDifferenciatedCare.Value);
 
                             if (theAge > 15)
                                 theProgId = 116;
@@ -1293,7 +1367,9 @@ namespace PresentationApp.PharmacyDispense
                                 deleteScript: ViewState["deleteScript"] == null ? "" : ViewState["deleteScript"].ToString(),
                                 regimenLine: string.IsNullOrEmpty(ddlregimenLine.SelectedValue) == true ? 0 : int.Parse(ddlregimenLine.SelectedValue),
                                 regimenCode: string.IsNullOrEmpty(ddlRegimenCode.SelectedValue) == true ? 0 : int.Parse(ddlRegimenCode.SelectedValue),
-                                therapyPlan: Convert.ToInt32(therapyPlan.ToString()));
+                                therapyPlan: Convert.ToInt32(therapyPlan.ToString()),
+                                    patientClassification: ptnClassification,
+                                    isEnrolDifferenciatedCare: isEnrolDifferenciatedCare);
                                 int val = theOrderId;
                                 int ptnPharmacyPK = Convert.ToInt32(dtPharmacyDetails.Rows[0]["Ptn_Pharmacy_Pk"].ToString());
 
@@ -1324,7 +1400,9 @@ namespace PresentationApp.PharmacyDispense
                                 DataTable dtPharmacyDetails = thePharmacyManager.SavePharmacyDispense_Web(Convert.ToInt32(Session["PatientID"]), Convert.ToInt32(Session["AppLocationId"]), iStoreID, Convert.ToInt32(Session["AppUserId"]), DispensedBy,
                                   txtDispenseDate.Value, theProgId, Convert.ToInt32(ddlTreatmentProg.SelectedValue), theRegimen, theOrderId, theDT,
                                                   NextAppointmentDate, datastatus, Convert.ToInt32(ddlPrescribedBy.SelectedValue), txtprescriptionDate.Value, ViewState["deleteScript"] == null ? "" : ViewState["deleteScript"].ToString(), int.Parse(ddlregimenLine.SelectedValue), int.Parse(ddlRegimenCode.SelectedValue)
-                                                  , Convert.ToInt32(therapyPlan.ToString()));
+                                                  , Convert.ToInt32(therapyPlan.ToString()),
+                                                    patientClassification: ptnClassification,
+                                                    isEnrolDifferenciatedCare: isEnrolDifferenciatedCare);
                                 int val = theOrderId;
                                 int ptnPharmacyPK = Convert.ToInt32(dtPharmacyDetails.Rows[0]["Ptn_Pharmacy_Pk"].ToString());
                                 //Session["ptnPharmacyPK"] = ptnPharmacyPK;
@@ -1466,6 +1544,8 @@ namespace PresentationApp.PharmacyDispense
             dt.Columns.Add(new DataColumn("Unit", typeof(string)));
             dt.Columns.Add(new DataColumn("BatchNo", typeof(string)));
             dt.Columns.Add(new DataColumn("BatchId", typeof(string)));
+            dt.Columns.Add(new DataColumn("SellingPrice", typeof(string)));
+            dt.Columns.Add(new DataColumn("BatchQty", typeof(string)));
             dt.Columns.Add(new DataColumn("ExpiryDate", typeof(string)));
             dt.Columns.Add(new DataColumn("Morning", typeof(string)));
             dt.Columns.Add(new DataColumn("Midday", typeof(string)));
@@ -1497,6 +1577,8 @@ namespace PresentationApp.PharmacyDispense
                 Label lblDrugName = (Label)gvRow.FindControl("lblDrugName");
                 Label lblUnit = (Label)gvRow.FindControl("lblUnit");
                 DropDownList ddlBatchNo = (DropDownList)gvRow.FindControl("ddlBatchNo");
+                Label lblSellingPrice = (Label)gvRow.FindControl("lblSellingPrice");
+                HiddenField hBatchQty = (HiddenField)gvRow.FindControl("hBatchQty");
                 Label lblExpiryDate = (Label)gvRow.FindControl("lblExpiryDate");
                 TextBox txtMorning = (TextBox)gvRow.FindControl("txtMorning");
                 TextBox txtMidday = (TextBox)gvRow.FindControl("txtMidday");
@@ -1529,6 +1611,8 @@ namespace PresentationApp.PharmacyDispense
                 dr["DrugName"] = lblDrugName.Text;
                 dr["Unit"] = lblUnit.Text;
                 dr["BatchNo"] = ddlBatchNo.Text;
+                dr["BatchQty"] = hBatchQty.Value.ToString();
+                dr["SellingPrice"] = lblSellingPrice.Text;
                 dr["BatchId"] = ddlBatchNo.SelectedValue.ToString();
                 if (lblExpiryDate.Text == "")
                     lblExpiryDate.Text = "01-Jan-1900";
@@ -1637,6 +1721,9 @@ namespace PresentationApp.PharmacyDispense
                     ddlTreatmentProg.SelectedValue = theDS.Tables[0].Rows[0]["TreatmentProgram"].ToString();
                     ddlregimenLine.SelectedValue = theDS.Tables[0].Rows[0]["RegimenLine"].ToString();
 
+                    ddlPtnClassification.SelectedValue = theDS.Tables[0].Rows[0]["PatientClassification"].ToString();
+                    hidDifferenciatedCare.Value = Convert.ToInt32(theDS.Tables[0].Rows[0]["IsEnrolDifferenciatedCare"]).ToString();
+
                     // Add by Gaurav, Dated 19 May 2016, Purpose: Get treatment plan from pharmacy table
                     if (Convert.ToInt32(theDS.Tables[0].Rows[0]["TreatmentPlan"].ToString()) != 0)
                     {
@@ -1730,9 +1817,9 @@ namespace PresentationApp.PharmacyDispense
             {
                 if (Convert.ToInt16(Session["Paperless"]) == 1)
                 {
-                   // ddlPrescribedBy.SelectedValue = Session["AppUserId"].ToString();
+                    // ddlPrescribedBy.SelectedValue = Session["AppUserId"].ToString();
                     ddlPrescribedBy.SelectedValue = "0";
-                   
+
                 }
                 else { ddlPrescribedBy.SelectedValue = Session["AppUserId"].ToString(); }
                 txtprescriptionDate.Value = Application["AppCurrentDate"].ToString();
@@ -1774,6 +1861,7 @@ namespace PresentationApp.PharmacyDispense
 
                 DropDownList ddlBatchNo = (DropDownList)gvrow.FindControl("ddlBatchNo");
                 Label lblExpiryDate = (Label)gvrow.FindControl("lblExpiryDate");
+                HiddenField hBatchQty = (HiddenField)gvrow.FindControl("hBatchQty");
 
                 ddlBatchNo.DataSource = dsBatches;
                 ddlBatchNo.DataTextField = "BatchQty";
@@ -1788,10 +1876,16 @@ namespace PresentationApp.PharmacyDispense
                                       select tmp["ExpiryDate"]).FirstOrDefault();
 
                     lblExpiryDate.Text = Convert.ToDateTime(ExpiryDate.ToString()).ToString("dd-MMM-yyyy");
+
+                    var BatchQty = (from DataRow tmp in dsBatches.Tables[0].Rows
+                                    where Convert.ToInt32(tmp["Batchid"]) == batchID
+                                    select tmp["quantity"]).FirstOrDefault();
+                    hBatchQty.Value = BatchQty.ToString();
                 }
                 else
                 {
                     lblExpiryDate.Text = "";
+                    hBatchQty.Value = "0";
                 }
             }
 
@@ -1928,6 +2022,7 @@ namespace PresentationApp.PharmacyDispense
             DropDownList ddlBatchNo = (DropDownList)sender;
             GridViewRow gvOrdersRow = ((GridViewRow)ddlBatchNo.Parent.Parent);
             Label lblExpiryDate = (Label)gvOrdersRow.FindControl("lblExpiryDate");
+            HiddenField hBatchQty = (HiddenField)gvOrdersRow.FindControl("hBatchQty");
             int DrugId = Convert.ToInt32(gvDispenseDrugs.DataKeys[gvOrdersRow.RowIndex].Value);
 
             if (lblExpiryDate != null)
@@ -1942,8 +2037,12 @@ namespace PresentationApp.PharmacyDispense
                 var ExpiryDate = (from DataRow tmp in dsBatches.Tables[0].Rows
                                   where Convert.ToInt32(tmp["Batchid"]) == batchID
                                   select tmp["ExpiryDate"]).FirstOrDefault();
+                var BatchQty = (from DataRow tmp in dsBatches.Tables[0].Rows
+                                where Convert.ToInt32(tmp["Batchid"]) == batchID
+                                select tmp["quantity"]).FirstOrDefault();
 
                 lblExpiryDate.Text = Convert.ToDateTime(ExpiryDate.ToString()).ToString("dd-MMM-yyyy");
+                hBatchQty.Value = BatchQty.ToString();
             }
         }
 

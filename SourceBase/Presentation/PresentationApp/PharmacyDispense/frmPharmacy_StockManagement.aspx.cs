@@ -120,39 +120,42 @@ namespace PresentationApp.PharmacyDispense
         {
             DataTable theDT = (DataTable)HttpContext.Current.Session["theStocks"];
             List<string> Drugsdetail = new List<string>();
-            DataTable distinctTable = theDT.AsEnumerable()
+            if(theDT!=null && theDT.Rows.Count>0)
+            {
+                DataTable distinctTable = theDT.AsEnumerable()
                        .GroupBy(x => x.Field<string>("drugname"))
                        .Select(g => g.First()).CopyToDataTable();
-            var drugs = from DataRow tmp in distinctTable.AsEnumerable()
-                        where tmp["DrugName"].ToString().ToLower().Contains(prefixText.ToLower())
-                        select tmp; // new { drugName = tmp["DrugName"].ToString(), drugID = tmp["Drug_pk"].ToString() };
+                var drugs = from DataRow tmp in distinctTable.AsEnumerable()
+                            where tmp["DrugName"].ToString().ToLower().Contains(prefixText.ToLower())
+                            select tmp; // new { drugName = tmp["DrugName"].ToString(), drugID = tmp["Drug_pk"].ToString() };
 
-            foreach (DataRow c in drugs)
-            {
-                if (tranactionType == "Opening Stock")
+                foreach (DataRow c in drugs)
                 {
-                    Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString(), c["drug_pk"].ToString()));
-                }
-                else if (sourceType == "Supplier")
-                {
-                    Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString(), c["drug_pk"].ToString()));
-                }
-                else
-                {
-                    StringBuilder test = new StringBuilder();
-                    test.Append(c["drugname"].ToString());
-                    test.Append("  -  ");
-                    test.Append(c["BatchNo"].ToString());
-                    test.Append("  -  ");                    
-                    test.Append(c["AvailQty"].ToString().PadRight(20));
-                    test.Append("  -  ");
-                    test.Append(c["ExpiryDate"].ToString());
-                    Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(test.ToString(), c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
-                    //Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString() + "  -------  " + c["BatchNo"].ToString() + "  -------  " + c["AvailQty"].ToString() + "  -------  " + c["ExpiryDate"].ToString(), c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
-                    //Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString() , c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
+                    if (tranactionType == "Opening Stock")
+                    {
+                        Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString(), c["drug_pk"].ToString()));
+                    }
+                    else if (sourceType == "Supplier")
+                    {
+                        Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString(), c["drug_pk"].ToString()));
+                    }
+                    else
+                    {
+                        StringBuilder test = new StringBuilder();
+                        test.Append(c["drugname"].ToString());
+                        test.Append("  -  ");
+                        test.Append(c["BatchNo"].ToString());
+                        test.Append("  -  ");
+                        test.Append(c["AvailQty"].ToString().PadRight(20));
+                        test.Append("  -  ");
+                        test.Append(c["ExpiryDate"].ToString());
+                        Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(test.ToString(), c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
+                        //Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString() + "  -------  " + c["BatchNo"].ToString() + "  -------  " + c["AvailQty"].ToString() + "  -------  " + c["ExpiryDate"].ToString(), c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
+                        //Drugsdetail.Add(AutoCompleteExtender.CreateAutoCompleteItem(c["drugname"].ToString() , c["drug_pk"].ToString() + "," + c["BatchNo"].ToString()));
+                    }
                 }
             }
-
+            
 
             return Drugsdetail;
         }

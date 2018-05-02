@@ -202,7 +202,7 @@ public partial class AdminLaboratoryTest_Master : LogPage
                         ddlDataType.Enabled = false;
                         txtLowerBoundary.Enabled = false;
                         txtUpperBoundary.Enabled = false;
-                        btnselectList.Disabled = true;
+                        //btnselectList.Disabled = true;
                     }
                     //if (theDS.Tables[0].Rows[0]["LabTypeId"].ToString() == "1")
                     //{

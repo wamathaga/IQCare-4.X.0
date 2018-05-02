@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/MasterPage/IQCare.master"  AutoEventWireup="true"
-     Inherits="ClinicalForms_frmClinical_Enrolment"  Title="Untitled Page" EnableEventValidation="False"
-     CodeBehind="frmClinical_Enrolment.aspx.cs" %>
+<%@ Page Language="C#" MasterPageFile="~/MasterPage/IQCare.master" AutoEventWireup="true"
+    Inherits="ClinicalForms_frmClinical_Enrolment" Title="Untitled Page" EnableEventValidation="False"
+    CodeBehind="frmClinical_Enrolment.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
     <script language="javascript" type="text/javascript">
@@ -134,18 +134,6 @@
             }
 
         }
-        function Button1_onclick() {
-
-        }
-
-        function Button2_onclick() {
-
-        }
-
-        function Button1_onclick() {
-
-        }
-
 
         function jsAreaClose(id) {
             document.getElementById(id).style.display = 'none';
@@ -182,9 +170,8 @@
             window.print();
         }
     </script>
-    <div onmousemove="javascript:checkLoadedObjects(event);" ondblclick="javascript:dropLoadedObject(event);" class="container-fluid">
-        <%-- <asp:ScriptManager ID="mst" runat="server">
-        </asp:ScriptManager>--%>
+    <div class="content-wrapper">
+        <%-- <asp:ScriptManager ID="mst" runat="server"> </asp:ScriptManager>--%>
         <asp:UpdatePanel ID="UpdateMasterLink" runat="server">
             <ContentTemplate>
                 <div class="center">
@@ -223,7 +210,8 @@
                                     <td class="border pad5 whitebg" width="50%" style="height: 34px" align="left">
                                         <label class="margin20" for="PatientTransferin">
                                             Transfer In:</label>
-                                        <asp:CheckBox ID="chkPatientTransferin" runat="server" style="vertical-align:sub"></asp:CheckBox>
+                                        <asp:CheckBox ID="chkPatientTransferin" runat="server" Style="vertical-align: sub">
+                                        </asp:CheckBox>
                                     </td>
                                     <td class="border pad5 whitebg" width="50%" style="height: 34px" align="left">
                                         <label class="margin20" for="LPTFPatientTransferfrom">
@@ -238,9 +226,9 @@
                     <br>
                     <div class="border center formbg">
                         <br>
-                        <h5 class="forms" align="left" style="margin-left:1%">
+                        <h5 class="forms" align="left" style="margin-left: 1%">
                             Demographic and Prior HIV History</h5>
-                        <table width="100%" class= "table-condensed">
+                        <table width="100%" class="table-condensed">
                             <tbody>
                                 <tr>
                                     <td class="border pad5 whitebg" align="center" colspan="2" style="height: 58px">
@@ -525,23 +513,24 @@
                                 </tr>
                                 <tr>
                                     <td class="border whitebg" valign="top" align="left">
-                                        <label for="numHouseholdHIVTest" style="white-space:pre-line">
-                                            How many member(s) of your household do you know have done an HIV<br />Test?</label>
+                                        <label for="numHouseholdHIVTest" style="white-space: pre-line">
+                                            How many member(s) of your household do you know have done an HIV<br />
+                                            Test?</label>
                                         <asp:TextBox ID="txtHouseholdHIVTest" MaxLength="2" runat="server" Width="25%"> </asp:TextBox>
                                     </td>
                                     <td class="border whitebg" valign="top" align="left">
-                                        <label for="numHouseholdHIVPositive"style="white-space:pre-line">
+                                        <label for="numHouseholdHIVPositive" style="white-space: pre-line">
                                             How many member(s) of your household do you know have tested positive for HIV?</label>
                                         <asp:TextBox ID="txtHouseholdHIVPositive" MaxLength="2" runat='server' Width="25%"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border whitebg" valign="top" align="left">
-                                        <label for="numHouseholdHIVDied" style="white-space:pre-line">
+                                        <label for="numHouseholdHIVDied" style="white-space: pre-line">
                                             How many member(s) of your household do you know are deceased from HIV?</label>
                                         <asp:TextBox ID="numHouseholdHIVDied" MaxLength="2" size="3" runat="server" Width="25%"></asp:TextBox>
                                     </td>
-                                    <td class="border whitebg" valign="top" align="left" >
+                                    <td class="border whitebg" valign="top" align="left">
                                         <label for="Membershipsupportgroup">
                                             Membership in HIV support group:</label>
                                         <input id="rbtnsupportGroupYes" type="radio" value="1" name="supportGroup" runat="server"
@@ -608,33 +597,37 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="row" >
-                        <asp:TextBox ID="txtSysDate" CssClass="textstylehidden" runat="server"> </asp:TextBox>
-                        <asp:Button ID="btnsave" runat="server" Text="Save" OnClick="btnsave_Click" CssClass="btn btn-primary" Height="30px" Width="8%" 
-                        style="text-align:left;"/>
-                        <span class="glyphicon glyphicon-floppy-disk" style="margin-left:-3.3%; vertical-align: middle; color: #fff; margin-top:.25%;"></span>
-
-                        <asp:Button ID="btncomplete" runat="server" Text="Data Quality check" OnClick="btncomplete_Click" CssClass="btn btn-primary" Height="30px"
-                         Width="16%" style="margin-left:3%; text-align:left;"/>
-                        <span class="glyphicon glyphicon-floppy-saved" style="margin-left:-2.8%; vertical-align: middle; color: #fff; margin-top:.25%;"></span>
-
-                        <asp:Button ID="btnCancel" runat="server" Text="Close" OnClick="btnCancel_Click" CssClass="btn btn-primary" Height="30px"
-                         Width="8%" style="margin-left:2.5%; text-align:left;"/>
-                         <span class="glyphicon glyphicon-remove-circle" style="margin-left:-3%; vertical-align: middle; color: #fff; margin-top:.22%"></span>
-                       
-                        <asp:Button ID="btnPrint" Text="Print" runat="server" OnClientClick="WindowPrint()" CssClass="btn btn-primary" Height="30px"
-                         Width="8%" style="margin-left:2.5%; text-align:left;"/>
-                        <span class="glyphicon glyphicon-print" style="margin-left:-3.5%; vertical-align: middle; color: #fff; margin-top:.2%;"></span>
-                         
-                         <asp:Button ID="btnOk" CssClass="textstylehidden" runat="server" Text="Ok" OnClick="btnOk_Click" Height="30px"
-                         Width="8%" style="margin-left:3%"/>
-                         <label  id="lblOKClick" class="glyphicon glyphicon-ok-sign" style="margin-left:-3%; vertical-align: middle; color: #fff; margin-top:.6%; 
-                             visibility:hidden;"></label>
-                        
-                        <asp:Button ID="theBtnDQ" Text="DQ" CssClass="textstylehidden" runat="server" OnClick="theBtnDQ_Click" Height="30px"
-                         Width="8%" style="margin-left:2%"/>
-                        <label id="lblDQClick" class="glyphicon glyphicon-random" style="margin-left:-3%; vertical-align: middle; color: #fff; margin-top:.6%;
-                            visibility:hidden;"></label>
+                        <div class="row">
+                            <asp:TextBox ID="txtSysDate" CssClass="textstylehidden" runat="server"> </asp:TextBox>
+                            <asp:Button ID="btnsave" runat="server" Text="Save" OnClick="btnsave_Click" CssClass="btn btn-primary"
+                                Height="30px" Width="8%" Style="text-align: left;" />
+                            <span class="glyphicon glyphicon-floppy-disk" style="margin-left: -3.3%; vertical-align: middle;
+                                color: #fff; margin-top: .25%;"></span>
+                            <asp:Button ID="btncomplete" runat="server" Text="Data Quality check" OnClick="btncomplete_Click"
+                                CssClass="btn btn-primary" Height="30px" Width="16%" Style="margin-left: 3%;
+                                text-align: left;" />
+                            <span class="glyphicon glyphicon-floppy-saved" style="margin-left: -2.8%; vertical-align: middle;
+                                color: #fff; margin-top: .25%;"></span>
+                            <asp:Button ID="btnCancel" runat="server" Text="Close" OnClick="btnCancel_Click"
+                                CssClass="btn btn-primary" Height="30px" Width="8%" Style="margin-left: 2.5%;
+                                text-align: left;" />
+                            <span class="glyphicon glyphicon-remove-circle" style="margin-left: -3%; vertical-align: middle;
+                                color: #fff; margin-top: .22%"></span>
+                            <asp:Button ID="btnPrint" Text="Print" runat="server" OnClientClick="WindowPrint()"
+                                CssClass="btn btn-primary" Height="30px" Width="8%" Style="margin-left: 2.5%;
+                                text-align: left;" />
+                            <span class="glyphicon glyphicon-print" style="margin-left: -3.5%; vertical-align: middle;
+                                color: #fff; margin-top: .2%;"></span>
+                            <asp:Button ID="btnOk" CssClass="textstylehidden" runat="server" Text="Ok" OnClick="btnOk_Click"
+                                Height="30px" Width="8%" Style="margin-left: 3%" />
+                            <label id="lblOKClick" class="glyphicon glyphicon-ok-sign" style="margin-left: -3%;
+                                vertical-align: middle; color: #fff; margin-top: .6%; visibility: hidden;">
+                            </label>
+                            <asp:Button ID="theBtnDQ" Text="DQ" CssClass="textstylehidden" runat="server" OnClick="theBtnDQ_Click"
+                                Height="30px" Width="8%" Style="margin-left: 2%" />
+                            <label id="lblDQClick" class="glyphicon glyphicon-random" style="margin-left: -3%;
+                                vertical-align: middle; color: #fff; margin-top: .6%; visibility: hidden;">
+                            </label>
                         </div>
                     </div>
                 </div>

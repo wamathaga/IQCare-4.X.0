@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using Interface.Administration;
 using DataAccess.Base;
 using DataAccess.Common;

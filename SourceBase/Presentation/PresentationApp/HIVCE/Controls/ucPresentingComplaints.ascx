@@ -82,7 +82,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                 Presenting Complaints Notes:
                                 <textarea class="form-control" rows="3" placeholder="Presenting Complaints Notes"
-                                    id="txtComplaintsNote"></textarea>
+                                    id="txtComplaintsNote" maxlength="1000"></textarea>
                             </div>
                         </div>
                         <!-- /.row -->
@@ -184,7 +184,7 @@
                             <!-- /.box-header -->
                             <div class="box-body">
                                 Reasons for Admission:
-                                <textarea class="form-control" id="txtPreviousAdmissions" rows="3" placeholder="Previous Admissions Notes"></textarea>
+                                <textarea class="form-control" id="txtPreviousAdmissions" rows="3" placeholder="Previous Admissions Notes" maxlength="1000"></textarea>
                             </div>
                         </div>
                     </div>
@@ -289,6 +289,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" class="form-control" id="dtEDD" data-date-format="dd-M-yyyy" style="padding: 13px 12px;">
+                                    <input type="hidden" runat="server" id="hidDTEDD" clientidmode="Static" />
                                 </div>
                             </div>
                             <div class="col-md-2 col-sm-12 col-xs-12 form-group">
@@ -353,15 +354,6 @@
                                                     <label for="dtVDRL" class="control-label">
                                                         VDRL:</label>
                                                 </div>
-                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                                                    <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control" id="dtVDRL" data-date-format="dd-M-yyyy"
-                                                            style="padding: 13px 12px;" />
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                                     <label for="txtVDRLResult" class="control-label">
                                                         Result:</label>
@@ -371,11 +363,35 @@
                                                         style="width: 100%;">
                                                     </select>
                                                 </div>
+                                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                                    <label for="txtVDRLResult" class="control-label">
+                                                        Date:</label>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="dtVDRL" data-date-format="dd-M-yyyy"
+                                                            style="padding: 13px 12px;" />
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                                     <label for="dtHb" class="control-label">
                                                         Hb:</label>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                                    <label for="HbResult" class="control-label">
+                                                        Result:</label>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                                    <input type="number" min="0" max="999" class="form-control" id="txtHbResult" placeholder="Hb Result">
+                                                </div>
+                                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                                    <label for="HbResult" class="control-label">
+                                                        Date:</label>
                                                 </div>
                                                 <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                                                     <div class="input-group date">
@@ -385,27 +401,11 @@
                                                         <input type="text" class="form-control" id="dtHb" data-date-format="dd-M-yyyy" style="padding: 13px 12px;">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                                    <label for="HbResult" class="control-label">
-                                                        Result:</label>
-                                                </div>
-                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                                                    <input type="number" class="form-control" id="txtHbResult" placeholder="Hb Result">
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                                     <label for="dtRhesus" class="control-label">
                                                         Rhesus:</label>
-                                                </div>
-                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
-                                                    <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control" id="dtRhesus" data-date-format="dd-M-yyyy"
-                                                            style="padding: 13px 12px;">
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12 col-xs-12 form-group">
                                                     <label for="RhesusResult" class="control-label">
@@ -416,6 +416,19 @@
                                                     <select class="form-control select2" data-placeholder="Select" id="ddlRhesusResult"
                                                         style="width: 100%;">
                                                     </select>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                                    <label for="RhesusResult" class="control-label">
+                                                        Date:</label>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="dtRhesus" data-date-format="dd-M-yyyy"
+                                                            style="padding: 13px 12px;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -499,7 +512,7 @@
             <!-- /.box -->
         </div>
     </div>
-<!-- /.row -->
+    <!-- /.row -->
 </div>
 <!-- /.box-body -->
 <!-- Button Footer -->

@@ -78,14 +78,14 @@ namespace IQCare.Web.ClinicalForms
                         dr["Name"] = "Triage";
                         dr["ID"] = 5;
                         theDT.Rows.Add(dr);
-                        
+
                         BindManager.BindCombo(ddWList, theDT, "Name", "ID");
                         //BindUserDropdown(ddWList, string.Empty);
                         //BindUserDropdown(ddWList, Session["AppUserId"].ToString());
-                        theDT.Clear();    
+                        theDT.Clear();
                     }
                     theDV.Dispose();
-                    
+
                 }
 
                 loadPatientsWaitList(Convert.ToInt32(HttpContext.Current.Session["WLPatientID"]));
@@ -109,7 +109,6 @@ namespace IQCare.Web.ClinicalForms
             grdWaitingList.DataBind();
 
         }
-
         protected void grdWaitingList_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
 
@@ -143,7 +142,8 @@ namespace IQCare.Web.ClinicalForms
 
 
         }
-        
+
+
         protected void grdWaitingList_Sorting(object sender, GridViewSortEventArgs e)
         {
 
@@ -274,7 +274,6 @@ namespace IQCare.Web.ClinicalForms
         {
 
         }
-
         private void BindUserDropdown(DropDownList DropDownID, String userId)
         {
             Dictionary<int, string> userList = new Dictionary<int, string>();

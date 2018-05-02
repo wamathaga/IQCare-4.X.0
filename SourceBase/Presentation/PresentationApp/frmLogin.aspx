@@ -5,6 +5,7 @@
 <html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>International Quality Care Patient Management and Monitoring System</title>
+
     <link rel="stylesheet" type="text/css" href="../Style/styles.css" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />

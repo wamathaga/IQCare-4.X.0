@@ -83,6 +83,30 @@
                 <asp:Label ID="IPTED" runat="server" Font-Bold="True"></asp:Label>
             </td>
         </tr>
+        <tr>
+            <td>
+                <asp:Label ID="ARTDateLabel" runat="server" Font-Bold="True" Text="ART Start Date: "></asp:Label>
+            </td>
+            <td>
+                <asp:Label ID="lblArtStartDt" runat="server" Font-Bold="True"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Label ID="lblPatientClassification" runat="server" Font-Bold="True" Text="Patient Classification : "></asp:Label>
+            </td>
+            <td>
+                <asp:Label ID="lblPatientClassificationVal" runat="server" Font-Bold="True"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Label ID="lblDifferenciatedCare" runat="server" Font-Bold="True" Text="Differenciated Care : "></asp:Label>
+            </td>
+            <td>
+                <asp:Label ID="lblDifferenciatedCareVal" runat="server" Font-Bold="True"></asp:Label>
+            </td>
+        </tr>
     </table>
     <hr style="height: 3px; border: none; color: #333; background-color: #800000;" />
     <div class="vScroll">

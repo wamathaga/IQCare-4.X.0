@@ -49,10 +49,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\Entities.Administration.dll</HintPath>
     </Reference>
-    <Reference Include="Entities.Billing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\Entities.Billing.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -76,6 +72,12 @@
     <Compile Include="IPurchase.cs" />
     <Compile Include="ISCMReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities.Billing\Entities.Billing.csproj">
+      <Project>{BB198AEB-D1AB-4137-A449-1C4F3B9275F7}</Project>
+      <Name>Entities.Billing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

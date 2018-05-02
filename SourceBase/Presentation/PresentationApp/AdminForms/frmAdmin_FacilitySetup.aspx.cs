@@ -19,6 +19,7 @@ using Application.Presentation;
 using Interface.Administration;
 using Interface.Security;
 using Interface.Service;
+using System.Web.Configuration;
 
 
 
@@ -45,7 +46,7 @@ public partial class frmAdmin_FacilitySetup : LogPage
 
         txtSatelliteID.Attributes.Add("onkeyup", "chkPostiveInteger('" + txtSatelliteID.ClientID + "')");
         txtSatelliteID.Attributes.Add("onblur", "chkPostiveInteger('" + txtSatelliteID.ClientID + "')");
-        txtNationalId.Attributes.Add("onKeyup", "chkNumeric('" + txtNationalId.ClientID + "')");
+        //txtNationalId.Attributes.Add("onKeyup", "chkNumeric('" + txtNationalId.ClientID + "')");
 
 
 
@@ -86,14 +87,8 @@ public partial class frmAdmin_FacilitySetup : LogPage
         }
 
         theDT = (DataTable)oCommonData.getAllProvince();
-        DataView dv = new DataView(theDT);
-        dv.RowFilter = "CountryID= " + Session["AppCountryId"] + "";
-        DataTable theDTSpecific = (DataTable)theUtils.CreateTableFromDataView(dv);
-        if (theDTSpecific.Rows.Count > 0)
-        {
-            BindManager.BindCombo(ddlprovince, theDTSpecific, "Name", "ID");
-        }
-        else if (theDT != null && theDT.Rows.Count > 0)
+        //theDV.RowFilter = "SystemID=" + Session["SystemId"] + "";
+        if (theDT != null && theDT.Rows.Count > 0)
         {
             //theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
             BindManager.BindCombo(ddlprovince, theDT, "Name", "ID");
@@ -138,6 +133,34 @@ public partial class frmAdmin_FacilitySetup : LogPage
         {
             BindFunctions BindManager = new BindFunctions();
             int countryID = int.Parse(ddCountry.SelectedValue);
+            //if (ddCountry.SelectedItem.ToString() == "Kenya")
+            //{
+            //    Session["SystemId"] = "1";
+            //    var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            //    configuration.AppSettings.Settings["SystemId"].Value = Session["SystemId"].ToString();
+            //    configuration.Save();
+            //}
+            //else if (ddCountry.SelectedItem.ToString() == "Tanzania")
+            //{
+            //    Session["SystemId"] = "2";
+            //    var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            //    configuration.AppSettings.Settings["SystemId"].Value = Session["SystemId"].ToString();
+            //    configuration.Save();
+            //}
+            //else if (ddCountry.SelectedItem.ToString() == "Niger" || ddCountry.SelectedItem.ToString() == "Nigeria")
+            //{
+            //    Session["SystemId"] = "3";
+            //    var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            //    configuration.AppSettings.Settings["SystemId"].Value = Session["SystemId"].ToString();
+            //    configuration.Save();
+            //}
+            //else
+            //{
+            //    Session["SystemId"] = "1";
+            //    var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            //    configuration.AppSettings.Settings["SystemId"].Value = Session["SystemId"].ToString();
+            //    configuration.Save();
+            //}
             ICommonData oCommonData = (ICommonData)ObjectFactory.CreateInstance("BusinessProcess.Service.BCommonData,BusinessProcess.Service");
             DataTable theDT = (DataTable)oCommonData.getAllProvince();
             DataView theDV = theDT.DefaultView;
@@ -196,7 +219,8 @@ public partial class frmAdmin_FacilitySetup : LogPage
 
         DataTable theDT = theFacilityDS.Tables[1];
         //lblCountry.InnerText = theDT.Rows[0]["Label"].ToString() + ":";
-        lblPOS.InnerText = theDT.Rows[1]["Label"].ToString() + ":";
+        //lblPOS.InnerText = theDT.Rows[1]["Label"].ToString() + ":";
+        //Comment above Line By Rahmat 16Feb18 for Facility set up - MFL Code
         lblSatellite.InnerText = theDT.Rows[2]["Label"].ToString() + ":";
         /*---------------------------------------------------------------*/
 
@@ -208,7 +232,7 @@ public partial class frmAdmin_FacilitySetup : LogPage
 
             txtLPTF.Text = theDV[0]["PosId"].ToString();
             txtSatelliteID.Text = theDV[0]["SatelliteId"].ToString();
-            txtNationalId.Text = theDV[0]["NationalId"].ToString();
+            //txtNationalId.Text = theDV[0]["NationalId"].ToString();
             txtGrace.Text = theDV[0]["AppGracePeriod"].ToString();
             ddCountry.SelectedValue = theDV[0]["CountryId"].ToString();
             //txtcountryno.Text = theDV[0]["CountryId"].ToString();
@@ -825,7 +849,7 @@ public partial class frmAdmin_FacilitySetup : LogPage
             {
                 FacilityManager = (IFacilitySetup)ObjectFactory.CreateInstance("BusinessProcess.Administration.BFacility, BusinessProcess.Administration");
 
-                int Rows = FacilityManager.SaveNewFacility(txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, txtNationalId.Text, ProvinceId, DistrictId, theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(Session["SystemId"]), Preferred, Paperless, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
+                int Rows = FacilityManager.SaveNewFacility(txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, "0", ProvinceId, DistrictId, theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(Session["SystemId"]), Preferred, Paperless, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
                 if (Rows > 0)
                 {
                     IQCareMsgBox.Show("FacilityMasterSave", this);
@@ -855,7 +879,7 @@ public partial class frmAdmin_FacilitySetup : LogPage
                 {
 
                     FacilityManager = (IFacilitySetup)ObjectFactory.CreateInstance("BusinessProcess.Administration.BFacility, BusinessProcess.Administration");
-                    int Rows = FacilityManager.UpdateFacility(Convert.ToInt32(ViewState["FacilityId"]), txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, txtNationalId.Text, ProvinceId, DistrictId, theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(ddStatus.SelectedValue), Convert.ToInt32(Session["SystemId"]), Preferred, Paperless, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
+                    int Rows = FacilityManager.UpdateFacility(Convert.ToInt32(ViewState["FacilityId"]), txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, "0", ProvinceId, DistrictId, theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(ddStatus.SelectedValue), Convert.ToInt32(Session["SystemId"]), Preferred, Paperless, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
                     if (Rows > 0)
                     {
                         IQCareMsgBox.Show("FacilityMasterUpdate", this);
@@ -962,7 +986,7 @@ public partial class frmAdmin_FacilitySetup : LogPage
         {
             thePepFarDate = theUtils.MakeDate(txtPEPFAR_Fund.Value);
             FacilityMgr = (IFacilitySetup)ObjectFactory.CreateInstance("BusinessProcess.Administration.BFacility, BusinessProcess.Administration");
-            int Rows = FacilityMgr.UpdateFacility(Convert.ToInt32(ViewState["FacilityId"]), txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, txtNationalId.Text, Convert.ToInt32(ddlprovince.SelectedValue), Convert.ToInt32(ddldistrict.SelectedValue), theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(ddStatus.SelectedValue), Convert.ToInt32(Session["SystemId"]), Preferred, Paperlessclinic, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
+            int Rows = FacilityMgr.UpdateFacility(Convert.ToInt32(ViewState["FacilityId"]), txtfacilityname.Text, CountryId.ToString(), txtLPTF.Text, txtSatelliteID.Text, "0", Convert.ToInt32(ddlprovince.SelectedValue), Convert.ToInt32(ddldistrict.SelectedValue), theFName, Convert.ToInt32(cmbCurrency.SelectedValue), Convert.ToInt32(txtGrace.Text), "dd-MMM-yyyy", Convert.ToDateTime(thePepFarDate), Convert.ToInt32(ddStatus.SelectedValue), Convert.ToInt32(Session["SystemId"]), Preferred, Paperlessclinic, Convert.ToInt32(Session["AppUserId"]), dtModule, htFacilityParameters, dtStore);
             Response.Redirect(".././frmLogin.aspx");
         }
         catch (Exception err)

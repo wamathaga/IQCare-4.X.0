@@ -10,6 +10,7 @@
 
 
 public partial class frmAddTechnicalArea {
+
     
     /// <summary>
     /// tHeading control.
@@ -64,6 +65,24 @@ public partial class frmAddTechnicalArea {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlTecharea;
+    
+    /// <summary>
+    /// Label2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl Label2;
+    
+    /// <summary>
+    /// ddlPatientType control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlPatientType;
     
     /// <summary>
     /// lblEnrollment control.

@@ -13,6 +13,8 @@
   <Message Id ="DuplicateIndentifier" Type ="!" Buttons ="" Text ="&lt;DataElement&gt;Control&lt;/DataElement&gt; is a duplicate. Provide another Idenifier Number."/>
   <Message Id ="WrongDateFormat" Type="!" Buttons="" Text ="&lt;DataElement&gt;Control&lt;/DataElement&gt; has wrong date format."/>
   <Message Id ="Length" Type="!" Buttons="" Text ="&lt;DataElement&gt;Control&lt;/DataElement&gt; has to be 8 digits."/>
+  <Message Id ="CmpDateNAFDAC" Type ="!" Buttons ="" Text ="Date Start cannot be greater than Date End."/>
+  
   
   <!-- Login Screen/Security -->
   <Message Id ="BlankUserName" Type ="!" Buttons ="" Text ="Enter username first."/>

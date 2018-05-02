@@ -71,10 +71,10 @@
                             Select waiting list:</label>
                         <asp:DropDownList ID="ddWList" runat="server" class="form-control">
                             <asp:ListItem Text="Select" Value="0"></asp:ListItem>
-                      <%--      <asp:ListItem Text="Consultation" Value="1"></asp:ListItem>
+                            <asp:ListItem Text="Consultation" Value="1"></asp:ListItem>
                             <asp:ListItem Text="Laboratory" Value="3"></asp:ListItem>
                             <asp:ListItem Text="Pharmacy" Value="4"></asp:ListItem>
-                            <asp:ListItem Text="Triage" Value="5"></asp:ListItem>--%>
+                            <asp:ListItem Text="Triage" Value="5"></asp:ListItem>
                         </asp:DropDownList>
                     </td>
                     <td class="border pad5 whitebg" width="20%">

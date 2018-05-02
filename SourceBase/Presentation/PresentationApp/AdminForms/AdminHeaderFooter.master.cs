@@ -79,7 +79,7 @@ public partial class AdminHeaderFooter : System.Web.UI.MasterPage
             IIQCareSystem AdminManager;
             AdminManager = (IIQCareSystem)ObjectFactory.CreateInstance("BusinessProcess.Security.BIQCareSystem, BusinessProcess.Security");
 
-            if (Session["AppDateFormat"] != "")
+            if (! String.IsNullOrEmpty(Session["AppDateFormat"].ToString()))
             {
                 lblDate.Text = AdminManager.SystemDate().ToString(Session["AppDateFormat"].ToString());
             }

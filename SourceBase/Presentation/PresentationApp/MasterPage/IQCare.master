@@ -152,17 +152,17 @@
         else {
             buildWeeklyCalendar(0, 0);
         }
-    
-    
+
+
 
     </script>
+   
     <style type="text/css">
-        body
-        {
-            font-family: 'Source Sans Pro' , 'Helvetica Neue' , Helvetica, Arial, sans-serif;
+        body {
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-        .AutoExtender
-        {
+
+        .AutoExtender {
             font-family: Courier New, Arial, sans-serif;
             font-size: 11px;
             font-weight: 100;
@@ -174,54 +174,54 @@
             width: 800px;
             text-align: left;
         }
-        .AutoExtenderList
-        {
+
+        .AutoExtenderList {
             cursor: pointer;
             color: black;
             z-index: 2147483647 !important;
             text-align: left;
         }
-        .AutoExtenderHighlight
-        {
+
+        .AutoExtenderHighlight {
             color: White;
             background-color: #006699;
             cursor: pointer;
         }
-        #divwidth
-        {
+
+        #divwidth {
             width: 800px !important;
         }
-        #divwidth div
-        {
+
+            #divwidth div {
+                width: 800px !important;
+            }
+
+        #divwidthFooter {
             width: 800px !important;
         }
-        #divwidthFooter
-        {
-            width: 800px !important;
-        }
-        #divwidthFooter div
-        {
-            width: 800px !important;
-        }
-        .control-label
-        {
+
+            #divwidthFooter div {
+                width: 800px !important;
+            }
+
+        .control-label {
             font-size: 12px !important;
             display: inline-block;
             max-width: 100%;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        .control-label-grdHeader
-        {
+
+        .control-label-grdHeader {
             font-size: 12px !important;
             font-weight: bold;
         }
-        .text-muted
-        {
+
+        .text-muted {
             font-size: 13px !important;
         }
-        .text-muted-header
-        {
+
+        .text-muted-header {
             font-size: 16px !important;
         }
     </style>
@@ -229,141 +229,140 @@
 <body style="padding-bottom: 60px">
     <div class="container-fluid">
         <form id="form1" class="form" runat="server" enctype="multipart/form-data">
-        <asp:ScriptManager ID="masterScriptManager" runat="server" EnablePageMethods="true"
-            EnablePartialRendering="true" ScriptMode="Auto">
-        </asp:ScriptManager>
-        
-        <div id="containerMaster">
-            <div class="row" style="margin-bottom: 2%">
-                <div class="navbar navbar-fixed-top navbar-static-top bg-primary">
-                    <!-- Brand and toggle get grouped for better mobile display
+            <asp:ScriptManager ID="masterScriptManager" runat="server" EnablePageMethods="true"
+                EnablePartialRendering="true" ScriptMode="Auto">
+            </asp:ScriptManager>
+
+            <div id="containerMaster">
+                <div class="row" style="margin-bottom: 2%">
+                    <div class="navbar navbar-fixed-top navbar-static-top bg-primary">
+                        <!-- Brand and toggle get grouped for better mobile display
 -->
-                    <div class="navbar-header">
-                        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
-                                class="icon-bar"></span><span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="navbar-brand">
-                        <div id="Div1" align="right" runat="server">
-                            <asp:Label ID="lblLocation" ForeColor="ActiveCaption" CssClass="fa text-uppercase text-muted-header"
-                                runat="server" Text=" Nsambya Hospital and Medical Center"></asp:Label>
-                            <span style="color: Silver">|</span>
-                            <asp:Label ID="lblUserName" ForeColor="ActiveCaption" CssClass="text-muted-header"
-                                runat="server" Text=" Lanette Burrows"></asp:Label>
-                            <span style="color: Silver">|</span>
-                            <asp:Label ID="lblDate" CssClass="text-muted-header" ForeColor="ActiveCaption" runat="server"
-                                Text="30 September 2006"></asp:Label>
+                        <div class="navbar-header">
+                            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+                                    class="icon-bar"></span><span class="icon-bar"></span>
+                            </button>
                         </div>
-                    </div>
-                    <!-- Collection
+                        <div class="navbar-brand">
+                            <div id="Div1" align="right" runat="server">
+                                <asp:Label ID="lblLocation" ForeColor="ActiveCaption" CssClass="fa text-uppercase text-muted-header"
+                                    runat="server" Text=" Nsambya Hospital and Medical Center"></asp:Label>
+                                <span style="color: Silver">|</span>
+                                <asp:Label ID="lblUserName" ForeColor="ActiveCaption" CssClass="text-muted-header"
+                                    runat="server" Text=" Lanette Burrows"></asp:Label>
+                                <span style="color: Silver">|</span>
+                                <asp:Label ID="lblDate" CssClass="text-muted-header" ForeColor="ActiveCaption" runat="server"
+                                    Text="30 September 2006"></asp:Label>
+                            </div>
+                        </div>
+                        <!-- Collection
 of nav links and other content for toggling -->
-                    <div id="navbarCollapse" class="collapse navbar-collapse">
-                        <ul class="nav
-navbar-nav navbar-right" style="padding-right: 5px">
-                            <li><a href="javascript:openHelp();" target="_blank"><span
-                                class="fa fa-exclamation-circle fa-3x text-muted" style="color: ActiveCaption;
-                                font-weight: 400; font-size: 14px;">&nbsp;Help</span> </a></li>
-                            <li>
-                                <asp:LinkButton ID="lnkPassword" runat="server" Font-Bold="True" OnClick="lnkPassword_Click">
+                        <div id="navbarCollapse" class="collapse navbar-collapse">
+                            <ul class="nav
+navbar-nav navbar-right"
+                                style="padding-right: 5px">
+                                <li><a href="javascript:openHelp();" target="_blank"><span
+                                    class="fa fa-exclamation-circle fa-3x text-muted" style="color: ActiveCaption; font-weight: 400; font-size: 14px;">&nbsp;Help</span> </a></li>
+                                <li>
+                                    <asp:LinkButton ID="lnkPassword" runat="server" Font-Bold="True" OnClick="lnkPassword_Click">
                                 <span class="fa fa-unlock-alt fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;"> Password</span> </asp:LinkButton>
-                            </li>
-                            <li>
-                                <asp:LinkButton ID="lnkReportDefect" runat="server" OnClientClick="window.open('http://futuresindia.dyndns.org:82/iqcareissue-report/default.aspx');"
-                                    Font-Bold="True"><span class="fa fa-bug fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;">
+                                </li>
+                                <li>
+                                    <asp:LinkButton ID="lnkReportDefect" runat="server" OnClientClick="window.open('http://122.160.201.164:82/iqcareissue-report/default.aspx');"
+                                        Font-Bold="True"><span class="fa fa-bug fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;">
 Report Defect</span></asp:LinkButton></li>
-                            <li class="active">
-                                <asp:LinkButton ID="lnkLogOut" runat="server" Font-Bold="True" OnClick="lnkLogOut_Click">
+                                <li class="active">
+                                    <asp:LinkButton ID="lnkLogOut" runat="server" Font-Bold="True" OnClick="lnkLogOut_Click">
                                 <span class="fa fa-sign-out fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;"> Logout</span> </asp:LinkButton>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- .navbarCollapse -->
-                </div>
-                <!-- .navbar -->
-                <br />
-            </div>
-            <br />
-            <div id="level1Navigation" class="row" style="padding-top: 5px">
-                <uc1:levelOneNavigationUserControl ID="levelOneNavigationUserControl1" runat="server" />
-            </div>
-            <div class="row">
-                <div id="mainMaster" class="col-md-12">
-                    <%--level 2 Navigation--%>
-                    <div id="level2Navigation" runat="server">
-                        <uc2:levelTwoNavigationUserControl ID="levelTwoNavigationUserControl1" runat="server" />
-                    </div>
-                </div>
-                <!-- .mainmaster -->
-            </div>
-            <div class="container-fluid">
-                <div class="container-fluid">
-                    <asp:Label ID="lblpntStatus" CssClass="textstylehidden" runat="server" Text=""></asp:Label>
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            <asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color:
-#FFFFC0; border: solid 1px #C00000" HorizontalAlign="Left">
-                                <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000;
-                                    padding-left: 5px"></asp:Label>
-                            </asp:Panel>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                    <div>
-                        <div>
-                            <asp:ContentPlaceHolder ID="IQCareContentPlaceHolder" runat="server">
-                            </asp:ContentPlaceHolder>
+                                </li>
+                            </ul>
                         </div>
-                        <asp:Panel ID="pnlExtruder" runat="server">
-                            <ucExtruder:UserControlKNH_Extruder ID="UserControlKNH_Extruder1" runat="server" />
-                        </asp:Panel>
+                        <!-- .navbarCollapse -->
                     </div>
-                    <br />
+                    <!-- .navbar -->
                     <br />
                 </div>
-                <asp:UpdatePanel ID="notificationPanel" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <asp:Panel ID="panelNotify" runat="server" Style="display: none; width: 500px; height: 140px;
-                            position: relative; border: solid 1px #808080; background-color: #E0E0E0; z-index: 15000">
-                            <asp:Panel ID="panelPopup_Title" runat="server" Style="cursor: move;" class="panel panel-body">
-                                <table style="width: 100%;" class="table-condensed">
-                                    <tr>
-                                        <td style="background-color: #479ADA;" colspan="2">
-                                            <span style="font-weight: bold; color: Black">
-                                                <asp:Label ID="lblNotice" runat="server"></asp:Label></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%" valign="middle" align="left">
-                                            <asp:Image ID="imgNotice" runat="server" ImageUrl="~/Images/mb_information.gif" Height="32px"
-                                                Width="32px" />
-                                        </td>
-                                        <td style="width: 90%;" valign="middle" align="left">
-                                            <asp:Label ID="lblNoticeInfo" runat="server" Font-Bold="True"></asp:Label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="panel panel-footer">
-                                            <asp:Button ID="btnOkAction" runat="server" Text="OK" Width="10%" Height="30px" CssClass="btn btn-primary"
-                                                Style="text-align: left;" />
-                                            <asp:Button ID="btnCancel" runat="server" Text="Cancel" Width="14%" Height="30px"
-                                                CssClass="btn btn-primary" Style="text-align: left;" />
-                                        </td>
-                                    </tr>
-                                </table>
+                <br />
+                <div id="level1Navigation" class="row" style="padding-top: 5px">
+                    <uc1:levelOneNavigationUserControl ID="levelOneNavigationUserControl1" runat="server" />
+                </div>
+                <div class="row">
+                    <div id="mainMaster" class="col-md-12">
+                        <%--level 2 Navigation--%>
+                        <div id="level2Navigation" runat="server">
+                            <uc2:levelTwoNavigationUserControl ID="levelTwoNavigationUserControl1" runat="server" />
+                        </div>
+                    </div>
+                    <!-- .mainmaster -->
+                </div>
+                <div class="container-fluid">
+                    <div class="container-fluid">
+                        <asp:Label ID="lblpntStatus" CssClass="textstylehidden" runat="server" Text=""></asp:Label>
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                                <asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color:
+#FFFFC0; border: solid 1px #C00000"
+                                    HorizontalAlign="Left">
+                                    <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000; padding-left: 5px"></asp:Label>
+                                </asp:Panel>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                        <div>
+                            <div>
+                                <asp:ContentPlaceHolder ID="IQCareContentPlaceHolder" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </div>
+                            <asp:Panel ID="pnlExtruder" runat="server">
+                                <ucExtruder:UserControlKNH_Extruder ID="UserControlKNH_Extruder1" runat="server" />
                             </asp:Panel>
-                        </asp:Panel>
-                        <asp:Button ID="btn" runat="server" Style="display: none" />
-                        <cc1:ModalPopupExtender ID="notifyPopupExtender" CancelControlID="btnCancel" TargetControlID="btn"
-                            runat="server" PopupControlID="panelNotify" BackgroundCssClass="modalBackground"
-                            DropShadow="True" PopupDragHandleControlID="panelPopup_Title" Enabled="True"
-                            DynamicServicePath="">
-                        </cc1:ModalPopupExtender>
-                    </ContentTemplate>
-                    <Triggers>
-                    </Triggers>
-                </asp:UpdatePanel>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                    <asp:UpdatePanel ID="notificationPanel" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:Panel ID="panelNotify" runat="server" Style="display: none; width: 500px; height: 140px; position: relative; border: solid 1px #808080; background-color: #E0E0E0; z-index: 15000">
+                                <asp:Panel ID="panelPopup_Title" runat="server" Style="cursor: move;" class="panel panel-body">
+                                    <table style="width: 100%;" class="table-condensed">
+                                        <tr>
+                                            <td style="background-color: #479ADA;" colspan="2">
+                                                <span style="font-weight: bold; color: Black">
+                                                    <asp:Label ID="lblNotice" runat="server"></asp:Label></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 10%" valign="middle" align="left">
+                                                <asp:Image ID="imgNotice" runat="server" ImageUrl="~/Images/mb_information.gif" Height="32px"
+                                                    Width="32px" />
+                                            </td>
+                                            <td style="width: 90%;" valign="middle" align="left">
+                                                <asp:Label ID="lblNoticeInfo" runat="server" Font-Bold="True"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="panel panel-footer">
+                                                <asp:Button ID="btnOkAction" runat="server" Text="OK" Width="10%" Height="30px" CssClass="btn btn-primary"
+                                                    Style="text-align: left;" />
+                                                <asp:Button ID="btnCancel" runat="server" Text="Cancel" Width="14%" Height="30px"
+                                                    CssClass="btn btn-primary" Style="text-align: left;" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </asp:Panel>
+                            </asp:Panel>
+                            <asp:Button ID="btn" runat="server" Style="display: none" />
+                            <cc1:ModalPopupExtender ID="notifyPopupExtender" CancelControlID="btnCancel" TargetControlID="btn"
+                                runat="server" PopupControlID="panelNotify" BackgroundCssClass="modalBackground"
+                                DropShadow="True" PopupDragHandleControlID="panelPopup_Title" Enabled="True"
+                                DynamicServicePath="">
+                            </cc1:ModalPopupExtender>
+                        </ContentTemplate>
+                        <Triggers>
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
             </div>
-        </div>
         </form>
     </div>
     <nav role="navigation" class="navbar navbar-default navbar-fixed-bottom" style="navigation"> <div class="container-fluid"> <div class="row" style="padding-top:3px">
@@ -377,4 +376,5 @@ Font-Bold="True" Text="Version : "></asp:Label> <asp:Label ID="lblversion" runat
 CssClass="blue11 nomargin" Font-Bold="True"></asp:Label> </div><!-- .col-md-4 -->
 </div> <!-- .row --> </div> <!-- .conatiner-fluid--> </nav>
 </body>
+ 
 </html>

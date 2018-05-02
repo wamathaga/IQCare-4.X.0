@@ -46,10 +46,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Application.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\Application.Common.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.7.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\External Dlls\MySql.Data.dll</HintPath>
@@ -65,6 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application.Common\Application.Common.csproj">
+      <Project>{0D193582-0B9B-49A6-8E3D-D96582C6B524}</Project>
+      <Name>Application.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess.Common\DataAccess.Common.csproj">
       <Project>{FA6D554F-BC52-454A-89D5-F8E576B3843E}</Project>
       <Name>DataAccess.Common</Name>

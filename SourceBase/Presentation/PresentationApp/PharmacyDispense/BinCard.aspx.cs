@@ -82,7 +82,6 @@ namespace PresentationApp.PharmacyDispense
 
         protected DataSet GetBINCard(int StoreId, int ItemsId, DateTime FromDate, DateTime ToDate)
         {
-
             ISCMReport binCard = (ISCMReport)ObjectFactory.CreateInstance("BusinessProcess.SCM.BSCMReport,BusinessProcess.SCM");
             return binCard.GetBINCard(StoreId, ItemsId, FromDate, ToDate, Convert.ToInt32(Session["AppLocationId"]));
         }

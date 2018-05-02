@@ -321,6 +321,11 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                 RemoveMenuItemByValue(patientLevelMenu.Items, "mnuAllergyInformation");
             }
 
+            if (Authentication.HasFeatureRight(ApplicationAccess.NAFDAC, theDT) == false)
+            {
+                //mnuFamilyInformation.Visible = false;
+                RemoveMenuItemByValue(patientLevelMenu.Items, "mnuNAFDAC");
+            }
             if (Authentication.HasFeatureRight(ApplicationAccess.ChildEnrollment, theDT) == false)
             {
                 //mnuInfantFollowUp.Visible = false;
@@ -545,10 +550,13 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
     private void AdditionalForms()
     {
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuAllergyInformation");
+        RemoveMenuItemByValue(patientLevelMenu.Items, "mnuNAFDAC");
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuFamilyInformation");
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuPatientClassification");
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuFollowupEducation");
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuExposedInfant");
+        RemoveMenuItemByValue(patientLevelMenu.Items, "mnuFreeText");
+        RemoveMenuItemByValue(patientLevelMenu.Items, "mnuClinicalSummaryAdd");
     }
 
     private void DivDynModule()
@@ -632,6 +640,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
     private void divHIVCE()
     {
         RemoveMenuItemByValue(patientLevelMenu.Items, "mnuHIVCE");
+        RemoveMenuItemByValue(patientLevelMenu.Items, "mnuREF");
     }
     #endregion
 
@@ -1084,7 +1093,8 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
 
                 else if (ModuleId.ToString() == "203")
                 {
-                    DivDynModule(); divUgandaBlueCard(); ClinicID(); divKHN(); divPEP(); divPMTCT(); divNigARTCard(); divKNHDCC(); divIEFV();
+                    DivDynModule(); divUgandaBlueCard(); ClinicID(); divKHN(); divPEP(); divPMTCT(); divNigARTCard(); divKNHDCC();
+                    //divIEFV();
                     if (lblpntStatus.Text != "1")
                     {
                         //if (theLabTest != "")
@@ -1232,7 +1242,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             divKHN(); divNigARTCard();
             divUgandaBlueCard();
             divKNHDCC();
-            divIEFV();
+            //divIEFV();
         }
         else if (ModuleId.ToString() == "204")
         {
@@ -1312,13 +1322,15 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             divHIVCE();
         }
 
-
-        if (Session["PaperLess"].ToString() == "0")
+        if (Session["PaperLess"] != null)
         {
-            RemoveMenuItemByValue(patientLevelMenu.Items, "mnuWaitingList");//waiting list available only in paerless mode
+            if (Session["PaperLess"].ToString() == "0")
+            {
+                RemoveMenuItemByValue(patientLevelMenu.Items,
+                    "mnuWaitingList"); //waiting list available only in paerless mode
 
+            }
         }
-
     }
 
     private void Init_Menu()
@@ -1347,6 +1359,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
             //    lblpatientname.Text = dtPatientInfo.Rows[0]["LastName"].ToString() + ", " + dtPatientInfo.Rows[0]["MiddleName"].ToString() + " , " + dtPatientInfo.Rows[0]["FirstName"].ToString();
             lblIQnumber.Text = dtPatientInfo.Rows[0]["IQNumber"].ToString();
             lblAge.Text = Convert.ToString(dtPatientInfo.Rows[0]["AGE"] == null ? "0" : dtPatientInfo.Rows[0]["AGE"]);
+            lblGender.Text = dtPatientInfo.Rows[0]["SexNM"].ToString();
 
 
             PMTCTNos = dtPatientInfo.Rows[0]["ANCNumber"].ToString() + dtPatientInfo.Rows[0]["PMTCTNumber"].ToString() + dtPatientInfo.Rows[0]["AdmissionNumber"].ToString() + dtPatientInfo.Rows[0]["OutpatientNumber"].ToString();
@@ -1502,6 +1515,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         #region "Common Forms"
         theUrl = string.Format("{0}&mnuClicked={1}&sts={2}", "../AdminForms/frmAdmin_DeletePatient.aspx?name=Add", "DeletePatient", lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuAdminDeletePatient", theUrl);
+
         //######## Meetu 08 Sep 2009 End########//
         //####### Delete Form #############
         theUrl = string.Format("{0}?sts={1}", "../ClinicalForms/frmClinical_DeleteForm.aspx", lblpntStatus.Text);
@@ -1512,7 +1526,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         AssignUrl(patientLevelMenu.Items, "mnuAdminDeletePatient", theUrl);
 
         //##### Patient Transfer #######
-        theUrl = string.Format("{0}&sts={1}", "../ClinicalForms/frmClinical_Transfer.aspx?name=Add", lblpntStatus.Text);        
+        theUrl = string.Format("{0}&sts={1}", "../ClinicalForms/frmClinical_Transfer.aspx?name=Add", lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuPatientTransfer", theUrl);
 
         //##### Patient Home #######
@@ -1523,27 +1537,42 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         //########### Existing Forms ############
         theUrl = string.Format("{0}&sts={1}", "../ClinicalForms/frmPatient_History.aspx?", lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuExistingForms", theUrl);
+
         //########### ARV-Pickup Report ############
         theUrl = string.Format("{0}&SatelliteID={1}&CountryID={2}&PosID={3}&sts={4}", "../Reports/frmReport_PatientARVPickup.aspx?name=Add", Session["AppSatelliteId"], Session["AppCountryId"], Session["AppPosID"], lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuDrugPickUp", theUrl);
+
         //########### PatientProfile ############
         theUrl = string.Format("{0}&ReportName={1}&sts={2}", "../Reports/frmReportViewer.aspx?name=Add", "PatientProfile", lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuPatientProfile", theUrl);
+
+        //########### PatientSummary ############
+        theUrl = string.Format("{0}&ReportName={1}&sts={2}", "../Reports/frmReportViewer.aspx?name=Add", "PatientSummary", lblpntStatus.Text);
+        AssignUrl(patientLevelMenu.Items, "mnuClinicalSummary", theUrl);
+
         //########### ARV-Pickup Report ############
         theUrl = string.Format("{0}&SatelliteID={1}&CountryID={2}&PosID={3}&sts={4}", "../Reports/frmReportDebitNote.aspx?name=Add", Session["AppSatelliteId"], Session["AppCountryId"], Session["AppPosID"], lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuDebitNote", theUrl);
+
         //###### PatientHome #############
         theUrl = string.Format("{0}", "../ClinicalForms/frmPatient_Home.aspx");
         AssignUrl(patientLevelMenu.Items, "mnuPatienHome", theUrl);
+
         //###### Scheduler #############
         theUrl = string.Format("{0}&LocationId={1}&FormName={2}&sts={3}", "../Scheduler/frmScheduler_AppointmentHistory.aspx?name=Add", Session["AppLocationId"].ToString(), "PatientHome", lblpntStatus.Text);
         AssignUrl(patientLevelMenu.Items, "mnuScheduleAppointment", theUrl);
+
         //####### Additional Forms - Family Information #######
         theUrl = string.Format("{0}", "../ClinicalForms/frmFamilyInformation.aspx?name=Add");
         AssignUrl(patientLevelMenu.Items, "mnuFamilyInformation", theUrl);
 
+        //####### Additional Forms - Allergy #######
         theUrl = string.Format("{0}", "../ClinicalForms/frmAllergy.aspx?name=Add");
         AssignUrl(patientLevelMenu.Items, "mnuAllergyInformation", theUrl);
+
+        //####### Additional Forms - NAFDAC #######
+        theUrl = string.Format("{0}", "../ClinicalForms/frmNAFDAC.aspx?name=Add");
+        AssignUrl(patientLevelMenu.Items, "mnuNAFDAC", theUrl);
 
         //####### Patient Classification #######
         theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_PatientClassificationCTC.aspx?name=Add");
@@ -1595,6 +1624,14 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
 
         theUrl = string.Format("{0}", "../ClinicalForms/frmClinical_KNH_Paediatric_IE.aspx");
         AssignUrl(patientLevelMenu.Items, "mnuknhPaediatricIE", theUrl);
+
+        //####### Additional Forms - Free Text #######
+        theUrl = string.Format("{0}", "../ClinicalForms/frmFreeText.aspx?name=Add");
+        AssignUrl(patientLevelMenu.Items, "mnuFreeText", theUrl);
+
+        //####### Additional Forms - Clinical Summary #######
+        theUrl = string.Format("{0}", "../ClinicalForms/frmClinicalSummary.aspx?name=Add");
+        AssignUrl(patientLevelMenu.Items, "mnuClinicalSummaryAdd", theUrl);
 
         //########### Patient Enrollment ############
         //Added - Jayanta Kr. Das - 16-02-07
@@ -1672,7 +1709,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
         }
         else if (ModuleId == 203)//CCC Patient Card MoH 257(Fix bug "Hide Legacy Forms From Menu" by Rahmat on 04-04-2017)
         {
-            RemoveMenuItemByValue(patientLevelMenu.Items, "mnuARTTherapy");          
+            RemoveMenuItemByValue(patientLevelMenu.Items, "mnuARTTherapy");
         }
         else
         {
@@ -1705,7 +1742,7 @@ public partial class MasterPage_levelTwoNavigationUserControl : System.Web.UI.Us
                     {
                         theLabelIdentifier1.Text = theLabelIdentifier1.Text + "    " + "<label class='control-label'>" + DRLabel[0].ToString() + "</label>" + " : " + DRLabel1[i].ToString() + "           ";
                     }
-                   
+
                     i++;
                 }
                 thePnlIdent.Controls.Add(theLabelIdentifier1);

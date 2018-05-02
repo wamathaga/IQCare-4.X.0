@@ -149,7 +149,6 @@ namespace HIVCE.DataAccess
             return ds;
         }
 
-
         public DataSet GetManagement(int ptn_pk, int visitPK, int locationId)
         {
             CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.GetManagement() Method Called.");
@@ -744,8 +743,6 @@ namespace HIVCE.DataAccess
             }
         }
 
-
-
         public DataTable SaveUpdateScreeningData(DBScreeningData obj, int userId, int locationId)
         {
             CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.SaveUpdateScreeningData() method called");
@@ -791,6 +788,15 @@ namespace HIVCE.DataAccess
                 ClsUtility.AddParameters("@IPTStartDate ", SqlDbType.VarChar, obj.IPTStartDate.HasValue == true ? obj.IPTStartDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
                 ClsUtility.AddParameters("@IPTEndDate ", SqlDbType.VarChar, obj.IPTEndDate.HasValue == true ? obj.IPTEndDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
                 ClsUtility.AddParameters("@EligibleForIPT", SqlDbType.Int, obj.EligibleForIPT.ToString());
+
+                ClsUtility.AddParameters("@IPTWPYellowColoredUrine", SqlDbType.Int, obj.IPTWPYellowColoredUrine.ToString());
+                ClsUtility.AddParameters("@IPTWPNumbnessBurning", SqlDbType.Int, obj.IPTWPNumbnessBurning.ToString());
+                ClsUtility.AddParameters("@IPTWPYellownessEyes", SqlDbType.Int, obj.IPTWPYellownessEyes.ToString());
+                ClsUtility.AddParameters("@IPTWPTenderness", SqlDbType.Int, obj.IPTWPTenderness.ToString());
+
+                ClsUtility.AddParameters("@OtherReasonDeclinedIPT", SqlDbType.VarChar, obj.OtherReasonDeclinedIPT.ToString());
+                ClsUtility.AddParameters("@OtherReasonDiscontinuedIPT", SqlDbType.VarChar, obj.OtherReasonDiscontinuedIPT.ToString());
+
 
                 ReturnDT = (DataTable)clsObj.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveUpdateScreeningData", ClsDBUtility.ObjectEnum.DataTable);
 
@@ -1000,6 +1006,25 @@ namespace HIVCE.DataAccess
                     }
                 }
 
+                /* GenitalUrinaryConditions */
+                deleteAll = 1;
+                foreach (DBMultiSelectSelcted mst in obj.GenitoUrinary)
+                {
+                    if (mst.id != 0)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@DeleteAll", SqlDbType.Int, deleteAll.ToString());
+                        ClsUtility.AddParameters("@Ptn_Pk", SqlDbType.Int, obj.Ptn_Pk.ToString());
+                        ClsUtility.AddParameters("@Visit_Pk", SqlDbType.Int, obj.Visit_Id.ToString());
+                        ClsUtility.AddParameters("@ID", SqlDbType.Int, mst.id.ToString());
+                        ClsUtility.AddParameters("@FieldName", SqlDbType.VarChar, "GenitalUrinaryConditions");
+
+                        ReturnDT = (DataTable)clsObj.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveMultiSelectline", ClsDBUtility.ObjectEnum.DataTable);
+                        if (deleteAll == 1)
+                            deleteAll = 0;
+                    }
+                }
+
                 /* WHOStageIConditions */
                 deleteAll = 1;
                 foreach (WHOStage mst in obj.WHOStages.Where(o => o.FieldName == "WHOStageIConditions").ToList())
@@ -1170,11 +1195,14 @@ namespace HIVCE.DataAccess
                 ClsUtility.AddParameters("@ScreenedForSTI", SqlDbType.Int, obj.STIScreening.ToString());
                 ClsUtility.AddParameters("@PartnerNotify", SqlDbType.Int, obj.PartnerNotified.ToString());
 
-                ClsUtility.AddParameters("@WorkUpPlan", SqlDbType.Int, obj.AreaReminders.ToString());
-                ClsUtility.AddParameters("@PatientRefDesc", SqlDbType.Int, obj.AreaReferrals.ToString());
+                ClsUtility.AddParameters("@WorkUpPlan", SqlDbType.VarChar, obj.AreaReminders.ToString());
+                ClsUtility.AddParameters("@PatientRefDesc", SqlDbType.VarChar, obj.AreaReferrals.ToString());
                 ClsUtility.AddParameters("@AppDate", SqlDbType.Int, obj.NextAppointmentDate.HasValue == true ? obj.NextAppointmentDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
-                ClsUtility.AddParameters("@AppReason", SqlDbType.Int, obj.Purpose.ToString());
+                ClsUtility.AddParameters("@AppReason", SqlDbType.VarChar, obj.Purpose.ToString());
                 ClsUtility.AddParameters("@Signature", SqlDbType.Int, obj.MgtSignature.ToString());
+                ClsUtility.AddParameters("@PatientClassification", SqlDbType.Int, obj.PatientClassification.ToString());
+                ClsUtility.AddParameters("@IsEnrolDifferenciatedCare", SqlDbType.Int, obj.IsEnrolDifferenciatedCare.ToString());
+                ClsUtility.AddParameters("@ARTRefillModel", SqlDbType.Int, obj.ARTRefillModel.ToString());
                 ReturnDT = (DataTable)clsObj.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveUpdateManagementxData", ClsDBUtility.ObjectEnum.DataTable);
 
 
@@ -1260,6 +1288,26 @@ namespace HIVCE.DataAccess
                     }
                 }
 
+                foreach (Appointment mst in obj.Appointments)
+                {
+                    if (mst.Id == 0)
+                    {
+                        ClsUtility.Init_Hashtable();
+
+                        ClsUtility.AddParameters("@PatientId", SqlDbType.Int, obj.Ptn_pk.ToString());
+                        ClsUtility.AddParameters("@LocationId", SqlDbType.Int, locationId.ToString());
+                        ClsUtility.AddParameters("@AppDate", SqlDbType.DateTime, mst.AppointmentDate.HasValue == true ? mst.AppointmentDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
+                        ClsUtility.AddParameters("@AppReasonId", SqlDbType.Int, mst.Purpose.ToString());
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userId.ToString());
+                        ClsUtility.AddParameters("@AppType", SqlDbType.Int, mst.AppointmentType.ToString());
+                        ClsUtility.AddParameters("@ServiceArea", SqlDbType.Int, mst.ServiceArea.ToString());
+                        ClsUtility.AddParameters("@Description", SqlDbType.VarChar, mst.Description.ToString());
+
+
+                        ReturnDT = (DataTable)clsObj.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveAppointment", ClsDBUtility.ObjectEnum.DataTable);
+                    }
+                }
+
 
                 DataMgr.CommitTransaction(this.Transaction);
                 DataMgr.ReleaseConnection(this.Connection);
@@ -1281,6 +1329,243 @@ namespace HIVCE.DataAccess
                     DataMgr.ReleaseConnection(this.Connection);
             }
         }
+
+        public int SaveUpdateTSTriage(TSTriage obj, int userId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.SaveUpdateTSTriage() method called");
+            bool flag = true;
+            int visitId = 0;
+            ClsObject clsObjTP = new ClsObject();
+            try
+            {
+                this.Connection = DataMgr.GetConnection();
+                this.Transaction = DataMgr.BeginTransaction(this.Connection);
+                clsObjTP.Connection = this.Connection;
+                clsObjTP.Transaction = this.Transaction;
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_Pk", SqlDbType.Int, obj.Ptn_pk.ToString());
+                ClsUtility.AddParameters("@Visit_Pk", SqlDbType.Int, obj.Visit_Id.ToString());
+                ClsUtility.AddParameters("@LocationId", SqlDbType.Int, obj.LocationId.ToString());
+                ClsUtility.AddParameters("@Visitdate", SqlDbType.DateTime, obj.OrdVisit.VisitDate.Value.Date.ToString("yyyy-MM-dd hh:mm:ss"));
+                ClsUtility.AddParameters("@UserID", SqlDbType.Int, userId.ToString());
+                ClsUtility.AddParameters("@VisitTypeId", SqlDbType.Int, obj.OrdVisit.VisitTypeId.ToString());
+
+                ClsUtility.AddParameters("@AppDate", SqlDbType.Int, obj.NextAppointmentDate.HasValue == true ? obj.NextAppointmentDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
+                ClsUtility.AddParameters("@AppReason", SqlDbType.Int, obj.Purpose.ToString());
+                ClsUtility.AddParameters("@Signature", SqlDbType.Int, obj.MgtSignature.ToString());
+                ClsUtility.AddParameters("@FormName", SqlDbType.VarChar, obj.FormName.ToString());
+
+                DataTable ReturnDT = new DataTable();
+
+                ReturnDT = (DataTable)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveUpdateTSTriage", ClsDBUtility.ObjectEnum.DataTable);
+
+                DataMgr.CommitTransaction(this.Transaction);
+                DataMgr.ReleaseConnection(this.Connection);
+                visitId = (int)ReturnDT.Rows[0]["VisitId"];
+                return visitId;
+            }
+            catch (Exception ex)
+            {
+                DataMgr.RollBackTransation(this.Transaction);
+                flag = false;
+                throw ex;
+
+            }
+
+            finally
+            {
+
+                clsObjTP = null;
+                if (this.Connection != null)
+                    DataMgr.ReleaseConnection(this.Connection);
+            }
+        }
+
+
+        public DataSet GetRefillEncounter(int ptn_pk, int visitPK, int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.GetRefillEncounter() Method Called.");
+            DataSet ds = new DataSet();
+            ClsObject clsObjTP = new ClsObject();
+            try
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, ptn_pk.ToString());
+                ClsUtility.AddParameters("@Visit_Id", SqlDbType.Int, visitPK.ToString());
+                ClsUtility.AddParameters("@LocationId", SqlDbType.Int, locationId.ToString());
+                ds = (DataSet)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_GetRefillEncounter", ClsDBUtility.ObjectEnum.DataSet);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsObjTP = null;
+                if (this.Connection != null)
+                    DataMgr.ReleaseConnection(this.Connection);
+            }
+            return ds;
+        }
+
+        public DataTable SaveRefillEncounterData(RefillEncounterDB obj, int userId, int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.SaveRefillEncounterData() method called");
+            bool flag = true;
+            int visitId = 0;
+            ClsObject clsObjTP = new ClsObject();
+            try
+            {
+                this.Connection = DataMgr.GetConnection();
+                this.Transaction = DataMgr.BeginTransaction(this.Connection);
+                clsObjTP.Connection = this.Connection;
+                clsObjTP.Transaction = this.Transaction;
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_Pk", SqlDbType.Int, obj.Ptn_pk.ToString());
+                ClsUtility.AddParameters("@Visit_Pk", SqlDbType.Int, obj.Visit_Id.ToString());
+                ClsUtility.AddParameters("@LocationId", SqlDbType.Int, obj.LocationId.ToString());
+                ClsUtility.AddParameters("@Visitdate", SqlDbType.DateTime, obj.OrdVisit.VisitDate.Value.Date.ToString("yyyy-MM-dd hh:mm:ss"));
+                ClsUtility.AddParameters("@UserID", SqlDbType.Int, userId.ToString());
+                ClsUtility.AddParameters("@VisitTypeId", SqlDbType.Int, obj.OrdVisit.VisitTypeId.ToString());
+                ClsUtility.AddParameters("@BPDiastolic", SqlDbType.Int, obj.PatientVitals.BPDiastolic.ToString());
+                ClsUtility.AddParameters("@BPSystolic", SqlDbType.Int, obj.PatientVitals.BPSystolic.ToString());
+                ClsUtility.AddParameters("@TEMP", SqlDbType.Float, string.IsNullOrEmpty(obj.PatientVitals.TEMP) != true ? obj.PatientVitals.TEMP.ToString() : "0");
+                ClsUtility.AddParameters("@RR", SqlDbType.Int, obj.PatientVitals.RR.ToString());
+                ClsUtility.AddParameters("@HR", SqlDbType.Int, obj.PatientVitals.HR.ToString());
+                ClsUtility.AddParameters("@Headcircumference", SqlDbType.Float, string.IsNullOrEmpty(obj.PatientVitals.HeadCircumference) != true ? obj.PatientVitals.HeadCircumference.ToString() : "0");
+                ClsUtility.AddParameters("@height", SqlDbType.Int, obj.PatientVitals.Height.ToString());
+                ClsUtility.AddParameters("@weight", SqlDbType.Int, obj.PatientVitals.Weight.ToString());
+                ClsUtility.AddParameters("@MUAC", SqlDbType.Int, obj.PatientVitals.MUAC.ToString());
+
+                ClsUtility.AddParameters("@Spo2", SqlDbType.VarChar, obj.PatientVitals.SPO2.ToString());
+                string dtVal = DBNull.Value.ToString();
+                if (obj.LMP.HasValue)
+                {
+                    dtVal = obj.LMP.Value.Date.ToString("yyyy-MM-dd hh:mm:ss").ToString();
+                }
+                ClsUtility.AddParameters("@LMP", SqlDbType.DateTime, dtVal);
+                ClsUtility.AddParameters("@Pregnant", SqlDbType.Int, obj.Pregnant.ToString());
+                ClsUtility.AddParameters("@BreastStatus", SqlDbType.Int, obj.BreastStatus.ToString());
+                ClsUtility.AddParameters("@FamilyPlanningMethod", SqlDbType.Int, obj.FamilyPlanningMethod.ToString());
+                ClsUtility.AddParameters("@FamilyPlanningStatus", SqlDbType.Int, obj.FamilyPlanningStatus.ToString());
+                ClsUtility.AddParameters("@NoFamilyPlanning", SqlDbType.Int, obj.NoFamilyPlanning.ToString());
+                ClsUtility.AddParameters("@ForgetMedicineSinceLastVisit", SqlDbType.Int, obj.IsForgotMed.ToString());
+                ClsUtility.AddParameters("@NoMissedDoses", SqlDbType.Int, obj.NoMissedDoses.ToString());
+                ClsUtility.AddParameters("@Drugs", SqlDbType.Int, obj.Drugs.ToString());
+
+                ClsUtility.AddParameters("@WorkUpPlan", SqlDbType.Int, obj.AreaReminders.ToString());
+                ClsUtility.AddParameters("@OtherPresentingComplaints", SqlDbType.VarChar, obj.OtherPresentingComplaints.ToString());
+
+                DataTable ReturnDT = new DataTable();
+
+                ReturnDT = (DataTable)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveRefillEncounter", ClsDBUtility.ObjectEnum.DataTable);
+                visitId = (int)ReturnDT.Rows[0]["VisitId"];
+                // return visitId;
+                obj.Visit_Id = visitId;
+                int temp = 0;
+                foreach (DBMultiSelectSelcted mss in obj.PWP)
+                {
+                    if (mss.id != 0)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientID", SqlDbType.Int, obj.Ptn_pk.ToString());
+                        ClsUtility.AddParameters("@locationID", SqlDbType.Int, obj.LocationId.ToString());
+                        ClsUtility.AddParameters("@visitID", SqlDbType.Int, obj.Visit_Id.ToString());
+                        ClsUtility.AddParameters("@pwpID", SqlDbType.Int, mss.id.ToString());
+                        ClsUtility.AddParameters("@pwpID_Other", SqlDbType.VarChar, string.Empty);
+                        temp = (int)clsObjTP.ReturnObject(ClsUtility.theParams, "pr_Clinical_SaveHIVCarePreventionwithpositives", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+
+                foreach (Appointment mst in obj.Appointments)
+                {
+                    if (mst.Id == 0)
+                    {
+                        ClsUtility.Init_Hashtable();
+
+                        ClsUtility.AddParameters("@PatientId", SqlDbType.Int, obj.Ptn_pk.ToString());
+                        ClsUtility.AddParameters("@LocationId", SqlDbType.Int, locationId.ToString());
+                        ClsUtility.AddParameters("@AppDate", SqlDbType.DateTime, mst.AppointmentDate.HasValue == true ? mst.AppointmentDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString() : DBNull.Value.ToString());
+                        ClsUtility.AddParameters("@AppReasonId", SqlDbType.Int, mst.Purpose.ToString());
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userId.ToString());
+                        ClsUtility.AddParameters("@AppType", SqlDbType.Int, mst.AppointmentType.ToString());
+                        ClsUtility.AddParameters("@ServiceArea", SqlDbType.Int, mst.ServiceArea.ToString());
+                        ClsUtility.AddParameters("@Description", SqlDbType.VarChar, mst.Description.ToString());
+
+
+                        ReturnDT = (DataTable)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveAppointment", ClsDBUtility.ObjectEnum.DataTable);
+                    }
+                }
+
+                int deleteAll = 1;
+                foreach (MultiSelectTable mst in obj.PCT)
+                {
+
+                    ClsUtility.Init_Hashtable();
+                    ClsUtility.AddParameters("@DeleteAll", SqlDbType.Int, deleteAll.ToString());
+                    ClsUtility.AddParameters("@Ptn_Pk", SqlDbType.Int, obj.Ptn_pk.ToString());
+                    ClsUtility.AddParameters("@Visit_Pk", SqlDbType.Int, obj.Visit_Id.ToString());
+                    ClsUtility.AddParameters("@ID", SqlDbType.Int, mst.ValueID.ToString());
+                    ClsUtility.AddParameters("@FieldName", SqlDbType.VarChar, mst.FieldName.ToString());
+                    ClsUtility.AddParameters("@OnSetDate", SqlDbType.DateTime, mst.OnSetDate.Value.ToString("yyyy-MM-dd hh:mm:ss").ToString());
+                    ClsUtility.AddParameters("@IsActive", SqlDbType.Int, mst.NumericField.ToString());
+
+                    ReturnDT = new DataTable();
+
+                    ReturnDT = (DataTable)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_SaveMultiSelectline", ClsDBUtility.ObjectEnum.DataTable);
+                    if (deleteAll == 1)
+                        deleteAll = 0;
+
+                }
+
+
+                DataMgr.CommitTransaction(this.Transaction);
+                DataMgr.ReleaseConnection(this.Connection);
+                return ReturnDT;
+
+            }
+            catch (Exception ex)
+            {
+                DataMgr.RollBackTransation(this.Transaction);
+                flag = false;
+                throw ex;
+
+            }
+
+            finally
+            {
+
+                clsObjTP = null;
+                if (this.Connection != null)
+                    DataMgr.ReleaseConnection(this.Connection);
+            }
+        }
+
+        public DataSet GetOIChronicDiseaseData(int ptn_pk,  int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "DBClinicalEncounter.GetOIChronicDiseaseData() Method Called.");
+            DataSet ds = new DataSet();
+            ClsObject clsObjTP = new ClsObject();
+            try
+            {
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, ptn_pk.ToString());
+                ClsUtility.AddParameters("@LocationId", SqlDbType.Int, locationId.ToString());
+                ds = (DataSet)clsObjTP.ReturnObject(ClsUtility.theParams, "Pr_HIVCE_GetOIChronicDiseaseData", ClsDBUtility.ObjectEnum.DataSet);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsObjTP = null;
+                if (this.Connection != null)
+                    DataMgr.ReleaseConnection(this.Connection);
+            }
+            return ds;
+        }
+
 
     }
 

@@ -10,7 +10,7 @@ namespace Application.Presentation
     {
         public static Object CreateInstance(string type)
         {
-            string theServerLocation = ((NameValueCollection)ConfigurationSettings.GetConfig("appSettings"))["ServerLocation"];
+            string theServerLocation = ((NameValueCollection)ConfigurationManager.GetSection("appSettings"))["ServerLocation"];
             IBusinessServerFactory theFactory = (IBusinessServerFactory)Activator.GetObject(Type.GetType("Application.Interface.IBusinessServerFactory, Application.Interface"), theServerLocation);
             return theFactory.CreateInstance(type);
         }

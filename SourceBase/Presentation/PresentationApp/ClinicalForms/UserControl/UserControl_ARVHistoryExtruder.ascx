@@ -34,6 +34,14 @@
         </td>
     </tr>
     <tr>
+        <td>
+            <asp:Label ID="ChangeRegimenDate_Label" runat="server" Font-Bold="True" Text="Date regimen Change:"></asp:Label>
+        </td>
+        <td>
+            <asp:Label ID="lblChangeRegimentDt" runat="server" Font-Bold="True"></asp:Label>
+        </td>
+    </tr>
+    <tr>
         <td colspan="2">
         <div class="GridView whitebg" style="cursor: pointer;">
                     <div class="grid">

@@ -29,6 +29,7 @@
         type="text/javascript"></script>
     <script src="<%=ResolveUrl("Scripts/ucManagementx.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>"
         type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-maxlength/1.7.0/bootstrap-maxlength.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () { $("[name='switch-size']").bootstrapSwitch(); });
     </script>
@@ -117,5 +118,7 @@
             runat="server" />
         <input type="hidden" runat="server" id="hidEIVID" clientidmode="Static" />
         <input type="hidden" runat="server" id="hidEIVD" clientidmode="Static" />
+        <input type="hidden" runat="server" id="hidMOD" clientidmode="Static" />
+        <input type="hidden" runat="server" id="hidsrvNm" clientidmode="Static" />
     </div>
 </asp:Content>

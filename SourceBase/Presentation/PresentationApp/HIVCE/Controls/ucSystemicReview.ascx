@@ -134,12 +134,28 @@
                                 </div>
                             </div>
                             <!-- /.row -->
+                            <div class="row">
+                                <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+                                    <label for="inputEmail3" class="control-label">
+                                        Genito- Urinary:</label>
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                                    <input id="chkGenitoUrinary" name="switch-size" type="checkbox" checked data-size="small" data-on-text="Yes"
+                                           data-off-text="No">
+                                </div>
+                                <div class="col-md-9 col-sm-12 col-xs-12 form-group" id="divGEU">
+                                    <select class="form-control select2" multiple="multiple" data-placeholder="Select"
+                                            id="ddlGenitoUrinary" style="width: 90%">
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /.row -->
                             <!-- /.row -->
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                     <label for="inputEmail3" class="control-label">
                                         Review of System Comments :</label>
-                                    <textarea class="form-control" rows="4" placeholder="Review of System Comments" id="txtReviewSystemComments"></textarea>
+                                    <textarea class="form-control" rows="4" placeholder="Review of System Comments and Other Systemic Finding" id="txtReviewSystemComments" maxlength="1000"></textarea>
                                 </div>
                                 <!-- /.box -->
                             </div>
@@ -204,11 +220,11 @@
                                     <div class="col-md-1 col-sm-12 col-xs-12 form-group">
                                         <input type="number" class="form-control" id="txtSRWeight" placeholder="Weight" disabled="disabled">
                                     </div>
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divSRBMILable">
                                         <label for="inputEmail3" class="control-label">
                                             BMI:</label>
                                     </div>
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
+                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divSRBMIText">
                                         <input type="text" class="form-control" id="txtSRBMI" disabled="disabled">
                                         <label for="txtBMI" id="lblSRBMIClassification">
                                         </label>
@@ -231,6 +247,15 @@
                                     <div class="col-md-1 col-sm-12 col-xs-12 form-group">
                                         <input type="text" class="form-control" id="txtSRMUAC" placeholder="MUAC" disabled="disabled">
                                     </div>
+                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divBMIZ1">
+                                        <label for="inputEmail3" class="control-label">
+                                            BMI Zscore</label>
+                                    </div>
+                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divBMIZV1">
+                                        <input type="text" class="form-control" id="txtSRBMIZScore" disabled="disabled">
+                                        <label for="txtBMIZScore" id="lblSRBMIzClassification">
+                                        </label>
+                                    </div>
                                     <div class="col-md-2 col-sm-12 col-xs-12 form-group" id="divWA1">
                                         <label for="inputEmail3" class="control-label">
                                             Weight for age zscore:</label>
@@ -250,15 +275,7 @@
                                         <label for="txtHAgeZScore" id="lblSRWHClassification">
                                         </label>
                                     </div>
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divBMIZ1">
-                                        <label for="inputEmail3" class="control-label">
-                                            BMI Zscore</label>
-                                    </div>
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group" id="divBMIZV1">
-                                        <input type="text" class="form-control" id="txtSRBMIZScore" disabled="disabled">
-                                        <label for="txtBMIZScore" id="lblSRBMIzClassification">
-                                        </label>
-                                    </div>
+                                    
                                 </div>
                                 <!-- /.row -->
                             </div>
@@ -279,7 +296,7 @@
                             Moderate Acute Malnutrition</label>
                         <label class="control-label radio-inline">
                             <input type="radio" name="NutritionGroup" value="941" />
-                            Overweigh/Obese</label>
+                            OverWeight/Obese</label>
                     </div>
                 </div>
                 <div class="row">
@@ -287,7 +304,7 @@
                         <label for="inputEmail3" class="control-label">
                             Nutritional Assessment Comments :</label>
                         <textarea class="form-control" rows="4" placeholder="Nutritional Assessment Comments"
-                            id="txtAreaNutritionComment"></textarea>
+                            id="txtAreaNutritionComment" maxlength="1000"></textarea>
                     </div>
                     <!-- /.box -->
                 </div>
@@ -444,7 +461,7 @@
                         <label id="lblCurrentWHOStaging" for="inputEmail3" class="control-label">
                             Current WHO Staging:&nbsp;&nbsp;</label>
                         <select class="form-control select2" data-placeholder="Select" id="ddlCurrentWhoStage"
-                            style="width: 40%;">
+                            style="width: 40%;" disabled>
                         </select>
                     </div>
                     <!-- /.box -->

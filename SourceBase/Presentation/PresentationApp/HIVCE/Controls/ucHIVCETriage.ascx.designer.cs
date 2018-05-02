@@ -13,6 +13,15 @@ namespace HIVCE.Presentation.Controls {
     public partial class ucHIVCETriage {
         
         /// <summary>
+        /// btnSaveFindTriage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnSaveFindTriage;
+        
+        /// <summary>
         /// btnSaveTriage control.
         /// </summary>
         /// <remarks>
@@ -29,5 +38,14 @@ namespace HIVCE.Presentation.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton btnDeleteForm;
+        
+        /// <summary>
+        /// btnTSSaveManagement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnTSSaveManagement;
     }
 }

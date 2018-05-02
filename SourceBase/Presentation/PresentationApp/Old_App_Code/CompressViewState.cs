@@ -1,6 +1,3 @@
-using System;
-using System.Data;
-using System.Configuration;
 using System.IO;
 using System.IO.Compression;
 

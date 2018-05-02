@@ -573,7 +573,7 @@
       <div class="col-md-3 col-sm-12 col-xs-12 form-group">
       <div style="width: 100%; margin: 0px auto;">
       <div style="float: left;padding-right:5px;"><label for="inputEmail3" class="control-label">
-                    <asp:Label ID="lblTemp" runat="server" Font-Bold="True" Text="Temperature:"></asp:Label>
+                    <asp:Label ID="lblTemp" runat="server" Font-Bold="True" Text="Temperature(C):"></asp:Label>
                     </label></div>
       <div style="float: left"> <asp:TextBox ID="txtTemp" runat="server" Width="60px" CssClass="form-control"></asp:TextBox></div>
       <div style="float: left"><span class="smallerlabel">C</span></div>

@@ -269,8 +269,10 @@ public partial class frmPatientCustomRegistration : LogPage
         txtSysDate.Text = theCurrentDate.ToString(Session["AppDateFormat"].ToString());
         txtlastName.Attributes.Add("onkeyup", "chkString('" + txtlastName.ClientID + "')");
         txtfirstName.Attributes.Add("onkeyup", "chkString('" + txtfirstName.ClientID + "')");
-        TxtDOB.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
+        TxtDOB.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3');");
         TxtDOB.Attributes.Add("onblur", "ValidateAge(); DateFormat(this,this.value,event,true,'3'); CalcualteAge('" + txtageCurrentYears.ClientID + "','" + txtageCurrentMonths.ClientID + "','" + TxtDOB.ClientID + "','" + txtSysDate.ClientID + "'); isCheckValidDate('" + Application["AppCurrentDate"] + "', '" + TxtDOB.ClientID + "', '" + TxtDOB.ClientID + "');");
+        //Add by Rahmat as on 07-Feb-2018 for calculate year and month and fill text box from first time on words..
+        TxtDOB.Attributes.Add("onChange", "CalcualteAge('" + txtageCurrentYears.ClientID + "','" + txtageCurrentMonths.ClientID + "','" + TxtDOB.ClientID + "','" + txtSysDate.ClientID + "');");
 
         txtRegDate.Attributes.Add("onkeyup", "DateFormat(this,this.value,event,false,'3')");
         txtRegDate.Attributes.Add("onblur", "DateFormat(this,this.value,event,true,'3'); isCheckValidDate('" + Application["AppCurrentDate"] + "', '" + txtRegDate.ClientID + "', '" + txtRegDate.ClientID + "');");
@@ -2578,7 +2580,7 @@ public partial class frmPatientCustomRegistration : LogPage
                 }
 
                 theDV = new DataView(theDSXML.Tables["Mst_Decode"]);
-                Session["SystemId"] = "1";
+                Session["SystemId"] = ConfigurationManager.AppSettings["SystemId"].ToString();
                 theDV.RowFilter = "CodeID=12 and SystemID=" + Session["SystemId"] + " and DeleteFlag=0";
                 theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
                 BindManager.BindCombo(ddmaritalStatus, theDT, "Name", "ID");
@@ -2598,7 +2600,7 @@ public partial class frmPatientCustomRegistration : LogPage
                 }
 
                 theDV = new DataView(theDSXML.Tables["Mst_Decode"]);
-                Session["SystemId"] = "1";
+                Session["SystemId"] = ConfigurationManager.AppSettings["SystemId"].ToString();
 
                 theDV.RowFilter = "CodeID=12 and SystemID=" + Session["SystemId"] + "";
                 theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
@@ -2631,6 +2633,9 @@ public partial class frmPatientCustomRegistration : LogPage
             }
 
             theDT = (DataTable)oCommonData.getAllDistrict();
+            theDV = theDT.DefaultView;
+            theDV.RowFilter = "SystemID = " + Session["SystemId"].ToString() + "";
+            theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
             if (theDT != null && theDT.Rows.Count > 0)
             {
                 BindManager.BindCombo(dddistrictName, theDT, "Name", "ID");
@@ -2638,6 +2643,9 @@ public partial class frmPatientCustomRegistration : LogPage
             }
 
             theDT = (DataTable)oCommonData.getAllVillages();
+            theDV = theDT.DefaultView;
+            theDV.RowFilter = "SystemID = " + Session["SystemId"].ToString() + "";
+            theDT = (DataTable)theUtils.CreateTableFromDataView(theDV);
             if (theDT != null && theDT.Rows.Count > 0)
             {
                 BindManager.BindCombo(ddvillageName, theDT, "Name", "ID");
@@ -2881,23 +2889,64 @@ public partial class frmPatientCustomRegistration : LogPage
         }
 
         //PMTCT Business rule
+        //
+
+        if (Request.Form[txtageCurrentYears.UniqueID].ToString().Length == 0 || Request.Form[txtageCurrentMonths.UniqueID].ToString().Length == 0)
+        {
+            CalculateAge_YearMonth(Convert.ToDateTime(TxtDOB.Text.Trim()));
+        }
         if (Convert.ToInt32(Session["TechnicalAreaId"]) == 1)
         {
+            //Change By Rahmat 06-Feb-2018
             // Male above than 2 yrs
-            if ((Convert.ToInt32(Request.Form[txtageCurrentYears.UniqueID]) > 2) && (ddgender.SelectedValue == "16"))
+            if ((Convert.ToInt32(txtageCurrentYears.Text.Trim() == "" ? "0" : txtageCurrentYears.Text.Trim()) > 2) && (ddgender.SelectedValue == "16"))
             {
                 IQCareMsgBox.Show("PMTCTMaleRegister", this);
                 return false;
             }
             // Child above than 2 yrs
-            else if ((Convert.ToInt32(Request.Form[txtageCurrentYears.UniqueID]) == 2) && (Convert.ToInt32(Request.Form[txtageCurrentMonths.UniqueID]) != 0))
+            else if ((Convert.ToInt32(txtageCurrentYears.Text.Trim() == "" ? "0" : txtageCurrentYears.Text.Trim()) == 2) && (Convert.ToInt32(txtageCurrentMonths.Text.Trim() == "" ? "0" : txtageCurrentMonths.Text.Trim()) != 0))
             {
                 IQCareMsgBox.Show("PMTCTMaleRegister", this);
                 return false;
             }
+            //// Male above than 2 yrs
+            //if ((Convert.ToInt32(Request.Form[txtageCurrentYears.UniqueID]) > 2) && (ddgender.SelectedValue == "16"))
+            //{
+            //    IQCareMsgBox.Show("PMTCTMaleRegister", this);
+            //    return false;
+            //}
+            //// Child above than 2 yrs
+            //else if ((Convert.ToInt32(Request.Form[txtageCurrentYears.UniqueID]) == 2) && (Convert.ToInt32(Request.Form[txtageCurrentMonths.UniqueID]) != 0))
+            //{
+            //    IQCareMsgBox.Show("PMTCTMaleRegister", this);
+            //    return false;
+            //}
         }
 
         return true;
+    }
+    private void CalculateAge_YearMonth(DateTime Dob)
+    {
+        DateTime Now = DateTime.Now;
+        int Years = new DateTime(DateTime.Now.Subtract(Dob).Ticks).Year - 1;
+        DateTime PastYearDate = Dob.AddYears(Years);
+        int Months = 0;
+        for (int i = 1; i <= 12; i++)
+        {
+            if (PastYearDate.AddMonths(i) == Now)
+            {
+                Months = i;
+                break;
+            }
+            else if (PastYearDate.AddMonths(i) >= Now)
+            {
+                Months = i - 1;
+                break;
+            }
+        }
+        txtageCurrentYears.Text = Years.ToString();
+        txtageCurrentMonths.Text = Months.ToString();
     }
     private String ValidationMessage()
     {

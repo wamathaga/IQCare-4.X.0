@@ -1,7 +1,8 @@
 ﻿var arrDataIPT = [];
+var flagTBContactsScreened = 0;
 
 function InitScreeningControls(response) {
-    debugger;
+    //debugger;
     window.scrollTo(0, 0);
     $("#ddlTBAssessment").select2();
     $("#ddlTbFindings").select2({ allowClear: false });
@@ -21,6 +22,12 @@ function InitScreeningControls(response) {
     $("#chkEligibleForIPT").bootstrapSwitch('state', false);
 
     $("#chkENT").bootstrapSwitch('state', false);
+
+    $("#chkYellowColoredUrine").bootstrapSwitch('state', false);
+    $("#chkNumbnessBurning").bootstrapSwitch('state', false);
+    $("#chkYellownessEyes").bootstrapSwitch('state', false);
+    $("#chkTenderness").bootstrapSwitch('state', false);
+
 
     $("#dtTBStartDate").datepicker({
         autoclose: true
@@ -72,8 +79,8 @@ function InitScreeningControls(response) {
 
     $("#divTBContactScreened").css("visibility", "hidden");
     $("#divTBContactScreened").css("display", "none");
-    $("#divTBContactScreenedDetails").css("visibility", "hidden");
-    $("#divTBContactScreenedDetails").css("display", "none");
+    //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+    //$("#divTBContactScreenedDetails").css("display", "none");
 
 
     $("#divIPTStartDate").css("visibility", "hidden");
@@ -112,6 +119,14 @@ function InitScreeningControls(response) {
             $("#lblTBAssessment").removeClass().addClass("control-label");
         }
     }
+
+    $("#ddlIPTContraindication").select2().on('change', function () {
+        EnableDisableOtherSpecifyTextBox("ddlIPTContraindication", "txtIPTContraindication", $(this).val());
+    }).trigger('change');
+
+    $("#ddlIPTDiscontinued").select2().on('change', function () {
+        EnableDisableOtherSpecifyTextBox("ddlIPTDiscontinued", "txtIPTDiscontinued", $(this).val());
+    }).trigger('change');
 
     //GetScreeningData();
     BindScreeningData(response);
@@ -168,8 +183,25 @@ function DisplayCXRResultsDiv(ctrlName) {
     }
 }
 
+function EnableDisableOtherSpecifyTextBox(ctrlName, ctrTextBox, val) {
+    var ddlDrugList = $("#" + ctrlName).select2("val");
+    if (ddlDrugList != null) {
+        var data = $("#" + ctrlName).select2('data')[0];
+        if (data.text.toLowerCase().indexOf("other") >= 0) {
+            $("#" + ctrTextBox).prop("disabled", false);
+        }
+        else {
+            $("#" + ctrTextBox).prop("disabled", true);
+        }
+    }
+    else {
+        $("#" + ctrTextBox).prop("disabled", true);
+    }
+}
+
+
 function TBAssessmentValidation() {
-    debugger;
+    //debugger;
 
     var noneSelected = false;
     var values = [];
@@ -250,17 +282,17 @@ function TBAssessmentValidation() {
 }
 
 function DisplayTBContactScreenedDiv(id, txt) {
-    $("#chkTBContactsScreened").bootstrapSwitch('state', false);
-    $("#ddlTBRegimen").select2();
-    $("#ddlRxDuration").select2();
+    //$("#chkTBContactsScreened").bootstrapSwitch('state', false);
+    //$("#ddlTBRegimen").select2();
+    //$("#ddlRxDuration").select2();
 
-    $("#ddlTBRegimen").select2("val", "0");
-    $("#ddlTBRegimen").trigger('change.select2');
+    //$("#ddlTBRegimen").select2("val", "0");
+    //$("#ddlTBRegimen").trigger('change.select2');
 
-    $("#ddlRxDuration").select2("val", "0");
-    $("#ddlRxDuration").trigger('change.select2');
+    //$("#ddlRxDuration").select2("val", "0");
+    //$("#ddlRxDuration").trigger('change.select2');
 
-    $("#dtTBStartDate").datepicker('setDate', "");
+    //$("#dtTBStartDate").datepicker('setDate', "");
 
     if ($("#ddlTbFindings").select2('data').length > 0) {
         var theID = $("#ddlTbFindings").select2('data')[0].id;
@@ -278,8 +310,8 @@ function DisplayTBContactScreenedDiv(id, txt) {
             $("#chkTBContactsScreened").bootstrapSwitch('state', false);
             $("#divTBContactScreened").css("visibility", "hidden");
             $("#divTBContactScreened").css("display", "none");
-            $("#divTBContactScreenedDetails").css("visibility", "hidden");
-            $("#divTBContactScreenedDetails").css("display", "none");
+            //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+            //$("#divTBContactScreenedDetails").css("display", "none");
         }
         else if (theSelection.toLowerCase() == "presumptive tb") {
             $("#div1IPT").css("visibility", "hidden");
@@ -292,12 +324,18 @@ function DisplayTBContactScreenedDiv(id, txt) {
             $("#chkTBContactsScreened").bootstrapSwitch('state', false);
             $("#divTBContactScreened").css("visibility", "hidden");
             $("#divTBContactScreened").css("display", "none");
-            $("#divTBContactScreenedDetails").css("visibility", "hidden");
-            $("#divTBContactScreenedDetails").css("display", "none");
+            //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+            //$("#divTBContactScreenedDetails").css("display", "none");
         }
         else if (theSelection.toLowerCase() == "client on tb treatment") {
             $("#div1IPT").css("visibility", "visible");
             $("#div1IPT").css("display", "block");
+
+            if (flagTBContactsScreened == 1) {
+                $("#chkTBContactsScreened").bootstrapSwitch('state', true);
+            } else {
+                $("#chkTBContactsScreened").bootstrapSwitch('state', false);
+            }
 
             $("#divAvailableTBResults").css("visibility", "visible");
             $("#divAvailableTBResults").css("display", "block");
@@ -317,8 +355,8 @@ function DisplayTBContactScreenedDiv(id, txt) {
             $("#chkTBContactsScreened").bootstrapSwitch('state', false);
             $("#divTBContactScreened").css("visibility", "hidden");
             $("#divTBContactScreened").css("display", "none");
-            $("#divTBContactScreenedDetails").css("visibility", "hidden");
-            $("#divTBContactScreenedDetails").css("display", "none");
+            //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+            //$("#divTBContactScreenedDetails").css("display", "none");
         }
         else {
             $("#div1IPT").css("visibility", "hidden");
@@ -331,8 +369,8 @@ function DisplayTBContactScreenedDiv(id, txt) {
             $("#chkTBContactsScreened").bootstrapSwitch('state', false);
             $("#divTBContactScreened").css("visibility", "hidden");
             $("#divTBContactScreened").css("display", "none");
-            $("#divTBContactScreenedDetails").css("visibility", "hidden");
-            $("#divTBContactScreenedDetails").css("display", "none");
+            //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+            //$("#divTBContactScreenedDetails").css("display", "none");
         }
     }
 }
@@ -351,7 +389,7 @@ function DisplayIPTDiv(ctrlName) {
     //$("#dtIPTStartDate").datepicker('setDate', "");
 
     //$("#dtIPTEndDate").datepicker('setDate', "");
-    debugger;
+    //debugger;
     if (ctrlName.parentNode.parentNode.innerText.trim().toLowerCase() == "start ipt") {
 
         $("#divIPTStartDate").css("visibility", "visible");
@@ -541,16 +579,18 @@ function BindScreeningData(responseDB) {
         disabled = true;
     }
     $.each(data, function (index, value) {
-        strIPT += "<label style=\"margin-right: 20px;\">";
-        strIPT += "     <input type=\"radio\" id=\"rb" + value.DId + "\" name=\"rbIPT\" class=\"flat-red\"";
-        if (value.DN !== "Start IPT" && value.DN !== "Declined IPT") {
-            if (disabled) {
-                strIPT += " disabled= \"disabled\"";
+        if (value.DN.toLowerCase() !== "defaulted") {
+            strIPT += "<label style=\"margin-right: 20px;\">";
+            strIPT += "     <input type=\"radio\" id=\"rb" + value.DId + "\" name=\"rbIPT\" class=\"flat-red\"";
+            if (value.DN !== "Start IPT" && value.DN !== "Declined IPT") {
+                if (disabled) {
+                    strIPT += " disabled= \"disabled\"";
+                }
             }
+            strIPT += "     value=\"" + value.DId + "\" />&nbsp;";
+            strIPT += value.DN;
+            strIPT += "</label>";
         }
-        strIPT += "     value=\"" + value.DId + "\" />&nbsp;";
-        strIPT += value.DN;
-        strIPT += "</label>";
     });
     $("#divIPT").append(strIPT);
     $('#divIPT input[type="radio"]').iCheck({
@@ -687,7 +727,7 @@ function BindScreeningData(responseDB) {
 
 
     $("#ddlTBAssessment").select2().on('change', function (e) {
-        debugger;
+        //debugger;
         var $this = $(this);
         if (jQuery.isEmptyObject($this) == false) {
             console.log($this.val());
@@ -732,12 +772,14 @@ function BindScreeningData(responseDB) {
         $("#ddlTbFindings").select2().val("0").trigger("change");
     }
 
+    debugger;
+
     $("#txtTBTreatment").val(responseDB.TBT);
-    $("#chkTBContactsScreened").bootstrapSwitch('state', false);
-    $("#divTBContactScreened").css("visibility", "hidden");
-    $("#divTBContactScreened").css("display", "none");
-    $("#divTBContactScreenedDetails").css("visibility", "hidden");
-    $("#divTBContactScreenedDetails").css("display", "none");
+    //$("#chkTBContactsScreened").bootstrapSwitch('state', false);
+    //$("#divTBContactScreened").css("visibility", "hidden");
+    //$("#divTBContactScreened").css("display", "none");
+    //$("#divTBContactScreenedDetails").css("visibility", "hidden");
+    //$("#divTBContactScreenedDetails").css("display", "none");
 
     $("#ddlTBRegimen").select2().val(responseDB.TBR).trigger("change");
     $("#ddlRxDuration").select2().val(responseDB.RxD).trigger("change");
@@ -750,16 +792,20 @@ function BindScreeningData(responseDB) {
     $("#ddlIPTContraindication").select2().val(responseDB.IPTC).trigger("change");
     $("#ddlIPTDiscontinued").select2().val(responseDB.IPTD).trigger("change");
 
+    flagTBContactsScreened = responseDB.IsTBCS;
     if (jQuery.isEmptyObject(responseDB.IsTBCS) == false) {
         var theID = $("#ddlTbFindings").select2('data')[0].id;
         var theSelection = $("#ddlTbFindings").select2('data')[0].text;
-        if (theSelection.toLowerCase() == "tb rx") {
-            $("#chkTBContactsScreened").bootstrapSwitch('state', true);
-        }
-        else {
-            $("#chkTBContactsScreened").bootstrapSwitch('state', false);
+
+        if (responseDB.IsTBCS == "1") {
+            if (theSelection.toLowerCase().indexOf("tb") != -1) {
+                $("#chkTBContactsScreened").bootstrapSwitch('state', true);
+            } else {
+                $("#chkTBContactsScreened").bootstrapSwitch('state', false);
+            }
         }
     }
+
     CheckDatenAssign(responseDB.TBSD, "dtTBStartDate", false);
     CheckDatenAssign(responseDB.SSD, "dtSputumSmear", false);
     CheckDatenAssign(responseDB.GED, "dtGeneExpert", false);
@@ -780,12 +826,44 @@ function BindScreeningData(responseDB) {
     else {
         $("#chkEligibleForIPT").bootstrapSwitch('state', false);
     }
+
+    if (responseDB.IPTWPYCU == 0) {
+        $("#chkYellowColoredUrine").bootstrapSwitch('state', false);
+    }
+    else {
+        $("#chkYellowColoredUrine").bootstrapSwitch('state', true);
+    }
+
+    if (responseDB.IPTWPNB == 0) {
+        $("#chkNumbnessBurning").bootstrapSwitch('state', false);
+    }
+    else {
+        $("#chkNumbnessBurning").bootstrapSwitch('state', true);
+    }
+
+    if (responseDB.IPTWPYE == 0) {
+        $("#chkYellownessEyes").bootstrapSwitch('state', false);
+    }
+    else {
+        $("#chkYellownessEyes").bootstrapSwitch('state', true);
+    }
+
+    if (responseDB.IPTWPT == 0) {
+        $("#chkTenderness").bootstrapSwitch('state', false);
+    }
+    else {
+        $("#chkTenderness").bootstrapSwitch('state', true);
+    }
+
+    $("#txtIPTContraindication").val(responseDB.ORDec);
+    $("#txtIPTDiscontinued").val(responseDB.ORDis);
+
     EnableDisableIPTDIV(GetSwitchValue("chkEligibleForIPT"));
 
     //    $("input:radio[name=rbIPT][value=" + responseDB.IPT + "]").attr('checked', 'checked');
     //    $("input:radio[name=rbIPT]").iCheck('update');
 
-    debugger;
+    //debugger;
     var dataIPT = $.grep(response, function (e) { return e.CN == "IPT"; });
     arrDataIPT = $.grep(response, function (e) { return e.CN == "IPT"; });
     var startIPTID = 0, continueIPT = 0;
@@ -996,6 +1074,12 @@ function PrepareScreeningData() {
 
     var chkEligibleForIPT = GetSwitchValue("chkEligibleForIPT");
 
+    var chkYellowColoredUrine = GetSwitchValue("chkYellowColoredUrine");
+    var chkNumbnessBurning = GetSwitchValue("chkNumbnessBurning");
+    var chkYellownessEyes = GetSwitchValue("chkYellownessEyes");
+    var chkTenderness = GetSwitchValue("chkTenderness");
+
+
     var rowAlcoholDepressionScreening = PrepareAlcoholDepressionScreeningData();
 
     if (txtTBTreatment.length == 0) {
@@ -1030,7 +1114,13 @@ function PrepareScreeningData() {
         rbCX: uChestXray,
         rbTB: uTissueBiopsy,
         ADS: rowAlcoholDepressionScreening,
-        EFIPT: chkEligibleForIPT
+        EFIPT: chkEligibleForIPT,
+        IPTWPYCU: chkYellowColoredUrine,
+        IPTWPNB: chkNumbnessBurning,
+        IPTWPYE: chkYellownessEyes,
+        IPTWPT: chkTenderness,
+        ORDec: $("#txtIPTContraindication").val(),
+        ORDis: $("#txtIPTDiscontinued").val()
     });
 
     return rowScreeningData;
@@ -1065,7 +1155,8 @@ function CheckScreeningBlankValues() {
 
     errorMsg = '';
     var errorField = '';
-    debugger;
+    var data;
+    //debugger;
     var rbIPT = $("input:radio[name=rbIPT]:checked").val();
     var uIPT = (rbIPT === undefined) ? 0 : rbIPT;
     if (uIPT > 0) {
@@ -1087,14 +1178,15 @@ function CheckScreeningBlankValues() {
                 }
                 errorField += 'IPT End Date ';
             }
-            var ddlIPTAdherence = $("#ddlIPTAdherence").select2("val");
+
+            /* var ddlIPTAdherence = $("#ddlIPTAdherence").select2("val");
 
             if (ddlIPTAdherence == null) {
-                if (errorField.length > 1) {
-                    errorField += ', ';
-                }
-                errorField += 'IPT Adherence ';
+            if (errorField.length > 1) {
+            errorField += ', ';
             }
+            errorField += 'IPT Adherence ';
+            }*/
 
         }
         else if (name.toLowerCase() == "declined ipt") {
@@ -1107,6 +1199,17 @@ function CheckScreeningBlankValues() {
                 }
                 errorField += 'IPT Contraindication ';
             }
+            else {
+                data = $("#ddlIPTContraindication").select2('data')[0];
+                if (data.text.toLowerCase().indexOf("other") >= 0) {
+                    if ($("#txtIPTContraindication").val().length == 0) {
+                        if (errorField.length > 1) {
+                            errorField += ', ';
+                        }
+                        errorField += 'IPT Contraindication Other Reason ';
+                    }
+                }
+            }
         }
         else if (name.toLowerCase() == "discontinued") {
             //Discontinued
@@ -1118,6 +1221,17 @@ function CheckScreeningBlankValues() {
                     errorField += ', ';
                 }
                 errorField += 'IPT Discontinued ';
+            }
+            else {
+                data = $("#ddlIPTDiscontinued").select2('data')[0];
+                if (data.text.toLowerCase().indexOf("other") >= 0) {
+                    if ($("#txtIPTDiscontinued").val().length == 0) {
+                        if (errorField.length > 1) {
+                            errorField += ', ';
+                        }
+                        errorField += 'IPT Discontinued Other Reason ';
+                    }
+                }
             }
         }
     }

@@ -366,8 +366,8 @@ public partial class frmLogin : BasePage
                 theThread.Start(false);
                 Init_Form();
 
-                //if (ConfigurationManager.AppSettings["TestingBuildDate"] != null)
-                //    lblTestRelDate.Text = "Testing build release date: " + ConfigurationManager.AppSettings["TestingBuildDate"].ToString();
+                if (ConfigurationManager.AppSettings["TestingBuildDate"] != null)
+                    lblTestRelDate.Text = "Testing build release date: " + ConfigurationManager.AppSettings["TestingBuildDate"].ToString();
             }
             //CLogger.WriteLog(ELogLevel.INFO, "Form: frmLogin, Method: Page_Load() end!");
         }
@@ -394,7 +394,11 @@ public partial class frmLogin : BasePage
             //CLogger.WriteLog(ELogLevel.INFO, "Form: frmLogin, Method: btnLogin_Click() begin!");
             LoginManager = (IUser)ObjectFactory.CreateInstance("BusinessProcess.Security.BUser, BusinessProcess.Security");
             if (object.Equals(Session["SystemId"], null))
-                Session["SystemId"] = "1";
+            {
+                if (ConfigurationManager.AppSettings["SystemId"] != null)
+                    Session["SystemId"] = ConfigurationManager.AppSettings["SystemId"].ToString();
+
+            }
 
             DataSet theDS = LoginManager.GetUserCredentials(txtuname.Text.Trim(), Convert.ToInt32(ddLocation.SelectedValue), Convert.ToInt32(Session["SystemId"]));
             if (theDS.Tables.Count > 0)

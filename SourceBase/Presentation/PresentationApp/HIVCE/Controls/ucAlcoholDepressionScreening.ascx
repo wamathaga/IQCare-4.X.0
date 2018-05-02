@@ -836,6 +836,6 @@
     <div class="box-body">
         <!-- /.box sub box level 1 -->
         Notes:
-        <textarea class="form-control" rows="3" placeholder="Notes" id="txtNotes"></textarea>
+        <textarea class="form-control" rows="3" placeholder="Notes" id="txtNotes" maxlength="1000"></textarea>
     </div>
 </div>

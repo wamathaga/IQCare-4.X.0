@@ -318,7 +318,39 @@ namespace HIVCE.BusinessLayer
                                           }).ToList();
                 }
 
+                /* Appointment Details */
+                if (data.Tables[19].Rows.Count > 0)
+                {
+                    DataTable dtRow = new DataTable();
+                    dtRow = data.Tables[19];
 
+                    ce.AppDate = string.IsNullOrEmpty(dtRow.Rows[0]["AppDate"].ToString()) == false ? Convert.ToDateTime(dtRow.Rows[0]["AppDate"].ToString()) : (DateTime?)null;
+                    ce.AppReason = string.IsNullOrEmpty(dtRow.Rows[0]["AppReason"].ToString()) == false ? dtRow.Rows[0]["AppReason"].ToString() : string.Empty;
+                }
+
+                /* PatientAdherence */
+                if (data.Tables[20].Rows.Count > 0)
+                {
+                    DataTable dtRow = new DataTable();
+                    dtRow = data.Tables[20];
+                    ce.MgtSignature = string.IsNullOrEmpty(dtRow.Rows[0]["Signature"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["Signature"].ToString()) : 0;
+                }
+
+                /* Purpose */
+                if (data.Tables[21].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[21].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("ID"),
+                               DeCodeName = dt.Field<string>("NAME"),
+                               CodeName = "PUR"
+                           }).ToList();
+
+                    ce.Purpose.AddRange(lst);
+                }
             }
             catch (Exception ex)
             {
@@ -1176,6 +1208,13 @@ namespace HIVCE.BusinessLayer
 
                         dataSC.EligibleForIPT = string.IsNullOrEmpty(row["EligibleForIPT"].ToString()) == false ? Convert.ToInt32(row["EligibleForIPT"].ToString()) : 0;
 
+                        dataSC.IPTWPYellowColoredUrine = string.IsNullOrEmpty(row["IPTWPYellowColoredUrine"].ToString()) == false ? Convert.ToInt32(row["IPTWPYellowColoredUrine"].ToString()) : 0;
+                        dataSC.IPTWPNumbnessBurning = string.IsNullOrEmpty(row["IPTWPNumbnessBurning"].ToString()) == false ? Convert.ToInt32(row["IPTWPNumbnessBurning"].ToString()) : 0;
+                        dataSC.IPTWPYellownessEyes = string.IsNullOrEmpty(row["IPTWPYellownessEyes"].ToString()) == false ? Convert.ToInt32(row["IPTWPYellownessEyes"].ToString()) : 0;
+                        dataSC.IPTWPTenderness = string.IsNullOrEmpty(row["IPTWPTenderness"].ToString()) == false ? Convert.ToInt32(row["IPTWPTenderness"].ToString()) : 0;
+
+                        dataSC.OtherReasonDeclinedIPT = string.IsNullOrEmpty(row["OtherReasonDeclinedIPT"].ToString()) == false ? row["OtherReasonDeclinedIPT"].ToString() : "";
+                        dataSC.OtherReasonDiscontinuedIPT = string.IsNullOrEmpty(row["OtherReasonDiscontinuedIPT"].ToString()) == false ? row["OtherReasonDiscontinuedIPT"].ToString() : "";
                     }
                 }
 
@@ -1276,6 +1315,12 @@ namespace HIVCE.BusinessLayer
                                              {
                                                  id = dt.Field<int>("ValueID")
                                              }).ToList();
+
+                    dataSC.GenitoUrinary = (from dt in data.Tables[1].AsEnumerable().Where(o => o.Field<string>("FieldName") == "GenitalUrinaryConditions").ToList()
+                                            select new DBMultiSelectSelcted()
+                                            {
+                                                id = dt.Field<int>("ValueID")
+                                            }).ToList();
 
                     var whoInClause = new string[] { "WHOStageIConditions", "WHOStageIIConditions", "WHOStageIIICoditions", "WHOStageIVConditions" };
 
@@ -1662,6 +1707,88 @@ namespace HIVCE.BusinessLayer
                     mgt.RegimenVisitId = string.IsNullOrEmpty(dtRow.Rows[0]["Visit_Pk"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["Visit_Pk"].ToString()) : 0;
                 }
 
+                /* Patient Classification */
+                if (data.Tables[21].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[21].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("ID"),
+                               DeCodeName = dt.Field<string>("NAME"),
+                               CodeName = "Classification"
+                           }).ToList();
+                    mgt.PatientClassifications.AddRange(lst);
+
+                }
+
+                /* ART Refill Model */
+                if (data.Tables[22].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[22].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("ID"),
+                               DeCodeName = dt.Field<string>("NAME"),
+                               CodeName = "ARTRM"
+                           }).ToList();
+                    mgt.ARTRefillModels.AddRange(lst);
+
+                }
+
+                /* RegimenID */
+                if (data.Tables[23].Rows.Count > 0)
+                {
+                    DataTable dtRow = new DataTable();
+                    dtRow = data.Tables[23];
+
+                    mgt.PatientClassification = string.IsNullOrEmpty(dtRow.Rows[0]["PatientClassification"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["PatientClassification"].ToString()) : 0;
+                    mgt.IsEnrolDifferenciatedCare = string.IsNullOrEmpty(dtRow.Rows[0]["IsEnrolDifferenciatedCare"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["IsEnrolDifferenciatedCare"]) : 0;
+                    mgt.ARTRefillModel = string.IsNullOrEmpty(dtRow.Rows[0]["ARTRefillModel"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["ARTRefillModel"].ToString()) : 0;
+                }
+
+                /* Appointments*/
+                if (data.Tables[24].Rows.Count > 0)
+                {
+
+                    mgt.Appointments = new List<Appointment>();
+
+                    int id = 1;
+                    foreach (DataRow row in data.Tables[24].Rows)
+                    {
+                        Appointment app = new Appointment();
+                        app.Id = id;
+                        app.Ptn_pk = Convert.ToInt32(row["Ptn_Pk"].ToString());
+
+                        app.LocationId = Convert.ToInt32(row["LocationId"].ToString());
+                        app.Visit_Id = Convert.ToInt32(row["Visit_pk"].ToString());
+
+                        app.Status = row["STATUS"].ToString();
+
+                        app.AppointmentDate = string.IsNullOrEmpty(row["Appdate"].ToString()) == false ? Convert.ToDateTime(row["Appdate"].ToString()) : (DateTime?)null;
+                        app.Purpose = string.IsNullOrEmpty(row["PurPoseID"].ToString()) == false
+                            ? Convert.ToInt32(row["PurPoseID"].ToString())
+                            : (int?)null;
+                        app.PurposeName = row["Purpose"].ToString();
+                        app.AppointmentType = string.IsNullOrEmpty(row["AppointmentType"].ToString()) == false
+                            ? Convert.ToInt32(row["AppointmentType"].ToString())
+                            : (int?)null;
+                        app.ServiceArea = string.IsNullOrEmpty(row["ServiceArea"].ToString()) == false
+                            ? Convert.ToInt32(row["ServiceArea"].ToString())
+                            : (int?)null;
+                        app.ServiceAreaName = row["ServiceAreaName"].ToString();
+                        app.Description = row["Description"].ToString();
+
+                        mgt.Appointments.Add(app);
+                        id++;
+                    }
+
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -1701,6 +1828,39 @@ namespace HIVCE.BusinessLayer
             }
             return flag;
         }
+
+        public bool SaveUpdateTSTriage(TSTriage obj, int userId, out int visitId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "BLClinicalEncounter.SaveUpdateTSTriage() method called");
+            bool flag = true;
+            visitId = 0;
+            try
+            {
+                //HIVCE.Common.Entities.Triage obj = SerializerUtil.ConverToObject<HIVCE.Common.Entities.Triage>(strObj);
+
+                if (obj.Ptn_pk != 0)
+                {
+                    dbLayer = new DBClinicalEncounter();
+                    visitId = dbLayer.SaveUpdateTSTriage(obj, userId);
+                    if (visitId > 0)
+                        flag = true;
+                    else
+                        flag = false;
+                }
+                else
+                {
+                    throw new Exception("Patient id can not be 0");
+                }
+            }
+            catch (Exception ex)
+            {
+                flag = false;
+                CLogger.WriteLog(ELogLevel.ERROR, "BLClinicalEncounter.SaveUpdateTriage() Method:" + ex.ToString());
+                throw ex;
+            }
+            return flag;
+        }
+
 
         public bool SaveUpdatePresentingComplaintsData(PresentingComplaint obj, int userId, int locationId)
         {
@@ -1821,6 +1981,442 @@ namespace HIVCE.BusinessLayer
                 CLogger.WriteLog(ELogLevel.ERROR, "BLClinicalEncounter.SaveUpdateManagementxData() Method:" + ex.ToString());
             }
             return flag;
+        }
+
+        public RefillEncounter GetRefillEncounter(int ptn_pk, int visitPK, int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "BLClinicalEncounter.GetData() method called");
+            RefillEncounter ce = new RefillEncounter();
+            ce.VisitTypes = new List<CodeDeCodeTables>();
+            ce.OrdVisit = new OrdVisit();
+            ce.PatientVitals = new PatientVitals();
+            //string result = string.Empty;
+
+            try
+            {
+                dbLayer = new DBClinicalEncounter();
+                DataSet data = dbLayer.GetRefillEncounter(ptn_pk, visitPK, locationId);
+
+                /* Visit Types*/
+                if (data.Tables[0].Rows.Count > 0)
+                {
+                    ce.VisitTypes = (from dt in data.Tables[0].AsEnumerable()
+                                     select new CodeDeCodeTables()
+                                     {
+                                         CodeId = dt.Field<int>("codeid"),
+                                         CodeName = dt.Field<string>("VisitType"),
+                                         DeCodeId = dt.Field<int>("Id"),
+                                         DeCodeName = dt.Field<string>("NAME")
+                                     }).ToList();
+                }
+
+
+                /* Ord Visit */
+                if (data.Tables[1].Rows.Count > 0)
+                {
+                    ce.OrdVisit = new OrdVisit();
+                    foreach (DataRow row in data.Tables[1].Rows)
+                    {
+                        ce.OrdVisit.Visit_Id = Convert.ToInt32(row["Visit_Id"]);
+                        ce.OrdVisit.Ptn_Pk = Convert.ToInt32(row["Ptn_Pk"]);
+                        ce.OrdVisit.LocationId = Convert.ToInt32(row["LocationID"]);
+                        ce.OrdVisit.VisitDate = string.IsNullOrEmpty(row["visitdate"].ToString()) == false ? Convert.ToDateTime(row["visitdate"].ToString()) : (DateTime?)null;
+                        ce.OrdVisit.VisitTypeId = Convert.ToInt32(row["visittype"]);
+                        ce.OrdVisit.CreatedDate = string.IsNullOrEmpty(row["CreateDate"].ToString()) == false ? Convert.ToDateTime(row["CreateDate"].ToString()) : (DateTime?)null;
+                        ce.OrdVisit.UpdatedDate = string.IsNullOrEmpty(row["updatedate"].ToString()) == false ? Convert.ToDateTime(row["updatedate"].ToString()) : (DateTime?)null;
+                        ce.OrdVisit.TypeOfVisit = Convert.ToInt32(row["TypeOfVisit"]);
+                        ce.OrdVisit.Signature = Convert.ToInt32(row["Signature"]);
+                    }
+                }
+
+                /* Patient Vitals */
+                if (data.Tables[2].Rows.Count > 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt = data.Tables[2];
+
+                    ce.PatientVitals = new PatientVitals();
+
+                    ce.PatientVitals.Visit_Id = Convert.ToInt32(dt.Rows[0]["visit_pk"].ToString());
+                    ce.PatientVitals.BPDiastolic = dt.Rows[0]["BPDiastolic"].ToString();
+                    ce.PatientVitals.BPSystolic = dt.Rows[0]["BPSystolic"].ToString();
+                    ce.PatientVitals.TEMP = dt.Rows[0]["TEMP"].ToString();
+                    ce.PatientVitals.RR = dt.Rows[0]["RR"].ToString();
+                    ce.PatientVitals.HR = dt.Rows[0]["HR"].ToString();
+                    ce.PatientVitals.HeadCircumference = dt.Rows[0]["Headcircumference"].ToString();
+                    ce.PatientVitals.Height = dt.Rows[0]["height"].ToString();
+                    ce.PatientVitals.Weight = dt.Rows[0]["weight"].ToString();
+                    ce.PatientVitals.MUAC = dt.Rows[0]["MUAC"].ToString();
+                    ce.PatientVitals.Weightforage = dt.Rows[0]["weightforage"].ToString();
+                    ce.PatientVitals.Weightforheight = dt.Rows[0]["weightforheight"].ToString();
+                    ce.PatientVitals.BMIz = dt.Rows[0]["BMIz"].ToString();
+                    ce.PatientVitals.NurseComments = dt.Rows[0]["NurseComments"].ToString();
+
+
+                }
+
+
+                if (data.Tables[3].Rows.Count > 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt = data.Tables[3];
+                    ce.PatientVitals.SPO2 = dt.Rows[0]["SPO2"].ToString();
+                }
+
+
+                /* Regimen Codes */
+                if (data.Tables[4].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[4].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("RegimenID"),
+                               DeCodeName = dt.Field<string>("RegimenValue"),
+                               CodeName = "RegimenCodes"
+                           }).ToList();
+                    ce.RegimenCodes.AddRange(lst);
+
+                }
+
+                /* Presenting Complaints*/
+                if (data.Tables[5].Rows.Count > 0)
+                {
+                    ce.PresentingComplaints = (from dt in data.Tables[5].AsEnumerable()
+                                               select new CodeDeCodeTables()
+                                               {
+                                                   DeCodeId = dt.Field<int>("Id"),
+                                                   DeCodeName = dt.Field<string>("NAME")
+                                               }).ToList();
+                }
+
+                /* Pregnancy status */
+                if (data.Tables[6].Rows.Count > 0)
+                {
+                    ce.PregnancyStatus = (from dt in data.Tables[6].AsEnumerable()
+                                          select new CodeDeCodeTables()
+                                          {
+                                              DeCodeId = dt.Field<int>("Id"),
+                                              DeCodeName = dt.Field<string>("NAME")
+                                          }).ToList();
+                }
+
+                /* Family Planning Methods */
+                if (data.Tables[7].Rows.Count > 0)
+                {
+                    ce.FamilyPlanningMethods = (from dt in data.Tables[7].AsEnumerable()
+                                                select new CodeDeCodeTables()
+                                                {
+                                                    DeCodeId = dt.Field<int>("Id"),
+                                                    DeCodeName = dt.Field<string>("NAME")
+                                                }).ToList();
+                }
+
+                /* Reason Not on Family Planning */
+                if (data.Tables[8].Rows.Count > 0)
+                {
+                    ce.ReasonNotFamilyPlanning = (from dt in data.Tables[8].AsEnumerable()
+                                                  select new CodeDeCodeTables()
+                                                  {
+                                                      DeCodeId = dt.Field<int>("Id"),
+                                                      DeCodeName = dt.Field<string>("NAME")
+                                                  }).ToList();
+                }
+
+                /* Prevention with positives (PwP) */
+                if (data.Tables[9].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[9].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("ID"),
+                               DeCodeName = dt.Field<string>("NAME"),
+                               CodeName = "PWP"
+                           }).ToList();
+                    ce.DropdownValues.AddRange(lst);
+                }
+
+                /* Purpose */
+                if (data.Tables[10].Rows.Count > 0)
+                {
+                    List<CodeDeCodeTables> lst = new List<CodeDeCodeTables>();
+
+                    lst = (from dt in data.Tables[10].AsEnumerable()
+                           select new CodeDeCodeTables()
+                           {
+                               DeCodeId = dt.Field<int>("ID"),
+                               DeCodeName = dt.Field<string>("NAME"),
+                               CodeName = "PUR"
+                           }).ToList();
+
+                    ce.Purpose.AddRange(lst);
+                }
+
+                /* Appointments*/
+                if (data.Tables[11].Rows.Count > 0)
+                {
+
+                    ce.Appointments = new List<Appointment>();
+
+                    int id = 1;
+                    foreach (DataRow row in data.Tables[11].Rows)
+                    {
+                        Appointment app = new Appointment();
+                        app.Id = id;
+                        app.Ptn_pk = Convert.ToInt32(row["Ptn_Pk"].ToString());
+
+                        app.LocationId = Convert.ToInt32(row["LocationId"].ToString());
+                        app.Visit_Id = Convert.ToInt32(row["Visit_pk"].ToString());
+
+                        app.Status = row["STATUS"].ToString();
+
+                        app.AppointmentDate = string.IsNullOrEmpty(row["Appdate"].ToString()) == false ? Convert.ToDateTime(row["Appdate"].ToString()) : (DateTime?)null;
+                        app.Purpose = string.IsNullOrEmpty(row["PurPoseID"].ToString()) == false
+                            ? Convert.ToInt32(row["PurPoseID"].ToString())
+                            : (int?)null;
+                        app.PurposeName = row["Purpose"].ToString();
+                        app.AppointmentType = string.IsNullOrEmpty(row["AppointmentType"].ToString()) == false
+                            ? Convert.ToInt32(row["AppointmentType"].ToString())
+                            : (int?)null;
+                        app.ServiceArea = string.IsNullOrEmpty(row["ServiceArea"].ToString()) == false
+                            ? Convert.ToInt32(row["ServiceArea"].ToString())
+                            : (int?)null;
+                        app.ServiceAreaName = row["ServiceAreaName"].ToString();
+                        app.Description = row["Description"].ToString();
+
+                        ce.Appointments.Add(app);
+                        id++;
+                    }
+
+                }
+
+                /* RegimenID */
+                if (data.Tables[12].Rows.Count > 0)
+                {
+                    DataTable dtRow = new DataTable();
+                    dtRow = data.Tables[12];
+
+                    ce.RegimenCodeValue = string.IsNullOrEmpty(dtRow.Rows[0]["RegimenId"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["RegimenId"].ToString()) : 0;
+                    ce.RegimenVisitId = string.IsNullOrEmpty(dtRow.Rows[0]["Visit_Pk"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["Visit_Pk"].ToString()) : 0;
+                }
+
+                /* PatientAdherence */
+                if (data.Tables[13].Rows.Count > 0)
+                {
+                    DataTable dtRow = new DataTable();
+                    dtRow = data.Tables[13];
+                    ce.IsForgotMed = string.IsNullOrEmpty(dtRow.Rows[0]["ForgetMedicineSinceLastVisit"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["ForgetMedicineSinceLastVisit"].ToString()) : 0;
+                    ce.Drugs = string.IsNullOrEmpty(dtRow.Rows[0]["Drugs"].ToString()) == false ? dtRow.Rows[0]["Drugs"].ToString() : "";
+                    ce.NoMissedDoses = string.IsNullOrEmpty(dtRow.Rows[0]["NoMissedDoses"].ToString()) == false ? Convert.ToInt32(dtRow.Rows[0]["NoMissedDoses"].ToString()) : 0;
+                }
+
+                DataTable dtData = new DataTable();
+                //
+                if (data.Tables[14].Rows.Count > 0)
+                {
+                    dtData = data.Tables[14];
+                    if (dtData.Rows[0]["LMP"].ToString().Length > 0)
+                    {
+                        ce.LMP = Convert.ToDateTime(dtData.Rows[0]["LMP"].ToString());
+                    }
+                    if (dtData.Rows[0]["Pregnant"].ToString().Length > 0)
+                    {
+                        ce.Pregnant = Convert.ToInt32(dtData.Rows[0]["Pregnant"].ToString());
+                    }
+
+                }
+
+                if (data.Tables[15].Rows.Count > 0)
+                {
+                    dtData = data.Tables[15];
+                    ce.BreastStatus = Convert.ToInt32(dtData.Rows[0]["BreastStatus"]);
+                }
+                if (data.Tables[16].Rows.Count > 0)
+                {
+                    dtData = data.Tables[16];
+                    if (dtData.Rows[0]["FamilyPlanningMethod"].ToString().Length > 0)
+                    {
+                        ce.FamilyPlanningMethod = Convert.ToInt32(dtData.Rows[0]["FamilyPlanningMethod"].ToString());
+                    }
+                    if (dtData.Rows[0]["FamilyPlanningStatus"].ToString().Length > 0)
+                    {
+                        ce.FamilyPlanningStatus = Convert.ToInt32(dtData.Rows[0]["FamilyPlanningStatus"].ToString());
+                    }
+                    if (dtData.Rows[0]["NoFamilyPlanning"].ToString().Length > 0)
+                    {
+                        ce.NoFamilyPlanning = Convert.ToInt32(dtData.Rows[0]["NoFamilyPlanning"].ToString());
+                    }
+                }
+
+                if (data.Tables[17].Rows.Count > 0)
+                {
+
+                    DataView theCodeDV = new DataView(data.Tables[17]);
+                    theCodeDV.RowFilter = "FieldName = 'presentingcomplaints'";
+                    DataTable selectedTable = (DataTable)SerializerUtil.CreateTableFromDataView(theCodeDV);
+
+                    if (selectedTable.Rows.Count > 0)
+                    {
+                        ce.PCT = (from dt in selectedTable.AsEnumerable()
+                                  select new MultiSelectTable()
+                                  {
+                                      Ptn_pk = dt.Field<int>("Ptn_pk"),
+                                      Visit_Pk = dt.Field<int>("Visit_Pk"),
+                                      ValueID = dt.Field<int>("ValueID"),
+                                      FieldName = dt.Field<string>("FieldName"),
+                                      OnSetDate = dt.Field<DateTime?>("OnSetDate"),
+                                      NumericField = dt.Field<int>("NumericField")
+                                  }).ToList();
+                    }
+                }
+
+                /* PWP List Details */
+                if (data.Tables[18].Rows.Count > 0)
+                {
+                    ce.PWPList = (from dt in data.Tables[18].AsEnumerable()
+                                  select new DBMultiSelectSelcted()
+                                  {
+                                      id = dt.Field<int>("ID")
+                                  }).ToList();
+                }
+
+                /* ARVSideEffects */
+                if (data.Tables[19].Rows.Count > 0)
+                {
+                    ce.AreaReminders = string.IsNullOrEmpty(data.Tables[19].Rows[0]["WorkUpPlan"].ToString()) == false ? data.Tables[19].Rows[0]["WorkUpPlan"].ToString() : string.Empty;
+                    ce.OtherPresentingComplaints = data.Tables[19].Rows[0]["OtherPresentingComplaints"].ToString();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                CLogger.WriteLog(ELogLevel.ERROR, "BLClinicalEncounter.GetData() Method:" + ex.ToString());
+            }
+            return ce;
+        }
+
+        public bool SaveRefillEncounterData(RefillEncounterDB obj, int userId, int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "BLClinicalEncounter.SaveRefillEncounterData() method called");
+            bool flag = true;
+            try
+            {
+                if (obj.Ptn_pk != 0)
+                {
+                    dbLayer = new DBClinicalEncounter();
+                    dbLayer.SaveRefillEncounterData(obj, userId, locationId);
+                }
+                else
+                {
+                    throw new Exception("Patient id can not be 0");
+                }
+            }
+            catch (Exception ex)
+            {
+                flag = false;
+                CLogger.WriteLog(ELogLevel.ERROR, "BLClinicalEncounter.SaveRefillEncounterData() Method:" + ex.ToString());
+                throw ex;
+            }
+            return flag;
+        }
+
+
+        public OIChronicDiseaseData GetOIChronicDiseaseData(int ptn_pk, int locationId)
+        {
+            CLogger.WriteLog(ELogLevel.INFO, "BLClinicalEncounter.GetOIChronicDiseaseData() method called");
+            OIChronicDiseaseData oiChronicDisease = new OIChronicDiseaseData();
+            oiChronicDisease.CDT = new List<MultiSelectTable>();
+            oiChronicDisease.WHOStages = new List<WHOStage>();
+            oiChronicDisease.ICDGridValues = new List<ICD>();
+            try
+            {
+                dbLayer = new DBClinicalEncounter();
+                DataSet data = dbLayer.GetOIChronicDiseaseData(ptn_pk, locationId);
+                DataTable dtData = new DataTable();
+                if (data.Tables[0].Rows.Count > 0)
+                {
+                    oiChronicDisease.CDT = (from dt in data.Tables[0].AsEnumerable()
+                                            select new MultiSelectTable()
+                                            {
+                                                Ptn_pk = dt.Field<int>("Ptn_pk"),
+                                                Visit_Pk = dt.Field<int>("Visit_Pk"),
+                                                ValueID = dt.Field<int>("ValueID"),
+                                                FieldName = dt.Field<string>("FieldName"),
+                                                OnSetDate = dt.Field<DateTime?>("OnSetDate"),
+                                                NumericField = dt.Field<int>("NumericField"),
+                                                ValueName = dt.Field<string>("ValueName")
+                                            }).ToList();
+
+                }
+
+                if (data.Tables[1].Rows.Count > 0)
+                {
+
+                    oiChronicDisease.WHOStages = (from dt in data.Tables[1].AsEnumerable()
+                                                  select new WHOStage()
+                                                  {
+                                                      ValueId = dt.Field<int>("ValueID"),
+                                                      FieldName = dt.Field<string>("FieldName"),
+                                                      DateField1 = dt.Field<DateTime?>("DateField1"),
+                                                      DateField2 = dt.Field<DateTime?>("DateField2"),
+                                                      ValueName = dt.Field<string>("ValueName")
+                                                  }).ToList();
+                }
+
+                if (data.Tables[2].Rows.Count > 0)
+                {
+                    dtData = data.Tables[2];
+                    if (dtData.Rows[0]["whostage"].ToString().Length > 0)
+                    {
+                        oiChronicDisease.WHOStage = string.IsNullOrEmpty(dtData.Rows[0]["whostage"].ToString()) == false ? Convert.ToInt32(dtData.Rows[0]["whostage"].ToString()) : 0;
+                    }
+                    if (dtData.Rows[0]["ValueName"].ToString().Length > 0)
+                    {
+                        oiChronicDisease.WHOStageName = dtData.Rows[0]["ValueName"].ToString();
+                    }
+                }
+
+                /* ICd GRID Data */
+                if (data.Tables[3].Rows.Count > 0)
+                {
+                    oiChronicDisease.ICDGridValues = (from dt in data.Tables[3].AsEnumerable()
+                                                      select new ICD()
+                                                      {
+                                                          ChapterId = dt.Field<int>("ChapterID"),
+                                                          ChapterName = dt.Field<string>("ChapterName"),
+                                                          BlockId = dt.Field<int>("BlockId"),
+                                                          BlockCode = dt.Field<string>("BlockCode"),
+                                                          BlockName = dt.Field<string>("BlockName"),
+                                                          SubBlockId = dt.Field<int>("SubBlockId"),
+                                                          SubBlockCode = dt.Field<string>("SubBlockCode"),
+                                                          SubBlockName = dt.Field<string>("SubBlockName"),
+                                                          ICDId = dt.Field<int>("ICDId"),
+                                                          ICDCode = dt.Field<string>("ICDCode"),
+                                                          ICDName = dt.Field<string>("ICDName")
+                                                      }).ToList();
+                }
+                /* ICd GRID Data */
+                if (data.Tables[4].Rows.Count > 0)
+                {
+                    oiChronicDisease.Collections = (from dt in data.Tables[4].AsEnumerable()
+                                                    select new CodeDeCodeTables()
+                        {
+                            CodeId = dt.Field<int>("CodeId"),
+                            CodeName = dt.Field<string>("CodeName"),
+                            DeCodeId = dt.Field<int>("DeCodeId"),
+                            DeCodeName = dt.Field<string>("DeCodeName")
+                        }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                CLogger.WriteLog(ELogLevel.ERROR, "BLClinicalEncounter.GetOIChronicDiseaseData() Method:" + ex.ToString());
+            }
+            return oiChronicDisease;
         }
     }
 }

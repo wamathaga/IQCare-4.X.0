@@ -13,6 +13,7 @@ var arrChronicDisorders = [];
 var arrPV = [];
 var chkStillActive;
 var activePage;
+var currAST;
 
 $(document).ready(function () {
     $.hivce.loader('show');
@@ -52,7 +53,17 @@ $(document).ready(function () {
         }
     });
 
-
+    $("textarea").maxlength({
+        //alwaysShow: true,
+        threshold: 50,
+        warningClass: "labelTextBox label label-success",
+        limitReachedClass: "labelTextBox label label-danger",
+        separator: ' out of ',
+        preText: 'You write ',
+        postText: ' characters.',
+        validate: true,
+        placement: 'top'
+    });
 });
 
 function GetPreviousPage(target) {
@@ -177,6 +188,7 @@ function GetTriageData() {
             }
             else {
                 if (response.AST != null) {
+                    currAST = response.AST;
                     enableAlreadySavedTabs(response.AST);
                 }
                 InitTriageControls(response);

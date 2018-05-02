@@ -68,7 +68,18 @@
     $("#dtMPR").datepicker({
         autoclose: true
     });
-    
+
+    $("textarea").maxlength({
+        alwaysShow: false,
+        threshold: 10,
+        warningClass: "labelTextBox label label-success",
+        limitReachedClass: "labelTextBox label label-danger",
+        separator: ' out of ',
+        preText: 'You write ',
+        postText: ' characters.',
+        validate: true,
+        placement: 'top'
+    });
     
     $("[name='switch-size-Art']").bootstrapSwitch();
     GetData();

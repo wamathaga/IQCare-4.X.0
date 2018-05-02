@@ -118,6 +118,7 @@ namespace Application.Common
 
         public static int Allergy = 172;
         public static int KNHPaediatricInitialEvaulation = 174;
+        public static int NAFDAC = 296;
 
         //****IQTools***////////
         public static int IQToolsReports = 225;
@@ -127,12 +128,12 @@ namespace Application.Common
         public static int BillingConfiguration = 237;
         public static int BillingReports = 238;
         public static int BillingReversal = 239;
-        public static int Consumables = 240;       
+        public static int Consumables = 240;
         public static int BillingType = 235;
-      
+
         /// The billing cheque payment
-        
-        public static int BillingChequePayment = 241;        
+
+        public static int BillingChequePayment = 241;
         /// The billing insurance payment        
         public static int BillingInsurancePayment = 242;
         /// <summary>
@@ -187,7 +188,7 @@ namespace Application.Common
         public static int NigeriaARTCareVisitation = 261;
         public static int NigeriaPaediatricIE = 262;
         public static int NigeriaARTCareSummary = 263;
-        public static int NigeriaInitialVisit = 264; 
+        public static int NigeriaInitialVisit = 264;
         #endregion
 
         #region "CustomizeList"
@@ -272,7 +273,12 @@ namespace Application.Common
         #endregion
 
         #region HIVCE
-        public static int ClinicalEncounter = 295; 
+        public static int ClinicalEncounter = 295;
+        #endregion
+
+        #region Adherence
+        public static int AdherenceBarriers = 299;
+        public static int EnhanceAdherenceCounselling = 298;
         #endregion
 
         public static string DBSecurity = "'ttwbvXWpqb5WOLfLrBgisw=='";

@@ -221,9 +221,7 @@ namespace PresentationApp.PharmacyDispense
         }
 
         protected void grdStockSummary_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-
-            
+        {            
             int storeid = Convert.ToInt32(ddlStore.SelectedValue.ToString());
             int index = Convert.ToInt32(e.CommandArgument.ToString());
             grdStockSummary.SelectedIndex = index;
@@ -239,8 +237,10 @@ namespace PresentationApp.PharmacyDispense
 
             //binCard_ModalPopupExtender.Show();
 
-            IQCareUtils.Redirect("BinCard.aspx?storeid=" + storeid.ToString() + "&itemid=" + itemid.ToString() + "&dtFrom=" + dateFrom.ToString()
-                + "&dtTo=" + dateTo.ToString(), "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");
+            IQCareUtils.Redirect("BinCard.aspx?storeid=" + storeid.ToString() + "&itemid=" + itemid.ToString() + "&dtFrom=" + dateFrom.ToString() + "&dtTo=" + dateTo.ToString(), "_blank", "toolbars=no,location=no,directories=no,dependent=yes,top=100,left=30,maximize=no,resize=no,width=1000,height=800,scrollbars=yes");            
+            //Response.Redirect("BinCard.aspx?storeid=" + storeid.ToString() + "&itemid=" + itemid.ToString() + "&dtFrom=" + dateFrom.ToString() + "&dtTo=" + dateTo.ToString(), false);
+            //Response.Redirect("../Reports/frmReportViewer.aspx?ReportName=StockSummary&storeid=" + storeid.ToString() + "&itemid=" + itemid.ToString() + "&dtFrom=" + dateFrom.ToString() + "&dtTo=" + dateTo.ToString() + "", false);
+
             //Response.Redirect("BinCard.aspx?storeid=" + storeid.ToString() + "&itemid=" + itemid.ToString() + "&dtFrom=" + dateFrom.ToString()
             //    + "&dtTo=" + dateTo.ToString() + "");
 

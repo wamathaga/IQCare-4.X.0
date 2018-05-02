@@ -1,6 +1,4 @@
-using System;
 using System.Data;
-using System.Configuration;
 
 /// <summary>
 /// Summary description for GblAdminCls

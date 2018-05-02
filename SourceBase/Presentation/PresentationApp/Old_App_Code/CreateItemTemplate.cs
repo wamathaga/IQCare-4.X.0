@@ -1,12 +1,7 @@
 using System;
 using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 public class CreateItemTemplate : ITemplate 
 {
@@ -31,7 +26,7 @@ public class CreateItemTemplate : ITemplate
         Checkbox,Textbox,Dropdown,label, label1
     }
 
-    public void InstantiateIn(System.Web.UI.Control container)
+    public void InstantiateIn(Control container)
     {
         switch (theControl)
         {
@@ -68,6 +63,7 @@ public class CreateItemTemplate : ITemplate
         }
 
     }
+
     void theDropdown_DataBinding(object sender,EventArgs e)
     {
         DropDownList theDrop = (DropDownList)sender;

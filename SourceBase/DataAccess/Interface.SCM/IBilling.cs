@@ -307,8 +307,9 @@ namespace Interface.SCM
         /// <value>
         /// The print price list XSL.
         /// </value>
-       // string PrintPriceListXSL { get;  }
-        
+        // string PrintPriceListXSL { get;  }
+
+        string GetPatientPaymentMode(int PatientId, int BillId);   
     }
 
     /// <summary>

@@ -264,7 +264,7 @@ namespace PresentationApp.Laboratory
 
                 switch (theName[0].Trim())
                 {
-                    case "Laboratory":
+                    case "Order Labs"://Change Laboratory to Order Labs by Rahmat as on 26Feb2018
                         //url = string.Format("{0}", "~/./Laboratory/frmLabOrder.aspx");
                         Session["LabOrderID"] = Session["PatientVisitId"];                        
                         #region "Old Lab Data"
@@ -384,9 +384,9 @@ namespace PresentationApp.Laboratory
                         TreeNode theFrmRoot = new TreeNode();
                         theFrmRoot.Text = theDR["FormName"].ToString() + " ( " + ((DateTime)theDR["TranDate"]).ToString(Session["AppDateFormat"].ToString()) + " )";
 
-                        if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Laboratory"))
+                        if (Convert.ToString(Session["TechnicalAreaId"]) == Convert.ToString(theDR["Module"]) || (theDR["FormName"].ToString() == "Order Labs"))//Change Laboratory to Order Labs by Rahmat as on 26Feb2018
                         {
-                            if ((theDR["FormName"].ToString() == "Laboratory"))
+                            if ((theDR["FormName"].ToString() == "Order Labs"))// Change Laboratory to Order Labs by Rahmat as on 26Feb2018
                             {
                                 if (theDR["URGENT"].ToString() == "URGENT")
                                 {
@@ -2258,7 +2258,7 @@ namespace PresentationApp.Laboratory
             int theResultRow, OrderNo;
             string FormName;
             OrderNo = Convert.ToInt32(Session["PatientVisitId"]);
-            FormName = "Laboratory";
+            FormName = "Order Labs";
 
             ILabFunctions LabResultManager = (ILabFunctions)ObjectFactory.CreateInstance("BusinessProcess.Laboratory.BLabFunctions, BusinessProcess.Laboratory");
             theResultRow = (int)LabResultManager.DeleteLabForms(FormName, OrderNo, Convert.ToInt32(Session["PatientId"]), Convert.ToInt32(Session["AppUserId"].ToString()));

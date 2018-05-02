@@ -30,13 +30,22 @@ public partial class frmAdmin_FacilitySetup {
     protected global::System.Web.UI.WebControls.TextBox txtfacilityname;
     
     /// <summary>
-    /// txtNationalId control.
+    /// lblPOS control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtNationalId;
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPOS;
+    
+    /// <summary>
+    /// txtLPTF control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtLPTF;
     
     /// <summary>
     /// lblCountry control.
@@ -57,22 +66,22 @@ public partial class frmAdmin_FacilitySetup {
     protected global::System.Web.UI.WebControls.DropDownList ddCountry;
     
     /// <summary>
-    /// lblPOS control.
+    /// lblFaclogo control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPOS;
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblFaclogo;
     
     /// <summary>
-    /// txtLPTF control.
+    /// Filelogo control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtLPTF;
+    protected global::System.Web.UI.HtmlControls.HtmlInputFile Filelogo;
     
     /// <summary>
     /// lblSatellite control.
@@ -93,22 +102,22 @@ public partial class frmAdmin_FacilitySetup {
     protected global::System.Web.UI.WebControls.TextBox txtSatelliteID;
     
     /// <summary>
-    /// lblFaclogo control.
+    /// lbltele control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblFaclogo;
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lbltele;
     
     /// <summary>
-    /// Filelogo control.
+    /// txtFactele control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlInputFile Filelogo;
+    protected global::System.Web.UI.WebControls.TextBox txtFactele;
     
     /// <summary>
     /// lblFacAddress control.
@@ -127,24 +136,6 @@ public partial class frmAdmin_FacilitySetup {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtFacAddress;
-    
-    /// <summary>
-    /// lbltele control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lbltele;
-    
-    /// <summary>
-    /// txtFactele control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtFactele;
     
     /// <summary>
     /// lblFacCell control.

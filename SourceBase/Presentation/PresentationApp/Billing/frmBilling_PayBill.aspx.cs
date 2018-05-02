@@ -481,6 +481,13 @@ namespace IQCare.Web.Billing
                             ddlPaymentMode.Items.Add(new ListItem(method.Name, method.ID.ToString()));
                         }
                     }
+
+                    //Kk - Fix specifically for mbungoni
+                    //-----------------------------------
+                    IBilling bMrg = (IBilling)ObjectFactory.CreateInstance("BusinessProcess.SCM.BBilling,BusinessProcess.SCM");
+                    ddlPaymentMode.SelectedIndex = ddlPaymentMode.Items.IndexOf(ddlPaymentMode.Items.FindByText(bMrg.GetPatientPaymentMode(PatientID, BillID)));
+                    //----------------------------------
+
                     //foreach (DataRow row in theDT.Rows)
                     //{
                     //    string name = row["Name"].ToString();

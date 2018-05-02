@@ -285,7 +285,8 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@ModuleId", SqlDbType.Int, ModuleId.ToString());
                 ClsUtility.AddParameters("@DBKey", SqlDbType.VarChar, ApplicationAccess.DBSecurity);
 
-                return (DataSet)PatientManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetPatientSummaryInfo_Futures", ClsDBUtility.ObjectEnum.DataSet);
+                //return (DataSet)PatientManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetPatientSummaryInfo_Futures", ClsDBUtility.ObjectEnum.DataSet);
+                return (DataSet)PatientManager.ReturnObject(ClsUtility.theParams, "pr_Clinical_GetPatientSummaryByPatientID", ClsDBUtility.ObjectEnum.DataSet);
             }
         }
         //John End

@@ -185,6 +185,15 @@ namespace BusinessProcess.Service
             return (DataTable)oMstDivision.ReturnObject(ClsUtility.theParams, "sp_GetAllDivision", ClsDBUtility.ObjectEnum.DataTable);
         }
         
+        public DataTable getAllProvinceByCountry(int CountryID)
+        {
+            ClsUtility.Init_Hashtable();
+            ClsObject oMstAllProvince = new ClsObject();
+            ClsUtility.AddParameters("@CountryID", SqlDbType.NVarChar, CountryID.ToString());
+
+
+            return (DataTable)oMstAllProvince.ReturnObject(ClsUtility.theParams, "sp_GetAllProvince_Country", ClsDBUtility.ObjectEnum.DataTable);
+        }
         
     }
     

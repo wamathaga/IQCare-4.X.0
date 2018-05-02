@@ -4,6 +4,8 @@
     Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <%@ Register assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" namespace="CrystalDecisions.Web" tagprefix="CR" %>
+<link href="../crystalreportviewers13/js/crviewer/images/style.css" rel="stylesheet" type="text/css" />
+<script src="../crystalreportviewers13/js/crviewer/crv.js" type="text/javascript"></script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

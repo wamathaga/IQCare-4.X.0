@@ -702,7 +702,9 @@ namespace BusinessProcess.Laboratory
                         ClsUtility.AddParameters("@DeleteFlag", SqlDbType.Char, Value.Flag.ToString());
                         ClsUtility.AddParameters("@SystemId", SqlDbType.Int, Value.SystemId.ToString());
                         ClsUtility.AddParameters("@UrgentFlag", SqlDbType.Int, Value.UrgentId.ToString());
-                        ClsUtility.AddParameters("@Justification", SqlDbType.Int, Value.Justification.ToString());
+                        ClsUtility.AddParameters("@RejectFlag", SqlDbType.Int, Value.RejectId.ToString());
+                        ClsUtility.AddParameters("@JustificationID", SqlDbType.Int, Value.JustificationID.ToString());
+                        ClsUtility.AddParameters("@JustificationOther", SqlDbType.VarChar, Value.OtherJustification.ToString());
                         if (Value.LabReportByDate.Year.ToString() != "1900")
                         {
                             ClsUtility.AddParameters("@LabReportByDate", SqlDbType.VarChar, String.Format("{0:dd-MMM-yyyy}", Value.OrderedByDate));
@@ -918,6 +920,19 @@ namespace BusinessProcess.Laboratory
                     DataMgr.ReleaseConnection(this.Connection);
             }
             return (TotalNoRowsAffected);
+        }
+
+
+        public DataSet GetLabHistory(int PatientID, int LocationID)
+        {
+            lock (this)
+            {
+                ClsObject labFieldsManager = new ClsObject();
+                ClsUtility.Init_Hashtable();
+                ClsUtility.AddParameters("@Ptn_pk", SqlDbType.Int, PatientID.ToString());
+                ClsUtility.AddParameters("@Locationid", SqlDbType.Int, LocationID.ToString());
+                return (DataSet)labFieldsManager.ReturnObject(ClsUtility.theParams, "Pr_Laboratory_GetLabHistory", ClsDBUtility.ObjectEnum.DataSet);
+            }
         }
     }
 }

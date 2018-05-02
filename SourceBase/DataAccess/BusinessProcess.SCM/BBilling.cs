@@ -134,6 +134,7 @@ namespace BusinessProcess.SCM
                                           PriceDate = row["PriceDate"] != DBNull.Value ? Convert.ToDateTime(row["PriceDate"]) : emptyDate,
                                           PricedPerItem = row["PharmacyPriceType"] != DBNull.Value ? !Convert.ToBoolean(row["PharmacyPriceType"]) : emptyBool,
                                           SellingPrice = row["SellingPrice"] != DBNull.Value ? Convert.ToDecimal(row["SellingPrice"]) : emptyDecimal,
+                                          SellingPriceIns = row["SellingPriceIns"] != DBNull.Value ? Convert.ToDecimal(row["SellingPriceIns"]) : emptyDecimal,
                                           Active = Convert.ToBoolean(row["Active"]),
                                           VersionStamp = row["VersionStamp"] != DBNull.Value ? Convert.ToUInt64(row["VersionStamp"]) : emptyU64Int
 
@@ -218,6 +219,8 @@ namespace BusinessProcess.SCM
                             }
                             ClsUtility.AddExtendedParameters("@Active", SqlDbType.Bit, saleItem.Active);
                             ClsUtility.AddExtendedParameters("@UserId", SqlDbType.Int, int.Parse(UserId.ToString()));
+                            ClsUtility.AddExtendedParameters("@itemSellingPriceIns", SqlDbType.Decimal, saleItem.SellingPriceIns);
+
                            int x = Convert.ToInt32(((DataRow)obj.ReturnObject(
                                 ClsUtility.theParams, 
                                 "pr_Billing_SavePriceList",
@@ -1376,6 +1379,28 @@ namespace BusinessProcess.SCM
                                }
                      ).ToList<PaymentMethod>();
                     return _pm;
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+        }
+
+        public string GetPatientPaymentMode(int PatientId, int BillId)
+        {
+            lock (this)
+            {
+                try
+                {
+                    ClsUtility.Init_Hashtable();
+
+                    ClsUtility.AddExtendedParameters("@PatientId", SqlDbType.Int, PatientId);
+                    ClsUtility.AddExtendedParameters("@BillId", SqlDbType.Int, BillId);
+
+                    ClsObject BillablesManager = new ClsObject();
+                    DataTable dt = (DataTable)BillablesManager.ReturnObject(ClsUtility.theParams, "dbo.pr_Billing_GetPatientPaymentMode", ClsDBUtility.ObjectEnum.DataTable);
+                    return dt.Rows[0]["PaymentMode"].ToString();
                 }
                 catch
                 {

@@ -1,11 +1,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Text;
 using System.Collections;
-using System.Collections.Specialized;
 using DataAccess.Common;
 using DataAccess.Base;
 using Application.Common;

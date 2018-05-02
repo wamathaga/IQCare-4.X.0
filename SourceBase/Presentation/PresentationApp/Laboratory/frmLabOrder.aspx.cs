@@ -18,19 +18,6 @@ using Interface.Security;
 using System.Text;
 #endregion
 
-/////////////////////////////////////////////////////////////////////
-// Code Written By   : Pankaj Kumar
-// Written Date      : 13th Oct 2006
-// Modified By       : Sanjay Rana 
-// Modification Date : 21st Dec 2006
-// Description       : Lab Order Form
-// Modified By       : Amitava Sinha
-// Modification Date : 2nd Feb 2007
-// Modified By       : Meetu Rahul
-// Modification Date : 11 Nov 2008
-// Modified By       : Akhil Dwivedi
-// Modification Date : 25 Oct 2013
-/// /////////////////////////////////////////////////////////////////
     
 public partial class Laboratory_LabOrder : BasePage 
 {

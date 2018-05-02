@@ -9,7 +9,7 @@ _moz=_dom&&!_ie
 _show='visible'
 _hide='hidden'
 _hand=_ie?"hand":"pointer"
-_appVer=navigator.appVersion.toLowerCase();
+_appVer=navigator.4.toLowerCase();
 _webKit=(_userAgent.indexOf("safari")>=0)||(_userAgent.indexOf("applewebkit")>=0)
 _mac=(_appVer.indexOf('macintosh')>=0)||(_appVer.indexOf('macos')>=0);
 _opera = (_userAgent.indexOf('opera') != -1);     // Browser is opera

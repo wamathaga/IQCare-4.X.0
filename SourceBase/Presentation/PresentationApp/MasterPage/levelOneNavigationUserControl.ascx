@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="MasterPage_levelOneNavigationUserControl"
-    CodeBehind="levelOneNavigationUserControl.ascx.cs" %>    
+    CodeBehind="levelOneNavigationUserControl.ascx.cs" %>
 <div class="navbar navbar-default">
     <%--<div class="navbar-inner">--%>
     <div class="container-fluid" style="border-bottom: 1px solid #6CF">
@@ -16,16 +16,19 @@
         </div>
         <!-- .navbar-header -->
         <!-- Everything you want hidden at 940px or less, place within here -->
-        <div class="collapse navbar-collapse" >
-           <asp:Menu ID="mainMenu" runat="server" EnableViewState="false" IncludeStyleBlock="false"
-                Orientation="Horizontal" RenderingMode="List" CssClass="text-muted"
-                StaticMenuStyle-CssClass="nav" StaticSelectedStyle-CssClass="active" DynamicMenuStyle-CssClass="dropdown-menu">
-             
+        <div class="collapse navbar-collapse">
+            <asp:Menu ID="mainMenu" runat="server" EnableViewState="false" IncludeStyleBlock="false"
+                Orientation="Horizontal" RenderingMode="List" CssClass="text-muted" StaticMenuStyle-CssClass="nav"
+                StaticSelectedStyle-CssClass="active" DynamicMenuStyle-CssClass="dropdown-menu">
                 <Items>
-                    <asp:MenuItem Text="<i class='fa fa-cubes fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'><strong>  Select Service</strong></span>" NavigateUrl="~/frmFacilityHome.aspx"></asp:MenuItem>
-                    <asp:MenuItem Text="<i class='fa fa-search fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'><strong>  Find/Add Patient</strong></span>" NavigateUrl="~/frmFindAddPatient.aspx"></asp:MenuItem>
-                    <asp:MenuItem Text="<i class='fa fa-bar-chart fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'> <strong>Reports</strong></span>" Selectable="False">
-                        <asp:MenuItem Text="Custom Reports" Value="Custom Reports" NavigateUrl="~/Reports/frmReportCustom.aspx"></asp:MenuItem>
+                    <asp:MenuItem Text="<i class='fa fa-cubes fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'><strong>  Select Service</strong></span>"
+                        NavigateUrl="~/frmFacilityHome.aspx"></asp:MenuItem>
+                    <asp:MenuItem Text="<i class='fa fa-search fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'><strong>  Find/Add Patient</strong></span>"
+                        NavigateUrl="~/frmFindAddPatient.aspx"></asp:MenuItem>
+                    <asp:MenuItem Text="<i class='fa fa-bar-chart fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'> <strong>Reports</strong></span>"
+                        Selectable="False">
+                        <asp:MenuItem Text="Custom Reports" Value="Custom Reports" NavigateUrl="~/Reports/frmReportCustom.aspx">
+                        </asp:MenuItem>
                         <asp:MenuItem Text="Query Builder Reports" Value="Query Builder Reports" NavigateUrl="~/Reports/frmQueryBuilderReports.aspx">
                         </asp:MenuItem>
                         <asp:MenuItem Text="IQTools Reports" Value="IQToolsReportsmain" Selectable="False">
@@ -38,7 +41,7 @@
                         </asp:MenuItem>
                     </asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-calendar fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'> <strong>Scheduler</strong></span>"
-                        Value="Scheduler" NavigateUrl="~/Scheduler/frmScheduler_AppointmentMain.aspx"/>
+                        Value="Scheduler" NavigateUrl="~/Scheduler/frmScheduler_AppointmentMain.aspx" />
                     <asp:MenuItem Text="<i class='fa fa-cogs fa-1x text-muted'></i> <span class='fa-1x text-muted'><strong>Administration</strong></span>"
                         Value="Administration" Selectable="False" NavigateUrl="~/frmFacilityHome.aspx">
                         <asp:MenuItem Text="Facility Setup" Value="Facility Setup" NavigateUrl="~/AdminForms/frmAdmin_FacilityList.aspx">
@@ -60,33 +63,18 @@
                         <asp:MenuItem Text="Refresh System Cache" Value="Refresh System Cache" NavigateUrl="~/frmSystemCache.aspx?Code=1">
                         </asp:MenuItem>
                     </asp:MenuItem>
-                    
-                    <asp:MenuItem Text="<i class='fa fa-bar-chart fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'> <strong>Plug-ins</strong></span>" Value="plugin" Selectable="False"></asp:MenuItem>
-
+                    <asp:MenuItem Text="<i class='fa fa-bar-chart fa-1x text-muted' aria-hidden='true'></i> <span class='fa-1x text-muted'> <strong>Plug-ins</strong></span>"
+                        Value="plugin" Selectable="False"></asp:MenuItem>
                     <asp:MenuItem Text="<i class='fa fa-database fa-1x text-muted' aria-hidden='true'></i><span class='fa-1x text-muted'> <strong>Database Back Up</strong></span>"
-                        Value="Back Up" NavigateUrl="~/frmDBBackup.aspx"></asp:MenuItem>
-
+                        Value="Back Up" Selectable="false" NavigateUrl="#">
+                        <asp:MenuItem Text="System Back-Up/Restore" Value="System Back-Up/Restore" NavigateUrl="~/frmDBBackup.aspx">
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="Backup/Restore Setup" Value="Backup/Restore Setup" NavigateUrl="~/frmDBBackupSetting.aspx">
+                        </asp:MenuItem>
+                    </asp:MenuItem>
                 </Items>
-                
             </asp:Menu>
         </div>
     </div>
     <!-- .nav-collapse collapse -->
 </div>
-<!-- .container -->
-<%--</div><!-- .navbar-inner -->--%>
-<%--<div class="row" style="height: 25px">
-    <div class="col-md-3 pull-left" style="margin-left: 20px">
-        <asp:Label ID="labelModule" CssClass="control-label pull-left" runat="server" Text=""></asp:Label></div>
-    <div class="col-md-6">
-    </div>
-    <div class="col-md-3 pull-right ">
-        <a class="text-muted">
-            <asp:Label ID="lblRoot" CssClass="" runat="server" Text=""></asp:Label>
-        </a><a class=" fa-1x text-primary">
-            <asp:Label ID="lblheader" runat="server"></asp:Label></a>
-    </div>
-    <div class="col-md-8">
-    </div>
-</div>
---%>

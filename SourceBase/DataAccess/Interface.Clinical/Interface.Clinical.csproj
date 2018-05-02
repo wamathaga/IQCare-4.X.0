@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPrEP.cs" />
+    <Compile Include="IClinicalSummaryForm.cs" />
+    <Compile Include="IFreeText.cs" />
+    <Compile Include="IHTSClientIntake.cs" />
+    <Compile Include="IPatientAdherence.cs" />
     <Compile Include="IAdultIE.cs" />
     <Compile Include="IAllergyInfo.cs" />
     <Compile Include="IConsumable.cs" />
@@ -86,6 +91,12 @@
     <Compile Include="IIQTouchClinicalNote.cs" />
     <Compile Include="IIQTouchPatientRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities.Common\Entities.Common.csproj">
+      <Project>{CB7EE2AC-D7BD-4777-99DA-EFC4EB585668}</Project>
+      <Name>Entities.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

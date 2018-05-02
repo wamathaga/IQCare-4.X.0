@@ -8,6 +8,7 @@
         type="text/javascript"></script>
     <script src="<%=ResolveUrl("Scripts/TreatmentPreparation.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>"
         type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-maxlength/1.7.0/bootstrap-maxlength.min.js"></script>
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content">
@@ -374,7 +375,7 @@
                 <td colspan="4">
                    Notes:
                                 <textarea class="form-control" rows="3" placeholder="Notes"
-                                    id="txtNotes"></textarea>
+                                    id="txtNotes" maxlength="1000"></textarea>
                 </td>
                 </tr>
 

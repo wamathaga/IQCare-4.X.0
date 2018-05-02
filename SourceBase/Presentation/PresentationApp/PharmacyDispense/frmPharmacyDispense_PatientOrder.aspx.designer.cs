@@ -319,6 +319,33 @@ namespace PresentationApp.PharmacyDispense {
         protected global::AjaxControlToolkit.CollapsiblePanelExtender CollapsiblePanelExtenderPatientInfo;
         
         /// <summary>
+        /// ddlPtnClassification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPtnClassification;
+        
+        /// <summary>
+        /// hidDifferenciatedCare control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidDifferenciatedCare;
+        
+        /// <summary>
+        /// chkDifferenciatedCare control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkDifferenciatedCare;
+        
+        /// <summary>
         /// ddlTreatmentProg control.
         /// </summary>
         /// <remarks>

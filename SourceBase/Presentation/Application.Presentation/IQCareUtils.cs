@@ -1,24 +1,17 @@
 using System;
 using System.Data;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Collections;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 //using Excel = Microsoft.Office.Interop.Owc11;
-using Excel = Microsoft.Office.Interop.Excel;
 using Interface.Security;
 using System.Configuration;
 using Interface.Laboratory;
 using Interface.Clinical;
-using System.Security;
-using System.Security.Permissions;
 
 namespace Application.Presentation
 {
@@ -154,7 +147,7 @@ namespace Application.Presentation
                 Pen thePen = new Pen(brushes[6]);
                 thegraph.DrawLine(thePen, Hpt1, Hpt2);
                 thegraph.DrawLine(thePen, Vpt1, Vpt2);
-                int HInterval, WInterval;
+                int HInterval;//, WInterval;
                 Font theFnt = new Font(FontFamily.GenericSansSerif, 7.0f, FontStyle.Regular);
                 for (i = 0; i <= 5; i++)
                 {
@@ -480,7 +473,7 @@ namespace Application.Presentation
             ExcelApp.Visible = true;
             ExcelApp.ActiveWorkbook.SaveCopyAs(@"" + theFilePath + "");
             ExcelApp.ActiveWorkbook.Saved = true;
-            Marshal.FinalReleaseComObject(ExcelApp);  
+            Marshal.FinalReleaseComObject(ExcelApp);
 
             //if (theDT.Rows.Count >= 1)
             //{
@@ -529,7 +522,7 @@ namespace Application.Presentation
             theScript += "</script>\n";
             return theScript;
         }
-        
+
         public static void Redirect(string url, string target, string windowFeatures)
         {
             HttpContext context = HttpContext.Current;
@@ -743,9 +736,9 @@ namespace Application.Presentation
                 WriteXMLDS.Tables.Add(theMainDS.Tables["mst_LabDepartment"].Copy());
                 WriteXMLDS.Tables.Add(theMainDS.Tables["mst_Batch"].Copy());
                 WriteXMLDS.Tables.Add(theMainDS.Tables["mst_Countries"].Copy());
-               WriteXMLDS.WriteXml(allMaster, XmlWriteMode.WriteSchema);
+                WriteXMLDS.WriteXml(allMaster, XmlWriteMode.WriteSchema);
 
-                 WriteXMLDS.Tables.Clear();
+                WriteXMLDS.Tables.Clear();
                 WriteXMLDS.Tables.Add(theMainDS.Tables["Mst_Strength"].Copy());
                 WriteXMLDS.Tables.Add(theMainDS.Tables["Mst_FrequencyUnits"].Copy());
                 WriteXMLDS.Tables.Add(theMainDS.Tables["Mst_Drug"].Copy());

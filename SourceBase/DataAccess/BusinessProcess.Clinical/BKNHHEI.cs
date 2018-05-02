@@ -108,6 +108,19 @@ namespace BusinessProcess.Clinical
                 ClsUtility.AddParameters("@KNHHEIAdmittoward", SqlDbType.Int, ht["KNHHEIAdmittoward"].ToString());
                 ClsUtility.AddParameters("@KNHHEITCA", SqlDbType.Int, ht["KNHHEITCA"].ToString());
 
+                //Other Extar Field added By Rahmat as ON 16-Apr-2018
+                ClsUtility.AddParameters("@Scheduled", SqlDbType.SmallInt, ht["Scheduled"].ToString());
+                ClsUtility.AddParameters("@DurationARTstart", SqlDbType.Int, ht["DurationARTstart"].ToString());
+                ClsUtility.AddParameters("@ReferredFrom", SqlDbType.Int, ht["ReferredFrom"].ToString());
+                ClsUtility.AddParameters("@ReferredFromOther", SqlDbType.NVarChar, ht["ReferredFromOther"].ToString());
+                ClsUtility.AddParameters("@SPO2", SqlDbType.Int, ht["SPO2"].ToString());
+                ClsUtility.AddParameters("@AnyComplaints", SqlDbType.Bit, ht["AnyComplaints"].ToString());
+                ClsUtility.AddParameters("@GeneralExamination", SqlDbType.Int, ht["GeneralExamination"].ToString());
+                ClsUtility.AddParameters("@NeonatalHistoryNotes", SqlDbType.NVarChar, ht["NeonatalHistoryNotes"].ToString());
+                ClsUtility.AddParameters("@TBFindings", SqlDbType.Bit, ht["TBFindings"].ToString());
+                ClsUtility.AddParameters("@MUAC", SqlDbType.Int, ht["MUAC"].ToString());
+                ClsUtility.AddParameters("@ReviewSystemComments", SqlDbType.NVarChar, ht["ReviewSystemComments"].ToString());
+
                 theDS = (DataSet)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_Clinical_SaveUpdateKNHHEI_Futures", ClsDBUtility.ObjectEnum.DataSet);
                 ////////////////////////////////
                 VisitID = Convert.ToInt32(theDS.Tables[0].Rows[0]["VisitId"]);
@@ -268,6 +281,7 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@Date", SqlDbType.VarChar, theDR["Date"].ToString());
                         ClsUtility.AddParameters("@Comments", SqlDbType.VarChar, theDR["Comments"].ToString());
                         ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        ClsUtility.AddParameters("@IsAchieved", SqlDbType.Int, theDR["Achieved"].ToString());
                         int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SaveGridViewData", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
                 }
@@ -293,6 +307,96 @@ namespace BusinessProcess.Clinical
                         ClsUtility.AddParameters("@Comments", SqlDbType.VarChar, theDR["Comments"].ToString());
                         ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
                         int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SaveGridViewData", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //SKIN
+                if (theDSchklist.Tables["dtSkin"] != null && theDSchklist.Tables["dtSkin"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtSkin"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "SKIN");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "SKIN_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //ENT
+                if (theDSchklist.Tables["dtENT"] != null && theDSchklist.Tables["dtENT"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtENT"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "ENT");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "ENT_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //CHEST
+                if (theDSchklist.Tables["dtChest"] != null && theDSchklist.Tables["dtChest"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtChest"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "CHEST");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "CHEST_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //CVS
+                if (theDSchklist.Tables["dtCVS"] != null && theDSchklist.Tables["dtCVS"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtCVS"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "CVS");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "CVS_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //Abdomen
+                if (theDSchklist.Tables["dtAbdomen"] != null && theDSchklist.Tables["dtAbdomen"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtAbdomen"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "Abdomen");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "Abdomen_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
+                    }
+                }
+                //CNS
+                if (theDSchklist.Tables["dtCNS"] != null && theDSchklist.Tables["dtCNS"].Rows.Count > 0)
+                {
+                    foreach (DataRow theDR in theDSchklist.Tables["dtCNS"].Rows)
+                    {
+                        ClsUtility.Init_Hashtable();
+                        ClsUtility.AddParameters("@patientid", SqlDbType.Int, patientID.ToString());
+                        ClsUtility.AddParameters("@Visit_ID", SqlDbType.Int, VisitID.ToString());
+                        ClsUtility.AddParameters("@Id", SqlDbType.Int, theDR["ID"].ToString());
+                        ClsUtility.AddParameters("@CodeName", SqlDbType.VarChar, "CNS");
+                        ClsUtility.AddParameters("@OtherNotes", SqlDbType.VarChar, "CNS_OTHER");
+                        ClsUtility.AddParameters("@UserId", SqlDbType.Int, userID.ToString());
+                        int temp = (int)KNHPMTCTHEI.ReturnObject(ClsUtility.theParams, "pr_KNHPMTCTHEI_SavecheckedlistItems", ClsDBUtility.ObjectEnum.ExecuteNonQuery);
                     }
                 }
                 DataMgr.CommitTransaction(this.Transaction);

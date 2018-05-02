@@ -75,15 +75,6 @@ public partial class frmFindAddPatient {
     protected global::System.Web.UI.WebControls.DropDownList ddlServices;
     
     /// <summary>
-    /// ddSex control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList ddSex;
-    
-    /// <summary>
     /// txtlastname control.
     /// </summary>
     /// <remarks>
@@ -136,6 +127,15 @@ public partial class frmFindAddPatient {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlInputText txtDOB;
+    
+    /// <summary>
+    /// ddSex control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddSex;
     
     /// <summary>
     /// ddCareEndedStatus control.

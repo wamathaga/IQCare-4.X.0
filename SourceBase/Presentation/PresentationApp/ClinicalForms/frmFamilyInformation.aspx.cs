@@ -54,7 +54,17 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
         {
             if (!object.Equals(Request.QueryString["ref"], null))
             {
+                Session["PtnRedirect"] = Convert.ToInt32(Session["PatientId"]);
                 Session["CE"] = "true";
+                string theUrl = string.Format("../frmFindAddPatient.aspx?FormName=FamilyInfo");
+                if (Session["SaveFlag"] != null)
+                {
+                    if (Session["SaveFlag"].ToString() == "Edit")
+                    {
+                        Session["SaveFlag"] = "Add";
+                    }
+                }
+                Response.Redirect(theUrl);
             }
             if (Request.QueryString["name"] == "Add")
             {
@@ -83,7 +93,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
                 }
 
             }
-            btnfind.Visible = false;
+            //btnfind.Visible = false;
 
 
             txtAgeYear.Attributes.Add("onkeyup", "chkNumeric('" + txtAgeYear.ClientID + "')");
@@ -451,7 +461,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
                     Session["GridData"] = theDT;
                     grdFamily.Columns.Clear();
                     grdFamily.DataSource = (DataTable)Session["GridData"];
-                    btnfind.Visible = false;
+                    //btnfind.Visible = false;
                 }
                 else
                 {
@@ -906,12 +916,13 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
                         ddlhivcstatus.SelectedValue = "1";
                     }
                 }
-                if (Session["ReferenceId"] == null)
-                    regthisclinic.SelectedItem.Text = "No";
-                else if (Session["ReferenceId"].ToString() == "")
-                    regthisclinic.SelectedItem.Text = "No";
-                else
-                    regthisclinic.SelectedItem.Text = "Yes";
+
+                //if (Session["ReferenceId"] == null)
+                //    this.regthisclinic.SelectedItem.Text = "No";
+                //else if (Session["ReferenceId"].ToString() == "")
+                //    regthisclinic.SelectedItem.Text = "No";
+                //else
+                //    regthisclinic.SelectedItem.Text = "Yes";
 
                 if (theDS.Tables[0].Rows[0]["RegistrationNo"] != null)
                     Session["RegistrationNo"] = theDS.Tables[0].Rows[0]["RegistrationNo"].ToString();
@@ -975,17 +986,17 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
 
             if (theDT.Rows[r]["ReferenceId"] == null)
             {
-                regthisclinic.SelectedItem.Text = "No";
+                //regthisclinic.SelectedItem.Text = "No";
                 EnableControls();
             }
             else if (theDT.Rows[r]["ReferenceId"].ToString() == "")
             {
-                regthisclinic.SelectedItem.Text = "No";
+                //regthisclinic.SelectedItem.Text = "No";
                 EnableControls();
             }
             else
             {
-                regthisclinic.SelectedItem.Text = "Yes";
+                //regthisclinic.SelectedItem.Text = "Yes";
                 DisableControls();
             }
 
@@ -1042,7 +1053,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
         txtAgeMonth.Text = "";
         txtAgeYear.Text = "";
         ddlgender.SelectedIndex = -1;
-        regthisclinic.SelectedItem.Text = "No";
+        //regthisclinic.SelectedItem.Text = "No";
         ddlrelationtype.SelectedIndex = -1;
         ddlhivstatus.SelectedIndex = -1;
         ddlhivcstatus.SelectedIndex = -1;
@@ -1224,6 +1235,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
         {
             if (theDR["IsAddEdit"].ToString() == "1")
             {
+
                 if (theDR["Id"] == DBNull.Value)
                     Id = -1;
                 else
@@ -1296,6 +1308,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
                 PatientManager.SaveFamilyInfo(Id, Ptn_Pk, RFirstName, RLastName, Sex, AgeYear, AgeMonth, RelationshipType, HivStatus, HivCareStatus, UserID,
                     DeleteFlag, ReferenceId, RegistrationNo, Convert.ToDateTime(RelationshipDate), LastHIVStatusDate,
                     Convert.ToInt32(Session["AppLocationId"]), Convert.ToBoolean(ConfigurationManager.AppSettings["EnableHIVStatus"]), Convert.ToInt32(ViewState["HivStatusID"] == null ? "0" : ViewState["HivStatusID"]));
+
             }
         }
 
@@ -1371,7 +1384,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
         ddlgender.Enabled = true;
         txtAgeYear.Enabled = true;
         txtAgeMonth.Enabled = true;
-        regthisclinic.Enabled = true;
+        //regthisclinic.Enabled = true;
         ddlhivstatus.Enabled = true;
         ddlhivcstatus.Enabled = true;
     }
@@ -1382,7 +1395,7 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
         ddlgender.Enabled = false;
         txtAgeYear.Enabled = false;
         txtAgeMonth.Enabled = false;
-        regthisclinic.Enabled = false;
+        //regthisclinic.Enabled = false;
         ddlhivstatus.Enabled = false;
         if (Convert.ToBoolean(ConfigurationManager.AppSettings["EnableHIVStatus"]) == true)
         {
@@ -1593,17 +1606,18 @@ public partial class ClinicalForms_frmFamilyInformation : BasePage
     }
 
 
-    protected void regthisclinic_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (regthisclinic.SelectedItem.Value == "1")
-        {
-            btnfind.Visible = true;
-        }
-        else
-        {
-            btnfind.Visible = false;
-        }
-    }
+    //protected void regthisclinic_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    if (regthisclinic.SelectedItem.Value == "1")
+    //    {
+    //        btnfind.Visible = true;
+    //    }
+    //    else
+    //    {
+    //        btnfind.Visible = false;
+    //    }
+    //}
+
     private void MessageBox(string msg)
     {
         Page.Controls.Add(new LiteralControl("<script language='javascript'> window.alert('" + msg + "')</script>"));

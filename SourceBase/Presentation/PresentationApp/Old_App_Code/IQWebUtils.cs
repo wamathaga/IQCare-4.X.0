@@ -1,13 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Configuration;
+﻿using System.Data;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using Application.Common;
 using System.IO;
 
 /// <summary>
@@ -48,6 +42,7 @@ public class IQWebUtils
         bw.Close();
         response.End();
     }
+
     public void ShowExcelFile(string theFile, HttpResponse theRes)
     {
         theRes.Clear();
@@ -58,6 +53,7 @@ public class IQWebUtils
         theRes.End();
 
     }
+
     public void ShowFile(string theFile, HttpResponse theRes)
     {
         theRes.Clear();
@@ -68,20 +64,7 @@ public class IQWebUtils
         theRes.End();
 
     }
-    //public void ResetSession()
-    //{
-    //    Session["PatientVisitId"] = 0;
-    //    Session["ServiceLocationId"] = 0;
-    //}
-    //public object CreateSessionObject(string theSession)
-    //{
-    //    //if(System.Web.HttpContext.Current.Session.Contents[theSession.ToString() + "GBLUserInstance"])
-    //    //{
-    //    //    LoggedInUser theUser = new LoggedInUser();
-    //    //    System.Web.HttpContext.Current.Session.Add(theSession.ToString() + "GBLUserInstance", theUser);
-    //    //}
-    //    //return System.Web.HttpContext.Current.Session[theSession.ToString() + "GBLUserInstance"];
-    //}
+
     public void HidePatientLevelheader()
     {
         var pageHandler = HttpContext.Current.CurrentHandler;

@@ -140,7 +140,9 @@ namespace IQCare.Web
                         Session["isKNHEnabled"] = true;
                 }
 
-                DataTable dtTiles = DSModules.Tables[0];
+                //DataTable dtTiles = DSModules.Tables[0];
+                DataTable dtTiles =dt;
+
 
 
                 //returns true if user has at least some rights in billing and billing is enabled

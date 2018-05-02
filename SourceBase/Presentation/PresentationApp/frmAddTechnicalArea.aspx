@@ -5,18 +5,19 @@
     Namespace="System.Web.UI" TagPrefix="asp" %>
 <%@ MasterType VirtualPath="~/MasterPage/IQCare.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
-<script type="text/javascript">
-    function RegisterJQuery() {
-        $('#txtenrollmentDate').datepicker({ autoclose: true });
-        $('#txtReEnrollmentDate').datepicker({ autoclose: true });
-    }
-    //Calling RegisterJQuery when document is ready (Page loaded first time)
-    $(document).ready(RegisterJQuery);
-    //Calling RegisterJQuery when the page is doing postback (asp.net)
-    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(RegisterJQuery);
-</script>
+
+    <script type="text/javascript">
+        function RegisterJQuery() {
+            $('#txtenrollmentDate').datepicker({ autoclose: true });
+            $('#txtReEnrollmentDate').datepicker({ autoclose: true });
+        }
+        //Calling RegisterJQuery when document is ready (Page loaded first time)
+        $(document).ready(RegisterJQuery);
+        //Calling RegisterJQuery when the page is doing postback (asp.net)
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(RegisterJQuery);
+    </script>
     <script language="javascript" type="text/javascript">
-       function fnChange() {
+        function fnChange() {
 
         }
         function fncheck() {
@@ -24,6 +25,12 @@
             var id = document.getElementById('ctl00_IQCareContentPlaceHolder_ddlTecharea').value;
             if (id == "0") {
                 alert("Select Service");
+                return false;
+            }
+
+            var ptype = document.getElementById('ddlPatientType').value;
+            if (ptype == "0") {
+                alert("Select Patient Type");
                 return false;
             }
         }
@@ -47,8 +54,8 @@
             width: 50%;
         }
     </style>
-        <!-- Main content -->
-        <section class="content">
+    <!-- Main content -->
+    <section class="content">
       <!-- Default box -->
       <div>
         <div class="box-body">
@@ -98,6 +105,23 @@
                                  <div class="col-md-3 col-sm-12 col-xs-12 form-group">
                                  &nbsp;
                                 </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-12 col-xs-12 form-group">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-5 col-sm-12 col-xs-12 form-group">
+                                        <label class="required" id="Label2" runat="server">
+                                            Patient Type:</label>
+                                            
+                                        <asp:DropDownList CssClass="form-control" ID="ddlPatientType" ClientIDMode="Static" runat="server" Style="z-index: 2"
+                                                          AutoPostBack="False" >
+                                        
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                        &nbsp;
+                                    </div>
                                 </div>
 
                                 <div class="row">

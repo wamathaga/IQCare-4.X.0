@@ -2,9 +2,6 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
-using Telerik.Web.UI;
 using Application.Presentation;
 using Interface.Administration;
 using BusinessProcess.Administration;
@@ -16,7 +13,7 @@ namespace Touch
     /// <summary>
     /// Handles the session per page
     /// </summary>
-    public class TouchPageBase : System.Web.UI.Page
+    public class TouchPageBase : Page
     {
         #region Local Variables
         private static string strPathAndQuery;

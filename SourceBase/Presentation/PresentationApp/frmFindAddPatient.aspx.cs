@@ -305,7 +305,6 @@ public partial class frmFindAddPatient : BasePage
         theDT.Rows.InsertAt(theDR, 1);
         BindFunctions theBindManger = new BindFunctions();
         theBindManger.BindCombo(ddlIdentifier, theDT, "IdentifierName", "IdentifierId");
-        ddlIdentifier.SelectedIndex = 1;
         ddFacility.SelectedValue = "0";
         txtidentificationno.Text = string.Empty;
         txtidentificationno.Enabled = false;
@@ -509,7 +508,6 @@ public partial class frmFindAddPatient : BasePage
 
         }
     }
-
     private void UpdateAppointment()
     {
         //*******Update appointment status priviously missed, missed, careended and met from pending*******//                LoginManager = (IUser)ObjectFactory.CreateInstance("BusinessProcess.Security.BUser, BusinessProcess.Security");
@@ -660,7 +658,6 @@ public partial class frmFindAddPatient : BasePage
 
         return strUrl;
     }
-
     [Ajax.AjaxMethod(Ajax.HttpSessionStateRequirement.ReadWrite)]
     public string SetPatientIdFamily_Session(string url)
     {
@@ -673,7 +670,6 @@ public partial class frmFindAddPatient : BasePage
         strUrl = str.Substring(0, str.IndexOf("?"));
         return url;
     }
-
     protected void grdSearchResult_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         //if (e.Row.RowType == DataControlRowType.DataRow)
@@ -722,20 +718,8 @@ public partial class frmFindAddPatient : BasePage
                 }
                 else
                 {
-                    //Check if the patient is enrolled and go directly to patient home page if patient is enrolled
-                    IPatientRegistration PatRegMgr = (IPatientRegistration)ObjectFactory.CreateInstance("BusinessProcess.Clinical.BPatientRegistration, BusinessProcess.Clinical");
-                    DataSet theDS = PatRegMgr.GetFieldNames(int.Parse(ddlServices.SelectedValue), Convert.ToInt32(e.Row.Cells[0].Text));
-
-                    if (theDS.Tables[2].Rows.Count > 0 && theDS.Tables[2].Rows[0]["StartDate"].ToString() != "")
-                    {
-                        //theUrl = "./ClinicalForms/frmPatient_Home.aspx";
-                        theUrl = string.Format("{0}?Values={1}", "./ClinicalForms/frmPatient_Home.aspx", e.Row.Cells[0].Text);
-                    }
-                    else
-                    {
-                        theUrl = string.Format("{0}?PatientId={1}", "./frmAddTechnicalArea.aspx", e.Row.Cells[0].Text);
-                        //theUrl = string.Format("{0}?Values={1}", "./ClinicalForms/frmPatient_Home.aspx", e.Row.Cells[0].Text);
-                    }
+                    theUrl = string.Format("{0}?PatientId={1}", "./frmAddTechnicalArea.aspx", e.Row.Cells[0].Text);
+                    //theUrl = string.Format("{0}?Values={1}", "./ClinicalForms/frmPatient_Home.aspx", e.Row.Cells[0].Text);
                 }
 
                 //e.Row.Attributes.Add("onclick", "window.location.href=('" + theUrl + "')");
@@ -751,7 +735,6 @@ public partial class frmFindAddPatient : BasePage
 
         }
     }
-
     protected void btnAdd_Click(object sender, EventArgs e)
     {
 
@@ -889,9 +872,15 @@ public partial class frmFindAddPatient : BasePage
         Response.Redirect(theUrl);
     }
 
-    protected void grdSearchResult_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
 
-    }
-
+    //protected void lnkAddPMTCT_Click(object sender, EventArgs e)
+    //{
+    //    string url;
+    //    if (Convert.ToString(Session["SystemId"]) == "1")
+    //    {
+    //        url = string.Format("{0}&sts={1}", "./ClinicalForms/frmClinical_EnrolmentPMTCT.aspx?name=Add", 0);
+    //    }
+    //    else { url = string.Format("{0}&sts={1}", "./ClinicalForms/frmClinical_EnrolmentPMTCT.aspx?name=Add", 0); }
+    //    Response.Redirect(url);
+    //}
 }

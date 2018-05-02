@@ -52,12 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\DataAccess.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Interface.Clinical, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\Interface.Clinical.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -66,6 +63,7 @@
   <ItemGroup>
     <Compile Include="BAdultIE.cs" />
     <Compile Include="BAllergyInfo.cs" />
+    <Compile Include="BClinicalSummary.cs" />
     <Compile Include="BConsumable.cs" />
     <Compile Include="BContact.cs" />
     <Compile Include="BCustomForm.cs" />
@@ -73,7 +71,9 @@
     <Compile Include="BFamilyInfo.cs" />
     <Compile Include="BFollowup.cs" />
     <Compile Include="BFollowupEducation.cs" />
+    <Compile Include="BFreeText.cs" />
     <Compile Include="BHivCareARTEncounter.cs" />
+    <Compile Include="BHTSClientIntake.cs" />
     <Compile Include="BInfantEnrollment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,9 +101,15 @@
     <Compile Include="BPriorArtHivCare.cs" />
     <Compile Include="BIQTouchClinicalNote.cs" />
     <Compile Include="BIQTouchPatientRegistration.cs" />
+    <Compile Include="BPatientAdherence.cs" />
+    <Compile Include="BPrEP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\IQCare.HIVCE\HIVCE.Common\HIVCE.Common.csproj">
+      <Project>{230FFA96-84DF-402B-B578-FFED64034CCD}</Project>
+      <Name>HIVCE.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BusinessProcess.Administration\BusinessProcess.Administration.csproj">
       <Project>{43C54C10-7642-4D56-8B1C-038E329346B3}</Project>
       <Name>BusinessProcess.Administration</Name>
@@ -116,9 +122,17 @@
       <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>
       <Name>DataAccess.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Entities.Common\Entities.Common.csproj">
+      <Project>{CB7EE2AC-D7BD-4777-99DA-EFC4EB585668}</Project>
+      <Name>Entities.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interface.Administration\Interface.Administration.csproj">
       <Project>{88425A40-338F-405B-BF91-D3A0E74863DE}</Project>
       <Name>Interface.Administration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface.Clinical\Interface.Clinical.csproj">
+      <Project>{6CB08200-E2E0-44B3-B877-2564F2E4A4EA}</Project>
+      <Name>Interface.Clinical</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -4,9 +4,13 @@
 <%@ Register Src="Controls/ucAlcoholDepressionScreening.ascx" TagName="ucAlcoholDepressionScreening"
     TagPrefix="uc1" %>
 <asp:Content ID="Data" ContentPlaceHolderID="IQCareContentPlaceHolder" runat="Server">
-    <script src="<%=ResolveUrl("Scripts/Common.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("Scripts/Constants.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>" type="text/javascript"></script>
-    <script src="<%=ResolveUrl("Scripts/AlcoholDepressionScreening.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>" type="text/javascript"></script>
+    <script src="<%=ResolveUrl("Scripts/Common.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>"
+        type="text/javascript"></script>
+    <script src="<%=ResolveUrl("Scripts/Constants.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>"
+        type="text/javascript"></script>
+    <script src="<%=ResolveUrl("Scripts/AlcoholDepressionScreening.js") %>?n=<%=string.Format("{0:yyyyMMddhhmmss}",DateTime.Now)%>"
+        type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-maxlength/1.7.0/bootstrap-maxlength.min.js"></script>
     <div class="content-wrapper">
         <!-- Main content -->
         <%--<section class="content">--%>

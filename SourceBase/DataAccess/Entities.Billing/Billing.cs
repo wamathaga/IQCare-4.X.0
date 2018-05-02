@@ -112,6 +112,12 @@ namespace Entities.Billing
         ///   <c>true</c> if active; otherwise, <c>false</c>.
         /// </value>
         public bool Active { get; set; }
+
+        //KK - Billing for Mbungoni
+        /// <summary>
+        /// The selling price
+        /// </summary>
+        public decimal? SellingPriceIns { get; set; }
     }
     [Serializable]
     public class Pager

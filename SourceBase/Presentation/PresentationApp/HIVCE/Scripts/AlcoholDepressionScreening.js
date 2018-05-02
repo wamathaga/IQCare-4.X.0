@@ -7,6 +7,19 @@ $(document).ready(function () {
 
     $.hivce.loader('show');
     $("#hidId").val(0);
+
+    $("textarea").maxlength({
+        alwaysShow: false,
+        threshold: 10,
+        warningClass: "labelTextBox label label-success",
+        limitReachedClass: "labelTextBox label label-danger",
+        separator: ' out of ',
+        preText: 'You write ',
+        postText: ' characters.',
+        validate: true,
+        placement: 'top'
+    });
+
     InitAlcoholDepressionScreeningControls();
 
 });
@@ -32,6 +45,10 @@ function InitAlcoholDepressionScreeningControls() {
     $("#chkSGBV5").bootstrapSwitch('state', false);
 
     $("#chkDisclosedHIVStatus").bootstrapSwitch('state', false);
+
+    $("#ddlDisclosureStatus").prop('disabled', true);
+    $("#ddlDisclosedTo").prop('disabled', true);
+
     $("#chkDrinkAnyAlcohol").bootstrapSwitch('state', false);
     $("#chkSmokeMarijuana").bootstrapSwitch('state', false);
     $("#chkUsageGetHigh").bootstrapSwitch('state', false);
@@ -174,6 +191,10 @@ function InitAlcoholDepressionScreeningControls() {
         checkboxClass: 'icheckbox_flat-blue',
         radioClass: 'iradio_flat-blue'
     });
+
+
+
+
 
     BindCRAFFTDiv();
     GetDisclosureData();
@@ -421,7 +442,7 @@ function GetADSData() {
 }
 
 function BindADSData(response) {
-
+    debugger;
     $("#hidId").val(response.Id);
 
     $("#divPHQLI").children("#" + response.PHQLI).removeClass("btn btn-default").addClass("btn btn-default active");
@@ -488,8 +509,6 @@ function BindADSData(response) {
     $("input:radio[name=rbSmoke]").iCheck('update');
 
     $("#txtNotes").val(response.Notes);
-
-
 
     displayPHQ();
     enableDisableDisclouserStatus();
@@ -712,13 +731,15 @@ function CheckAlcoholDepressionBlankValues() {
 
     var age = $("#hidDOB").val();
     if (age < 14) {
-        var ddlDisclosureStatus = $("#ddlDisclosureStatus").select2("val");
+        if ($("#chkDisclosedHIVStatus").bootstrapSwitch('state')) {
+            var ddlDisclosureStatus = $("#ddlDisclosureStatus").select2("val");
 
-        if (ddlDisclosureStatus == null) {
-            if (errorField.length > 1) {
-                errorField += ', ';
+            if (ddlDisclosureStatus == null) {
+                if (errorField.length > 1) {
+                    errorField += ', ';
+                }
+                errorField += 'Disclosure Status ';
             }
-            errorField += 'Disclosure Status ';
         }
     }
 

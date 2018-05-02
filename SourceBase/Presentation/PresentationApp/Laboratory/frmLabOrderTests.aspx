@@ -25,7 +25,7 @@
     </script>
     <form id="frmLabOrderTests" method="post" runat="server">
     <h1 id="H1" class="nomargin" runat="server">
-        Order Lab Tests</h1>
+        Order Labs</h1>
     <div class="border formbg">
         <table cellspacing="6" cellpadding="0" style="margin-top: 10px" width="100%" border="0">
             <tbody>
