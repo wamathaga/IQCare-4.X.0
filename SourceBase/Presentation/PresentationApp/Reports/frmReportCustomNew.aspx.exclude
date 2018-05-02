@@ -1,0 +1,416 @@
+<%@ Page Language="C#" MasterPageFile="~/Reports/ReportHeaderFooter.master" AutoEventWireup="true"
+    CodeFile="frmReportCustomNew.aspx.cs" Inherits="frmReportCustomNew" MaintainScrollPositionOnPostback="true"
+    Title="Untitled Page" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="reportheaderfooter" runat="Server">
+
+    <script language="javascript" type="text/javascript">
+    
+      function ValidatePage(txtTitle,ddCategory,txtCategory)
+      {
+         var message;
+         var isValidated=true;
+         if(document.getElementById(txtTitle).value=="")
+          {
+            message="Please enter Report Title \n";
+            isValidated=false;
+          }
+         if(document.getElementById(ddCategory).selectedIndex==0 && document.getElementById(txtCategory).value=="")
+          {
+            message=message + "Please select Category or enter a new Category \n";
+            isValidated=false;
+          }
+         if(isValidated==false)
+            {
+                alert(message);
+                return false;
+            }
+        return true;
+            
+                  
+      }
+
+   
+      function HideRow(Row)
+        {
+            //alert(Row);
+            document.getElementById(Row).style.visibility ="hidden";
+            return false;
+        }
+        
+        function ShowRow(Row)
+        {
+            document.getElementById(Row).style.visibility ="visible";
+            return false;
+        }
+        
+        function HideRowWithValueText(Row,TextBox,ddl,image)
+        {
+            //alert(Row);
+            document.getElementById(Row).style.visibility ="hidden";
+            document.getElementById(TextBox).style.visibility ="hidden";
+            document.getElementById(ddl).style.visibility ="hidden";
+            document.getElementById(image).style.visibility ="hidden";
+            
+            return false;
+        }
+        
+        
+      function Display(ctrlInitial,CalanderControl,TextControl,DropdownControl,ddl)
+        {
+            //alert(document.getElementById(ctrlInitial).value);
+            var ctrlVal;
+            ctrlVal= document.getElementById(ctrlInitial).value;
+            //alert(ctrlVal)
+            if(document.getElementById(ddl).selectedIndex>2)
+            {
+                if(ctrlVal=="4")// for Text box
+                {
+                    document.getElementById(TextControl).style.visibility ="visible";        
+                    document.getElementById(TextControl).style.width = 120;
+                    document.getElementById(DropdownControl).style.visibility ="hidden";        
+                    document.getElementById(CalanderControl).style.visibility ="hidden";    
+                     document.getElementById(DropdownControl).style.width =0;        
+                    document.getElementById(CalanderControl).style.width=0;        
+                }
+                else if(ctrlVal=="8")// for Date picker
+                {
+                    document.getElementById(TextControl).value="";
+                    document.getElementById(TextControl).style.visibility ="visible";        
+                    document.getElementById(TextControl).style.width = 120;
+                    document.getElementById(CalanderControl).style.visibility ="visible";        
+                    document.getElementById(CalanderControl).style.width =20;        
+                    document.getElementById(DropdownControl).style.visibility ="hidden";        
+                    document.getElementById(DropdownControl).style.width =0;    
+                }
+               else if(ctrlVal=="7")// for combobox
+                {
+                    document.getElementById(TextControl).style.visibility ="hidden";        
+                    document.getElementById(DropdownControl).style.visibility ="visible";        
+                    document.getElementById(DropdownControl).style.width = 120;
+                    document.getElementById(CalanderControl).style.visibility ="hidden";        
+                    document.getElementById(TextControl).style.width =0;        
+                    document.getElementById(CalanderControl).style.width=0;        
+                    document.getElementById(TextControl).value="";
+                }
+           }
+           else
+           {
+                    document.getElementById(TextControl).value="";
+                    document.getElementById(TextControl).style.visibility ="hidden";        
+                    document.getElementById(CalanderControl).style.visibility ="hidden";        
+                    document.getElementById(DropdownControl).style.visibility ="hidden";        
+           }
+        }
+
+
+        function SetValueType(ToBeChanged,ToChanged,txtDisplay,ToBeChanged2)
+        {
+             //alert(ToBeChanged)
+             
+             document.getElementById(ToBeChanged).selectedIndex = document.getElementById(ToChanged).selectedIndex;
+             document.getElementById(ToBeChanged2).selectedIndex = document.getElementById(ToChanged).selectedIndex;             
+             document.getElementById(txtDisplay).value= document.getElementById(ToChanged).options[document.getElementById(ToChanged).selectedIndex].text;
+             //alert(document.getElementById(ToBeChanged).value);
+        }
+        
+        
+    </script>
+
+    <form runat="server" id="frmNewCustomReport">
+        <h1 class="nomargin">
+            New Custom Report</h1>
+        <div class="border center formbg">
+            <table class="center" width="100%" border="0" cellpadding="0" cellspacing="6">
+                <tr>
+                    <td align="left">
+                        <label style="width: 200px">
+                            Step 1: Give your report an identity</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border pad5 whitebg" align="center">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 30%" align="right">
+                                    <label style="width: 80px">
+                                        Report Title :
+                                    </label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtTitle" runat="server" Width="400px"></asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <label style="width: 80px">
+                                        Description :
+                                    </label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <label style="width: 80px">
+                                        Category :</label></td>
+                                <td>
+                                    <asp:DropDownList ID="ddCategory" runat="server" Width="200px">
+                                    </asp:DropDownList>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <input type="button" value="New Category" id="btnNewCategory" runat="server" />
+                                    &nbsp;&nbsp;
+                                    <input type="text" id="txtNewCategory" runat="server" style="visibility: hidden" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border pad5 whitebg">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <label style="width: 600px">
+                            Step 2: Select your columns and column action</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border pad5 whitebg" align="center" valign="top">
+                        <asp:DataGrid ID="dgFields" runat="server" AutoGenerateColumns="false" GridLines="None"
+                            Width="100%" OnItemDataBound="dgFields_DataBound">
+                            <Columns>
+                                <asp:TemplateColumn>
+                                    <ItemTemplate>
+                                        <table border="0" width="100%" cellpadding="0" cellspacing="0" class="border">
+                                            <tr>
+                                                <td colspan="5" valign="top">
+                                                    <asp:Label ID="lblColumnCaption" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"ColumnNo") +" :" %>'
+                                                        Font-Size="Small" Font-Bold="true"></asp:Label>
+                                                    &nbsp;&nbsp;&nbsp; &nbsp;<asp:Label ID="Label1" runat="server" Text="Display On Report"
+                                                        Font-Bold="true"></asp:Label>
+                                                    <asp:CheckBox ID="chkDisplayOnReport" runat="server" TextAlign="left" Checked='<%# DataBinder.Eval(Container.DataItem,"isDisplay")%>' />
+                                                    <hr />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>
+                                                        Field Group:</label>
+                                                    <asp:DropDownList ID="ddFieldGroup" runat="server" Width="120px" AutoPostBack="true"> 
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Field:</label>
+                                                    <asp:DropDownList ID="ddFields" runat="server" Width="120px" AutoPostBack="true">
+                                                    </asp:DropDownList>
+                                                    <asp:DropDownList ID="ddFieldsType" runat="server" Width="0" Visible="true"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddView" runat="server" Width="0" Visible="true"></asp:DropDownList>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Report Label:</label>
+                                                    <asp:TextBox ID="txtReportLabel" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"FieldLabel") %>'></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Function:</label>
+                                                    <asp:DropDownList ID="ddFunctions" runat="server" Width="110px">
+                                                        <asp:ListItem Selected="True" Text="-Select Function-" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Group" Value="Group"></asp:ListItem>
+                                                        <asp:ListItem Text="Sum" Value="Sum"></asp:ListItem>
+                                                        <asp:ListItem Text="Count" Value="Count"></asp:ListItem>
+                                                        <asp:ListItem Text="Count Distinct" Value="CountDistinct"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        Sort:</label>
+                                                    <asp:DropDownList ID="ddSort" runat="server" Width="80px">
+                                                        <asp:ListItem Selected="True" Text="-Select-" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Ascending" Value="Asc"></asp:ListItem>
+                                                        <asp:ListItem Text="Descending" Value="Desc"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" colspan="5">
+                                                    <table border="0" width="71%">
+                                                        <tr runat="server" id="trFilter1">
+                                                            <td>
+                                                                &nbsp;
+                                                            </td>
+                                                            <td>
+                                                                <label>Where:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddOperator1" runat="server" Width="80px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td runat="server" id="tdValueLabel">
+                                                                <label>
+                                                                    Value:</label>
+                                                            </td>
+                                                            <td runat="server" id="tdValueTextBox">
+                                                                <asp:TextBox ID="txtFilterValue1" runat="server" style="visibility:hidden" Text='<%# DataBinder.Eval(Container.DataItem,"where1Value") %>'></asp:TextBox>
+                                                                <img id="imgFilterDate1" src="../Images/cal_icon.gif" height="22" alt="Date Helper" hspace="3" border="0" runat="server" style="visibility:hidden" />
+                                                                <asp:DropDownList ID="ddFilterValue1" Width="120px" runat="server" style="visibility:hidden"></asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                &nbsp;</td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkAddFilter1" runat="server" Text="Add Filter"></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                        <tr id="trFilter2" runat="server" style="visibility: hidden">
+                                                            <td>
+                                                                <asp:DropDownList ID="ddAndOr2" runat="server" Width="50px">
+                                                                    <asp:ListItem Text="And" Value="and"></asp:ListItem>
+                                                                    <asp:ListItem Text="Or" Value="or"></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Where:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddOperator2" runat="server" Width="80px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Value:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txtFilterValue2" runat="server" style="visibility:hidden"  Text='<%# DataBinder.Eval(Container.DataItem,"where2Value") %>'></asp:TextBox>
+                                                                <img id="imgFilterDate2" src="../Images/cal_icon.gif" height="22" alt="Date Helper" hspace="3" border="0" runat="server" style="visibility:hidden" />
+                                                                <asp:DropDownList ID="ddFilterValue2" Width="120px" runat="server" style="visibility:hidden"></asp:DropDownList>
+
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkRemoveFilter2" runat="server" Text="Remove"></asp:LinkButton>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkAddFilter2" runat="server" Text="Add Filter"></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                        <tr id="trFilter3" runat="server" style="visibility: hidden">
+                                                            <td>
+                                                                <asp:DropDownList ID="ddAndOr3" runat="server" Width="50px">
+                                                                    <asp:ListItem Text="And" Value="and"></asp:ListItem>
+                                                                    <asp:ListItem Text="Or" Value="or"></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Where:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddOperator3" runat="server" Width="80px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Value:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txtFilterValue3" runat="server" style="visibility:hidden"  Text='<%# DataBinder.Eval(Container.DataItem,"where3Value") %>'></asp:TextBox>
+                                                                <img id="imgFilterDate3" src="../Images/cal_icon.gif" height="22" alt="Date Helper" hspace="3" border="0" runat="server" style="visibility:hidden" />
+                                                                <asp:DropDownList ID="ddFilterValue3" Width="120px" runat="server" style="visibility:hidden"></asp:DropDownList>
+
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkRemoveFilter3" runat="server" Text="Remove"></asp:LinkButton>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkAddFilter3" runat="server" Text="Add Filter"></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                        <tr id="trFilter4" runat="server" style="visibility: hidden">
+                                                            <td>
+                                                                <asp:DropDownList ID="ddAndOr4" runat="server" Width="50px">
+                                                                    <asp:ListItem Text="And" Value="and"></asp:ListItem>
+                                                                    <asp:ListItem Text="Or" Value="or"></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Where:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddOperator4" runat="server" Width="80px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                            <td>
+                                                                <label>
+                                                                    Value:</label>
+                                                            </td>
+                                                            <td>
+                                                                <asp:TextBox ID="txtFilterValue4" runat="server" style="visibility:hidden"  Text='<%# DataBinder.Eval(Container.DataItem,"where4Value") %>'></asp:TextBox>
+                                                                <img id="imgFilterDate4" src="../Images/cal_icon.gif" height="22" alt="Date Helper" hspace="3" border="0" runat="server" style="visibility:hidden" />
+                                                                <asp:DropDownList ID="ddFilterValue4" Width="120px" runat="server" style="visibility:hidden"></asp:DropDownList>
+
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="lnkRemoveFilter4" runat="server" Text="Remove"></asp:LinkButton>
+                                                            </td>
+                                                            <td>
+                                                                &nbsp;</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                    </ItemTemplate>
+                                </asp:TemplateColumn>
+                            </Columns>
+                        </asp:DataGrid>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <asp:LinkButton ID="lnkRemoveField" runat="server" Text="Remove Field" OnClick="lnkRemoveField_Click"></asp:LinkButton>
+                        &nbsp;&nbsp;&nbsp;
+                        <asp:LinkButton ID="lnkAddMoreField" runat="server" Text="Add Field" OnClick="lnkAddMoreField_Click"></asp:LinkButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border pad5 whitebg">
+                        <table width="100%">
+                            <tr>
+                                <td colspan="2">
+                                    <label style="font-size: small; font-weight: bold">
+                                        Advanced Query Options:
+                                    </label>
+                                    <hr />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <label>
+                                        Enter SQL Statement :
+                                    </label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtSQLStatement" runat="server" TextMode="MultiLine" Width="700px"
+                                        Height="150px"></asp:TextBox>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border pad5 whitebg">
+                        <asp:Button ID="btnSaveReport" runat="server" Text="Save and Run Report" OnClick="btnSaveReport_Click" />&nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btnExportParameters" runat="server" Text="Export Report Parameters" OnClick="btnExportParameters_Click" />
+                        <asp:Button ID="btnClose" runat="server" Text="Close" Width="60px" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</asp:Content>

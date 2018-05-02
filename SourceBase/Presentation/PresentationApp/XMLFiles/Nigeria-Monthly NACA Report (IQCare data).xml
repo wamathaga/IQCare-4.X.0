@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="Table1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="RowId" type="xs:int" minOccurs="0" />
+        <xs:element name="FacilityName" type="xs:string" minOccurs="0" />
+        <xs:element name="CurMonth" type="xs:string" minOccurs="0" />
+        <xs:element name="CurYear" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15VL" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15VL" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15VL" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15VL" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15CD4" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15CD4" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15CD4" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15CD4" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15ARVTotal" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15ARVTotal" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15ARVTotal" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15ARVTotal" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15ARVFTime" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15ARVFTime" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15ARVFTime" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15ARVFTime" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15MisAdh" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15MisAdh" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15MisAdh" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15MisAdh" type="xs:int" minOccurs="0" />
+        <xs:element name="MUnder15OVC" type="xs:int" minOccurs="0" />
+        <xs:element name="FUnder15OVC" type="xs:int" minOccurs="0" />
+        <xs:element name="MAbove15OVC" type="xs:int" minOccurs="0" />
+        <xs:element name="FAbove15OVC" type="xs:int" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Table1" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Table1" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

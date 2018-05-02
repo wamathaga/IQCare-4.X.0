@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6CB08200-E2E0-44B3-B877-2564F2E4A4EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Interface.Clinical</RootNamespace>
+    <AssemblyName>Interface.Clinical</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\References\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\References\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IAdultIE.cs" />
+    <Compile Include="IAllergyInfo.cs" />
+    <Compile Include="IConsumable.cs" />
+    <Compile Include="IConsumableItem.cs" />
+    <Compile Include="IContact.cs" />
+    <Compile Include="ICustomForm.cs" />
+    <Compile Include="IDeleteForm.cs" />
+    <Compile Include="IFamilyInfo.cs" />
+    <Compile Include="IFollowup.cs" />
+    <Compile Include="IFollowupEducation.cs" />
+    <Compile Include="IHivCareARTEncounter.cs" />
+    <Compile Include="IInfantEnrollment.cs" />
+    <Compile Include="IInitialEval.cs" />
+    <Compile Include="IinitialFollowupVisit.cs" />
+    <Compile Include="IIQTouchVisit.cs" />
+    <Compile Include="IKNHHEI.cs" />
+    <Compile Include="IKNHMEI.cs" />
+    <Compile Include="IKNHPeadraticFollowup.cs" />
+    <Compile Include="IKNHRevisedAdult.cs.cs" />
+    <Compile Include="IKNHStaticForms.cs" />
+    <Compile Include="INigeriaARTCard.cs" />
+    <Compile Include="INigeriaARTCareSummary.cs" />
+    <Compile Include="INigeriaARTCareVisitation.cs" />
+    <Compile Include="INonARTFollowUp.cs" />
+    <Compile Include="IPatientARTCare.cs" />
+    <Compile Include="IPatientClassification.cs" />
+    <Compile Include="IPatientHome.cs" />
+    <Compile Include="IPatientKNHPEP.cs" />
+    <Compile Include="IPatientRecord.cs" />
+    <Compile Include="IPatientRegistration.cs" />
+    <Compile Include="IPatientTransfer.cs" />
+    <Compile Include="IPriorArtHivCare.cs" />
+    <Compile Include="IQTouchKNHAdultIE.cs" />
+    <Compile Include="IQTouchKNHExpress.cs" />
+    <Compile Include="IIQTouchClinicalNote.cs" />
+    <Compile Include="IIQTouchPatientRegistration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

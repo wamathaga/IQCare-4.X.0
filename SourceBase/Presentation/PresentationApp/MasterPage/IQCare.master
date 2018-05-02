@@ -1,0 +1,380 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="MasterPage_IQCare" CodeBehind="IQCare.master.cs" %>
+
+<%@ Register Src="levelOneNavigationUserControl.ascx" TagName="levelOneNavigationUserControl"
+    TagPrefix="uc1" %>
+<%@ Register Src="levelTwoNavigationUserControl.ascx" TagName="levelTwoNavigationUserControl"
+    TagPrefix="uc2" %>
+<%@ Register Src="~/ClinicalForms/UserControl/UserControlKNH_Extruder.ascx" TagName="UserControlKNH_Extruder"
+    TagPrefix="ucExtruder" %>
+<%@ Register Assembly="AjaxControlToolkit" TagPrefix="cc1" Namespace="AjaxControlToolkit" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server" id="pageHead">
+    <meta http-equiv="X-UA-Compatible" content="IE=11,chrome=1" />
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title id="lblTitle" runat="server">International Quality Care Patient Management and
+        Monitoring System</title>
+    <link href="<%# ResolveUrl("~/Bootstrap/css/bootstrap.css") %>" rel="stylesheet"
+        type="text/css" />
+    <link href="<%# ResolveUrl("~/Bootstrap/css/iqcare.ke-font.css") %>" rel="stylesheet" />
+    <link href="<%# ResolveUrl("~/Bootstrap/css/parsley.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Bootstrap/css/CustomStyle.css") %>" rel="stylesheet"
+        type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff"
+        rel="stylesheet" />
+    <%--  <link href="<%# ResolveUrl("~/Style/Menu.css") %>" id="menuStyle" rel="stylesheet"
+        type="text/css" />
+    --%>
+    <link href="<%# ResolveUrl("~/Style/calendar.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Style/_assets/css/grid.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Style/_assets/css/round.css") %>" rel="stylesheet"
+        type="text/css" />
+    <link href="<%# ResolveUrl("~/Touch/Styles/custom-theme/jquery-ui-1.10.3.custom.min.css") %>"
+        rel="Stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Style/mbExtruder.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Incl/notification_center_plugin/css/style_light.css") %>"
+        rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Incl/notification_center_plugin/css/style.css") %>"
+        rel="stylesheet" type="text/css" />
+    <link href="<%# ResolveUrl("~/Incl/notification_center_plugin/css/uniform.css") %>"
+        rel="stylesheet" type="text/css" />
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/css/bootstrap-switch.css") %>" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/plugins/datatables/dataTables.bootstrap.css") %>" />
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/plugins/daterangepicker/daterangepicker.css") %>" />
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/plugins/datepicker/datepicker3.css") %>" />
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/plugins/iCheck/all.css") %>">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/plugins/select2/select2.min.css") %>">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/dist/css/AdminLTE.css") %>" />
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="<%#ResolveUrl("~/bootstrap/dist/css/skins/_all-skins.min.css") %>" />
+    <link rel="stylesheet" href="<%#ResolveUrl("~/style/CustomStyle.css") %>" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js") %>"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js") %>"></script>
+  <![endif]-->
+    <!-- Added by Gaurav -->
+    <!-- jQuery 2.2.3 -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/jQuery/jquery-2.2.3.min.js") %>"
+        type="text/javascript"></script>
+    <!-- jquery.formatDateTime -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/jQueryUI/jquery.formatDateTime.js") %>"
+        type="text/javascript"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="<%#ResolveUrl("~/bootstrap/js/bootstrap.min.js") %>" type="text/javascript"></script>
+    <!-- DataTables -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/datatables/jquery.dataTables.js") %>"
+        type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/datatables/dataTables.bootstrap.min.js") %>"
+        type="text/javascript"></script>
+    <!-- Bootstrap Switch -->
+    <script src="<%#ResolveUrl("~/bootstrap/js/bootstrap-switch.js") %>" type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/js/highlight.js") %>" type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/select2/select2.full.js") %>" type="text/javascript"></script>
+    <!-- InputMask -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/input-mask/jquery.inputmask.js") %>"
+        type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/input-mask/jquery.inputmask.date.extensions.js") %>"
+        type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/input-mask/jquery.inputmask.extensions.js") %>"
+        type="text/javascript"></script>
+    <!-- date-range-picker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"
+        type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/daterangepicker/daterangepicker.js") %>"
+        type="text/javascript"></script>
+    <!-- bootstrap datepicker -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/datepicker/bootstrap-datepicker.js") %>"
+        type="text/javascript"></script>
+    <!-- bootstrap color picker -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/colorpicker/bootstrap-colorpicker.min.js") %>"
+        type="text/javascript"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/iCheck/icheck.js") %>" type="text/javascript"></script>
+    <!-- AdminLTE App -->
+    <script src="<%#ResolveUrl("~/bootstrap/dist/js/app.min.js") %>" type="text/javascript"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="<%#ResolveUrl("~/bootstrap/dist/js/demo.js") %>" type="text/javascript"></script>
+    <script src="<%#ResolveUrl("~/bootstrap/bootbox.js") %>" type="text/javascript"></script>
+    <!-- jquery.formatDateTime -->
+    <script src="<%#ResolveUrl("~/bootstrap/plugins/jQueryUI/underscore.js") %>" type="text/javascript"></script>
+    <!-- End Here -->
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/menu.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/jsCommon.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/IQCareScript.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/weeklycalendar.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/highlightLabels.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/dateformat.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/jsDate.js") %>"></script>
+    <script language="javascript" src="<%# ResolveUrl("~/Incl/IQCareScript.js") %>" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/jquery.tablesorter.min.js") %>">  </script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/notification_center_plugin/js/ttw-notification-center.js") %>"></script>
+    <%--<script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Touch/styles/custom-theme/jquery-ui-1.10.3.custom.min.js") %>"></script>--%>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Touch/scripts/jquery.mb.flipText.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Incl/jquery.hoverIntent.min.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/Touch/scripts/mbExtruder.js") %>"></script>
+    <script language="javascript" type="text/javascript" src="<%# ResolveUrl("~/crystalreportviewers13/js/crviewer/crv.js") %>"></script>
+    <script language="javascript" type="text/javascript">
+        function pageurl(urlp) {
+
+            window.open(urlp);
+        }
+        function openHelp() {
+            var path = '/IQCareHelp/index.html';
+            if (window.location.href.toLowerCase().indexOf("iqcare") > -1) {
+                path = '/IQCare' + path;
+            }
+            window.open(path);
+        }
+    </script>
+    <%--<script language="javascript" type="text/javascript">    buildWeeklyCalendar(0, 1);</script>--%>
+    <script language="javascript" type="text/javascript">
+
+        if (location.pathname.substring(0, 17) == "/Presentation/frm") {
+            buildWeeklyCalendar(0, 1);
+        }
+
+        else {
+            buildWeeklyCalendar(0, 0);
+        }
+    
+    
+
+    </script>
+    <style type="text/css">
+        body
+        {
+            font-family: 'Source Sans Pro' , 'Helvetica Neue' , Helvetica, Arial, sans-serif;
+        }
+        .AutoExtender
+        {
+            font-family: Courier New, Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 100;
+            border: solid 1px #006699;
+            line-height: 15px;
+            padding: 0px;
+            background-color: White;
+            margin-left: 0px;
+            width: 800px;
+            text-align: left;
+        }
+        .AutoExtenderList
+        {
+            cursor: pointer;
+            color: black;
+            z-index: 2147483647 !important;
+            text-align: left;
+        }
+        .AutoExtenderHighlight
+        {
+            color: White;
+            background-color: #006699;
+            cursor: pointer;
+        }
+        #divwidth
+        {
+            width: 800px !important;
+        }
+        #divwidth div
+        {
+            width: 800px !important;
+        }
+        #divwidthFooter
+        {
+            width: 800px !important;
+        }
+        #divwidthFooter div
+        {
+            width: 800px !important;
+        }
+        .control-label
+        {
+            font-size: 12px !important;
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .control-label-grdHeader
+        {
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+        .text-muted
+        {
+            font-size: 13px !important;
+        }
+        .text-muted-header
+        {
+            font-size: 16px !important;
+        }
+    </style>
+</head>
+<body style="padding-bottom: 60px">
+    <div class="container-fluid">
+        <form id="form1" class="form" runat="server" enctype="multipart/form-data">
+        <asp:ScriptManager ID="masterScriptManager" runat="server" EnablePageMethods="true"
+            EnablePartialRendering="true" ScriptMode="Auto">
+        </asp:ScriptManager>
+        
+        <div id="containerMaster">
+            <div class="row" style="margin-bottom: 2%">
+                <div class="navbar navbar-fixed-top navbar-static-top bg-primary">
+                    <!-- Brand and toggle get grouped for better mobile display
+-->
+                    <div class="navbar-header">
+                        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-brand">
+                        <div id="Div1" align="right" runat="server">
+                            <asp:Label ID="lblLocation" ForeColor="ActiveCaption" CssClass="fa text-uppercase text-muted-header"
+                                runat="server" Text=" Nsambya Hospital and Medical Center"></asp:Label>
+                            <span style="color: Silver">|</span>
+                            <asp:Label ID="lblUserName" ForeColor="ActiveCaption" CssClass="text-muted-header"
+                                runat="server" Text=" Lanette Burrows"></asp:Label>
+                            <span style="color: Silver">|</span>
+                            <asp:Label ID="lblDate" CssClass="text-muted-header" ForeColor="ActiveCaption" runat="server"
+                                Text="30 September 2006"></asp:Label>
+                        </div>
+                    </div>
+                    <!-- Collection
+of nav links and other content for toggling -->
+                    <div id="navbarCollapse" class="collapse navbar-collapse">
+                        <ul class="nav
+navbar-nav navbar-right" style="padding-right: 5px">
+                            <li><a href="javascript:openHelp();" target="_blank"><span
+                                class="fa fa-exclamation-circle fa-3x text-muted" style="color: ActiveCaption;
+                                font-weight: 400; font-size: 14px;">&nbsp;Help</span> </a></li>
+                            <li>
+                                <asp:LinkButton ID="lnkPassword" runat="server" Font-Bold="True" OnClick="lnkPassword_Click">
+                                <span class="fa fa-unlock-alt fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;"> Password</span> </asp:LinkButton>
+                            </li>
+                            <li>
+                                <asp:LinkButton ID="lnkReportDefect" runat="server" OnClientClick="window.open('http://futuresindia.dyndns.org:82/iqcareissue-report/default.aspx');"
+                                    Font-Bold="True"><span class="fa fa-bug fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;">
+Report Defect</span></asp:LinkButton></li>
+                            <li class="active">
+                                <asp:LinkButton ID="lnkLogOut" runat="server" Font-Bold="True" OnClick="lnkLogOut_Click">
+                                <span class="fa fa-sign-out fa-3x text-muted" style="color: ActiveCaption;font-weight: 400;font-size: 14px;"> Logout</span> </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- .navbarCollapse -->
+                </div>
+                <!-- .navbar -->
+                <br />
+            </div>
+            <br />
+            <div id="level1Navigation" class="row" style="padding-top: 5px">
+                <uc1:levelOneNavigationUserControl ID="levelOneNavigationUserControl1" runat="server" />
+            </div>
+            <div class="row">
+                <div id="mainMaster" class="col-md-12">
+                    <%--level 2 Navigation--%>
+                    <div id="level2Navigation" runat="server">
+                        <uc2:levelTwoNavigationUserControl ID="levelTwoNavigationUserControl1" runat="server" />
+                    </div>
+                </div>
+                <!-- .mainmaster -->
+            </div>
+            <div class="container-fluid">
+                <div class="container-fluid">
+                    <asp:Label ID="lblpntStatus" CssClass="textstylehidden" runat="server" Text=""></asp:Label>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <ContentTemplate>
+                            <asp:Panel ID="divError" runat="server" Style="padding: 5px" CssClass="background-color:
+#FFFFC0; border: solid 1px #C00000" HorizontalAlign="Left">
+                                <asp:Label ID="lblError" runat="server" Style="font-weight: bold; color: #800000;
+                                    padding-left: 5px"></asp:Label>
+                            </asp:Panel>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                    <div>
+                        <div>
+                            <asp:ContentPlaceHolder ID="IQCareContentPlaceHolder" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </div>
+                        <asp:Panel ID="pnlExtruder" runat="server">
+                            <ucExtruder:UserControlKNH_Extruder ID="UserControlKNH_Extruder1" runat="server" />
+                        </asp:Panel>
+                    </div>
+                    <br />
+                    <br />
+                </div>
+                <asp:UpdatePanel ID="notificationPanel" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:Panel ID="panelNotify" runat="server" Style="display: none; width: 500px; height: 140px;
+                            position: relative; border: solid 1px #808080; background-color: #E0E0E0; z-index: 15000">
+                            <asp:Panel ID="panelPopup_Title" runat="server" Style="cursor: move;" class="panel panel-body">
+                                <table style="width: 100%;" class="table-condensed">
+                                    <tr>
+                                        <td style="background-color: #479ADA;" colspan="2">
+                                            <span style="font-weight: bold; color: Black">
+                                                <asp:Label ID="lblNotice" runat="server"></asp:Label></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%" valign="middle" align="left">
+                                            <asp:Image ID="imgNotice" runat="server" ImageUrl="~/Images/mb_information.gif" Height="32px"
+                                                Width="32px" />
+                                        </td>
+                                        <td style="width: 90%;" valign="middle" align="left">
+                                            <asp:Label ID="lblNoticeInfo" runat="server" Font-Bold="True"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="panel panel-footer">
+                                            <asp:Button ID="btnOkAction" runat="server" Text="OK" Width="10%" Height="30px" CssClass="btn btn-primary"
+                                                Style="text-align: left;" />
+                                            <asp:Button ID="btnCancel" runat="server" Text="Cancel" Width="14%" Height="30px"
+                                                CssClass="btn btn-primary" Style="text-align: left;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </asp:Panel>
+                        <asp:Button ID="btn" runat="server" Style="display: none" />
+                        <cc1:ModalPopupExtender ID="notifyPopupExtender" CancelControlID="btnCancel" TargetControlID="btn"
+                            runat="server" PopupControlID="panelNotify" BackgroundCssClass="modalBackground"
+                            DropShadow="True" PopupDragHandleControlID="panelPopup_Title" Enabled="True"
+                            DynamicServicePath="">
+                        </cc1:ModalPopupExtender>
+                    </ContentTemplate>
+                    <Triggers>
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        </form>
+    </div>
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-bottom" style="navigation"> <div class="container-fluid"> <div class="row" style="padding-top:3px">
+<div class="col-md-1"> <img src="<%=ResolveUrl("~/Images/FGI.jpg") %>" class="img-responsive img-rounded" alt="Palladium Group"/> </div> <div class="col-md-4">
+<img id="img1" class="img-responsive" alt="International Quality Care" src="<%=ResolveUrl("~/Images/iq_logo.gif") %>" border="0" height="50" width="80"/> </div> <div
+class="col-md-2 text-left text-primary "> <br /> <h4></h4> </div> <div class="col-md-1">
+</div> <div class="col-md-4"> <asp:Label ID="Label2" runat="server" Font-Bold="True"
+Text="Release Date : "></asp:Label> <asp:Label ID="lblrelDate" runat="server" CssClass="blue11
+nomargin" Font-Bold="True"></asp:Label> | <asp:Label ID="Label1" runat="server"
+Font-Bold="True" Text="Version : "></asp:Label> <asp:Label ID="lblversion" runat="server"
+CssClass="blue11 nomargin" Font-Bold="True"></asp:Label> </div><!-- .col-md-4 -->
+</div> <!-- .row --> </div> <!-- .conatiner-fluid--> </nav>
+</body>
+</html>

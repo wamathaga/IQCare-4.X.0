@@ -1,0 +1,1406 @@
+<%@ Page Language="C#" MasterPageFile="~/AdminHeaderFooter.master" AutoEventWireup="true" Title="Untitled Page" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="adminheaderfooter" Runat="Server">
+
+<SCRIPT language=javascript>
+
+
+function SetCheckBoxes(FormName, FieldName, CheckValue)
+{
+	if(!document.forms[FormName])
+		return;
+	var objCheckBoxes = document.forms[FormName].elements[FieldName];
+		
+									
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = CheckValue;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = CheckValue;
+
+}
+
+
+//Generic function to toggle elements
+function toggle(divId)
+{
+var Id = divId;
+if (document.layers)
+  {
+    if(document.layers[Id].visibility == "hide")
+    { show(Id);
+      return;
+    }
+    else if (document.layers[Id].visibility == "show")
+    { hide(Id);
+      return;
+    }
+  }
+if (document.all)
+  { if(document.all[Id].style.display == "none")
+      { show(Id);
+        return;
+      }
+    else if (document.all[Id].style.display == "inline")
+      { hide(Id);
+        return;
+      }
+  }
+else if (document.getElementById)
+  {
+    if(document.getElementById(Id).style.display == "none")
+      { show(Id);
+        return;
+      }
+    else if (document.getElementById(Id).style.display == "inline")
+      { hide(Id);
+       return;
+      }
+  }
+}
+
+//hides div
+function hide(divId) {
+if (document.layers) document.layers[divId].visibility = 'hide';
+else if (document.all) document.all[divId].style.display = 'none';
+else if (document.getElementById) document.getElementById(divId).style.display = 'none';
+}
+
+//shows div
+function show(divId) {
+if (document.layers) document.layers[divId].visibility = 'show';
+else if (document.all) document.all[divId].style.display = 'inline';
+else if (document.getElementById) document.getElementById(divId).style.display = 'inline';
+}
+
+function shownull(id)
+
+{
+var selectId = id;
+var nulldivId = 'null' + selectId;
+
+
+if (document.getElementById(selectId)[document.getElementById(selectId).selectedIndex].value != 'Equal to')
+
+
+
+{
+
+hide (nulldivId);
+
+}
+else 
+{
+show (nulldivId);
+
+}
+}
+
+</SCRIPT>
+<form id="custom" method="post" runat="server" >
+<h1 class=margin>New Custom Report</h1>
+<h2 class=forms>Step 1: Give Your Report an Identity</h2>
+
+<div class ="border">
+
+<br />
+<LABEL class="right25">Report Title: </LABEL>
+<asp:TextBox ID=reportTitle runat=server size="100"></asp:TextBox>
+
+<br /><br />
+
+<LABEL class="right25" style="vertical-align:500%">Description: </LABEL>
+<textarea rows=5 cols=102 id=reportdescription></textarea>
+
+<br /><br />
+<LABEL class="right25">Report Category: </LABEL>
+<asp:DropDownList ID=newReportCat runat=server>
+<asp:ListItem value="" Text="--Select Report Category--"></asp:ListItem>
+<asp:ListItem value="" Text="Demographic Reports"></asp:ListItem>
+</asp:DropDownList>
+<a href="javascript:show('divnewcat');" class="button" style="vertical-align:28%">NEW CATEGORY</a> 
+
+<div id=divnewcat style="display:none;" class=margin10>
+<asp:TextBox ID=txtnewcat size=44 runat=server></asp:TextBox>
+</div>
+<div id=continue class=center>
+<br />
+<br />
+<a href="javascript:show('step2');hide('continue');" class="button">CONTINUE TO STEP 2</a> 
+</div>
+<br /><br />
+</div>
+<br />
+<div id="step2" style="display:none;">
+<h2 class=forms>Step 2: Select Your Columns and Column Actions</h2>
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 1: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=display checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=right10>Field Group: </label>
+<asp:DropDownList ID=DropDownList1 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList2 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=ReportLabel runat=server></asp:Textbox>
+
+</asp:DropDownList>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList4 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList5 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="DropDownList6"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=value1 runat=server></asp:textbox>
+
+<div id="nullDropDownList6" style="display:none">
+<asp:DropDownList ID=DropDownList18 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<asp:DropDownList ID=DropDownList3 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<a href="javascript:show('whereclause1');hide('AddWhereClause');show('remove')" style="margin-left:30px;vertical-align:29%" id=AddWhereClause>Add Another Where Clause</a>
+<a href="javascript:hide('whereclause1');javascript:hide('whereclause2');hide('remove');toggle('AddWhereClause');" style="display:none;margin-left:30px;vertical-align:29%" id=remove >Remove</a>
+
+
+<div id=whereclause1 style="display:none;">
+
+
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="whereclauseExample"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox2 runat=server></asp:textbox>
+
+<div id="nullwhereclauseExample" style="display:none">
+<asp:DropDownList ID=DropDownList10 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<asp:DropDownList ID=DropDownList16 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+
+
+
+
+<a href="javascript:show('whereclause2');hide('addwhereclause2');show('remove2');" style="margin-left:30px;vertical-align:29%" id=addwhereclause2 >Add Another Where Clause</a>
+<a href="javascript:hide('whereclause2');toggle('addwhereclause2');hide('remove2')" style="display:none;margin-left:30px;vertical-align:29%" id=remove2 >Remove</a>
+</div> <!--end add where clause -->
+
+
+
+
+<!-- begin where clause2 -->
+
+
+<div id=whereclause2 style="display:none;">
+
+
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="whereclause2dd"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox34 runat=server></asp:textbox>
+
+<div id="nullwhereclause2dd" style="display:none">
+<asp:DropDownList ID=DropDownList40 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<asp:DropDownList ID=DropDownList49 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+
+
+
+<a href="#stop" name="stop" style="margin-left:30px;vertical-align:29%" id=addwhereclause3>Add Another Where Clause</a>
+
+</div> 
+
+<!-- end where clause2 -->
+
+
+
+<br /><br />
+</div>
+<div id=button1 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field2');hide('button1')" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+<!-- FIELD 2 -->
+<div id=field2 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 2: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox1 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList7 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList8 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=ReportLabel2 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList11 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem>
+</asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList12 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select2"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox1 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList13 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect2" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select3"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox3 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList14 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect2" style="display:none">
+<asp:DropDownList ID=DropDownList15 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList17 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button2 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field3');hide('button2');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 3 -->
+<div id=field3 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 3: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox2 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList20 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList21 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox24 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList23 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem>
+</asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList24 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select4"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox4 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList25 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect4" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select5"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox5 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList26 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect4" style="display:none">
+<asp:DropDownList ID=DropDownList27 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList28 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button3 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field4');hide('button3');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 4 -->
+<div id=field4 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 4: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox3 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList29 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList30 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox25 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList32 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem>
+</asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList33 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select6"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox6 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList34 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect6" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select7"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox7 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList35 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect6" style="display:none">
+<asp:DropDownList ID=DropDownList36 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList37 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button4 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field5');hide('button4');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 5 -->
+<div id=field5 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 5: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox4 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList38 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList39 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox26 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList41 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList42 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select8"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox8 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList43 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect8" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select9"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox9 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList44 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect8" style="display:none">
+<asp:DropDownList ID=DropDownList45 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList46 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button5 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field6');hide('button5');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 6 -->
+<div id=field6 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 6: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox5 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList47 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList48 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox27 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList50 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList51 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select10"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox10 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList52 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect10" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select11"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox11 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList53 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect10" style="display:none">
+<asp:DropDownList ID=DropDownList54 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList55 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button6 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field7');hide('button6');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 7 -->
+<div id=field7 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 7: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox6 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList56 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList57 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox28 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList59 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList60 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select12"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox12 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList61 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect12" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select13"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox13 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList62 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect12" style="display:none">
+<asp:DropDownList ID=DropDownList63 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList64 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button7 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field8');hide('button7');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 8 -->
+<div id=field8 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 8: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox7 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList65 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList66 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox29 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList68 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList69 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select14"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox14 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList70 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect14" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select15"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox15 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList71 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect14" style="display:none">
+<asp:DropDownList ID=DropDownList72 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList73 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button8 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field9');hide('button8');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 9 -->
+<div id=field9 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 9: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox8 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList74 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList75 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox30 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList77 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList78 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select16"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox16 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList79 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect16" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select17"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox17 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList80 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect16" style="display:none">
+<asp:DropDownList ID=DropDownList81 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList82 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button9 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field10');hide('button9');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 10 -->
+<div id=field10 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 10: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox9 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList83 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList84 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox31 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList86 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList87 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select18"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox18 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList88 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect18" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select19"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox19 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList89 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect18" style="display:none">
+<asp:DropDownList ID=DropDownList90 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList91 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button10 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field11');hide('button10');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 11 -->
+<div id=field11 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 11: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox10 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList92 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList93 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox32 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList95 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList96 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select20"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox20 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList97 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect20" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select21"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox21 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList98 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect20" style="display:none">
+<asp:DropDownList ID=DropDownList99 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList100 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<div id=button11 style="position: RELATIVE; left: 524px; top: 16px; width: 395px; text-align:right;">
+<a href="javascript:show('field12');hide('button11');" class="button">ADD FIELD</a>
+</div>
+<br /><br />
+
+</div>
+<!-- FIELD 12 -->
+<div id=field12 style="display:none">
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Column 12: </LABEL>
+<label>Display on report</label> <asp:CheckBox ID=CheckBox11 checked runat=server />
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Field Group: </label>
+<asp:DropDownList ID=DropDownList101 runat=server>
+<asp:ListItem value="" Text="--Select Group--"></asp:ListItem>
+<asp:ListItem value="" Text="Field Groups"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Field: </label>
+<asp:DropDownList ID=DropDownList102 runat=server>
+<asp:ListItem value="" Text="--Select Field--"></asp:ListItem>
+<asp:ListItem value="" Text="Field"></asp:ListItem>
+</asp:DropDownList>
+
+ <label class=margin10>Report Label: </label>
+<asp:Textbox ID=Textbox33 runat=server></asp:Textbox>
+
+ <label class=margin10>Function: </label>
+<asp:DropDownList ID=DropDownList104 runat=server>
+<asp:ListItem value="" Text="--Select Function--"></asp:ListItem>
+<asp:ListItem value="" Text="Group"></asp:ListItem>
+<asp:ListItem value="" Text="Sum"></asp:ListItem>
+<asp:ListItem value="" Text="Count"></asp:ListItem>
+<asp:ListItem value="" Text="Count Distinct"></asp:ListItem></asp:DropDownList>
+
+<asp:DropDownList ID=DropDownList105 cssclass=margin10 runat=server>
+<asp:ListItem value="" Text="Ascending"></asp:ListItem>
+<asp:ListItem value="" Text="Descending"></asp:ListItem>
+</asp:DropDownList>
+<br />
+<br />
+
+<label class=right25>Where: </label>
+<select  ID="Select22"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox22 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList106 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+<div id="addSelect22" style="display:none;">
+<div style="padding-bottom:10px;"> </div>
+<label class=right25>AND </label>
+<select  ID="Select23"  onChange="shownull(this.id)">
+<option value="">--Operator--</option>
+<option value="Equal to">=</option>
+<option value="Less than"><</option>
+<option value="Greater than">></option>
+<option value="Less than or equal to"><=</option>
+<option value="Greater than or equal to">>=</option>
+</select>
+
+ <label class=margin10>Value: </label>
+<asp:textbox ID=Textbox23 runat=server></asp:textbox>
+
+<asp:DropDownList ID=DropDownList107 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="A number or text"></asp:ListItem>
+</asp:DropDownList>
+
+</div>
+
+<div id="nullSelect22" style="display:none">
+<asp:DropDownList ID=DropDownList108 CssClass=margin10left runat=server>
+<asp:ListItem value="" Text="--Select--"></asp:ListItem>
+<asp:ListItem value="" Text="Null"></asp:ListItem>
+<asp:ListItem value="" Text="Not null"></asp:ListItem>
+</asp:DropDownList>
+</div>
+<asp:DropDownList ID=DropDownList109 cssclass=margin10left runat=server>
+<asp:ListItem value="" Text="AND"></asp:ListItem>
+<asp:ListItem value="" Text="OR"></asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+</div>
+<br /><br />
+</div>
+
+<div class="border">
+<br />
+
+<LABEL class="margin15 bigbold" style="vertical-align:20%">Advanced Query Options:</LABEL>
+<hr size=1 style="margin-left:15px;margin-bottom:12px;margin-top:0px;margin-right:15px;"  />
+
+<label class=margin20>Enter SQL Statement: </label><br />
+<div class=center style="padding-top:5px;">
+<textarea cols=140 rows=10></textarea>
+<br /><br />
+</div>
+
+</div>
+<div align="center" class="topmargin">
+<asp:Button text="Save and Run Report" runat=server /><asp:Button text="Export Report Parameters" runat=server CssClass=margin10left />
+</div>
+</div>
+</form>
+
+
+<br /><br /><br /><br />
+</asp:Content>
+

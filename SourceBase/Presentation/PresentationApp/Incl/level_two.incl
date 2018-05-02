@@ -1,0 +1,29 @@
+<div id="level2nav">
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td class="navbutton2"><a href="" class="leveltwo">Socio-Demographics</a><br /></td>
+<td><a href="" class="leveltwo">Initial Evaluation</a><br /></td>
+<td onmouseover="expand2(this);" 
+      onmouseout="collapse2(this);" class="navbutton2"><a href=""  class="leveltwo">Forms</a><br /><div class="navbutton2" style="width:167px;">
+<a href="" class="menuitem2">Follow Up</a>
+<a href="" class="menuitem2">Adult Pharmacy</a>
+<a href="" class="menuitem2">Pediatric Pharmacy</a> 
+<a href="" class="menuitem2">Lab Order</a>
+<a href="" class="menuitem2">Contract Tracking</a>
+<a href="" class="menuitem2">Home Visit</a>
+</div>
+</td>
+<td onmouseover="expand2(this);"   onmouseout="collapse2(this);" class="navbutton2"><a href="" 
+ class="leveltwo">Patient Reports</a><br />
+<div class="navbutton2" style="width:259px;">
+<a href="../Apps/frmPatientHome.htm" class="menuitem2">Drug Pick Up Habit</a>
+<a href="" class="menuitem2">HIV Care Patient Profile</a>
+<a href="" class="menuitem2">Medical Data Card</a>
+<a href="" class="menuitem2">Patient Graphical Reports</a>
+</div>
+</td>
+<td class="navbutton2"><a href="" class="leveltwo">Schedule Appointment</a></td>
+<td class="navbutton2"><a href="/patient_home.html" class="leveltwob">Patient Home</a></td>
+</tr>
+</table>
+</div>

@@ -1,0 +1,408 @@
+<%@ Master Language="C#" AutoEventWireup="true"
+    Inherits="ClinicalForms_ClinicalHomeHeaderFooter" Codebehind="ClinicalHomeHeaderFooter.master.cs" %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<?xml version="1.0" ?>
+<html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title id="lblTitle" runat="server">International Quality Care Patient Management and
+        Monitoring System<%=Session["AppLocation"].ToString()%></title>
+
+        <link rel="stylesheet" type="text/css" href="../style/calendar.css" />
+        <link rel="stylesheet" type="text/css" href="../style/styles.css" />
+        <link rel="stylesheet" type="text/css" href="../Style/StyleSheet.css" />
+        <link type="text/css" href="../Style/_assets/css/grid.css" rel="stylesheet" />
+        <link type="text/css" href="../Style/_assets/css/round.css" rel="stylesheet" />
+        </head>
+    <script language="javascript" type="text/javascript">
+//        var sPath = window.location.pathname;
+//        var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+//        var browserName = navigator.appName;
+//        if (browserName != "Microsoft Internet Explorer") {
+//            document.write('<link rel="stylesheet" type="text/css" href="../style/StyleSheetBrowser.css" />');
+//        }
+//        else {
+//            document.write('<link rel="stylesheet" type="text/css" href="../style/styles.css" />');
+//        }
+        function ClearSession() {
+
+            ClinicalForms_ClinicalHomeHeaderFooter.SetPatientId_Session();
+        }
+
+        function fnSetformID(id) {
+            ClinicalForms_ClinicalHomeHeaderFooter.SetDynamic_Session(id);
+        }
+        function openBluecart() {
+            window.open('../Reports/frmPatientBlueCart.aspx?name=Add&PatientId=' + '<%=PatientId.ToString()%>' + '&ReportName=bluecart' + '&sts=lblpntStatusText', 'bluecart', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=no,resize=no,width=700,height=350,scrollbars=yes');
+
+        }
+
+        function openClinicalSummary() {
+            window.open('../Reports/frmClinical_PatientSummary.aspx', 'popupwindow', 'toolbars=no,location=no,directories=no,dependent=yes,top=10,left=30,maximize=yes,resizable=no,width=950,height=650,scrollbars=yes');
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript" src="../incl/menu.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../incl/jsCommon.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../incl/IQCareScript.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../incl/weeklycalendar.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../incl/highlightLabels.js"></script>
+
+   <script language="javascript" type="text/javascript" src="../incl/dateformat.js"></script>
+
+    <script language="javascript" type="text/javascript">        buildWeeklyCalendar(0);</script>
+     
+<body>
+    <form id="Form1" runat="server">
+    <div id="container">
+     <div class="utility" align="right">
+            <a class="utility" href="../IQCareHelp/index.aspx" onclick="window.open('../IQCareHelp/index.html'); return false">
+                Help</a> | <a class="utility" href="../AdminForms/frmAdmin_ChangePassword.aspx">Password</a> | <a class="utility" href="mailto:iqsupport@futuresgroup.com">Report Defect</a>|
+            <a class="utility" href="../frmLogOff.aspx">Logout</a>
+        </div>
+        <!-- level one nav  -->
+        <div id="levelone">
+            <table cellspacing="0" cellpadding="0" width="950" border="0">
+                <tbody>
+                    <tr>
+                        <asp:Label ID="lblpntStatus" CssClass="textstylehidden" runat="server" Text="0"></asp:Label>
+                        <td class="navbutton" width="121" height="26" rowspan="2">
+                            <a class="innerbutton" href="../frmFindAddPatient.aspx" onclick="javascript:ClearSession();">Find/Add Patient</a><br>
+                        </td>
+                        <td class="navbutton" onmouseover="expand(this);" onmouseout="collapse(this);" width="70"
+                            height="26" rowspan="2">
+                            <a class="innerbutton">Reports</a><br>
+                            <!--begin dropdown -->
+                            <div class="navbutton">
+                                <table class="menu" cellspacing="0" cellpadding="0" width="165" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminFacilityReport" runat="server" href="../Reports/frmReportFacilityJump.aspx" onclick="javascript:ClearSession();">
+                                                    Facility Reports</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminDonorReport" runat="server" href="../Reports/frmReportDonorJump.aspx" onclick="javascript:ClearSession();">
+                                                    Donor Reports</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminCustomReport" runat="server" href="../Reports/frmReportCustom.aspx" onclick="javascript:ClearSession();">
+                                                    Custom Reports</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        <td>
+                                        <a class="menuitem" id="QueryBuilderReports" runat="server" href="~/Reports/frmQueryBuilderReports.aspx" onclick="javascript:ClearSession();">
+                                                    QueryBuilder Reports</a>
+                                        </td>
+                                        </tr>
+                                      <%--  <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminaReport" runat="server" href="../Reports/frmReporta.aspx">
+                                                    a Reports</a>
+                                            </td>
+                                        </tr>--%>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--end  dropdown -->
+                        </td>
+                        <td class="navbutton" width="80" height="26" rowspan="2">
+                            <a class="innerbutton" id="mnuSchedular" runat="server" href="../Scheduler/frmScheduler_AppointmentMain.aspx" onclick="javascript:ClearSession();">
+                                Scheduler</a><br>
+                        </td>
+                        <td class="navbutton" onmouseover="expand(this);" onmouseout="collapse(this);" width="110"
+                            height="26" rowspan="2">
+                            <a class="innerbutton" href="../frmFacilityHome.aspx" onclick="javascript:ClearSession();">Administration</a><br>
+                            <!-- begin dropdown -->
+                            <div class="navbutton">
+                                <table class="menu" cellspacing="0" cellpadding="0" width="189" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminFacility" runat="server" href="../AdminForms/frmAdmin_FacilityList.aspx" onclick="javascript:ClearSession();">
+                                                    Facility Setup</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminCustom" runat="server" href="../AdminForms/frmAdmin_PMTCT_CustomItems.aspx" onclick="javascript:ClearSession();">
+                                                    Customize Lists</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminUser" runat="server" href="../AdminForms/frmAdmin_UserList.aspx" onclick="javascript:ClearSession();">
+                                                    User Administration</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminUserGroup" runat="server" href="../AdminForms/frmAdmin_UserGroupList.aspx" onclick="javascript:ClearSession();">
+                                                    User Group Administration</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminDeletePatient" runat="server" href="../AdminForms/frmAdmin_DeletePatient.aspx" onclick="javascript:ClearSession();">
+                                                    Delete Patient</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminCustomConfig" runat="server" href="../AdminForms/frmConfig_Customfields.aspx" onclick="javascript:ClearSession();">
+                                                    Configure Custom Fields</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminExport" runat="server" href="../AdminForms/frmAdmin_Export.aspx" onclick="javascript:ClearSession();">
+                                                    Export</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" id="mnuAdminRefreshCache" runat="server" href="../frmSystemCache.aspx" onclick="javascript:ClearSession();">
+                                                    Refresh System Cache</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end dropdown -->
+                        </td>
+                        <td class="navbutton" onmouseover="expand(this);" onmouseout="collapse(this);" width="80"
+                            height="26" rowspan="2">
+                            <a class="innerbutton" href="../frmDBBackup.aspx" onclick="javascript:ClearSession();" >Backup</a><br>
+                            <div class="navbutton">
+                                <table class="menu" cellspacing="0" cellpadding="0" width="189" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" href="../frmDBBackup.aspx" onclick="javascript:ClearSession();">Backup/Restore Database</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="menuitem" href="../frmDBBackupSetup.aspx" onclick="window.open('../frmDBBackupSetup.aspx'); return false">
+                                                    Backup/Restore Setup</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td class="navbutton" onmouseover="imgswap('tab','../images/tab_right_over');" onmouseout="imgswap('tab','../images/tab_right');"
+                            width="98" height="26" rowspan="2">
+                            <a class="innerbutton2" href="../frmFacilityHome.aspx" onclick="javascript:ClearSession();">Facility Home</a><br>
+                        </td>
+                        <td valign="top" width="23" height="26" rowspan="2">
+                            <img id="tab" height="27" alt="tab" src="../IMAGES/tab_right.gif" width="23" border="0"
+                                name="tab"><br />
+                        </td>
+                        <td class="breadcrumb" valign="bottom" height="21">
+                            <!-- Modified 18June 2007 (3) -->
+                            <a class="breadcrumb">
+                                <asp:Label ID="lblRoot" runat="server" Text=""></asp:Label></a>
+                            <asp:Label ID="lblMark" runat="server" Text="»"></asp:Label>
+                            <a class="breadcrumb">
+                                <asp:Label ID="lblheader" runat="server" Text="Facility Setup"></asp:Label></a>
+                            <!-- Modified 18June 2007 (3) -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="topline" height="5">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="main">
+            <div id="bluetop">
+            </div>
+            <img id="logo" height="94" alt="International Quality Care by AIDSRelief" src="../IMAGES/iq_logo.gif"
+                width="236" border="0">
+            <img id="pmms" height="53" alt="Patient Management and Monitoring System" src="../IMAGES/pmms.gif"
+                width="264" border="0">
+            <img id="collage" height="117" src="../IMAGES/collage_admin2_mut.jpg" width="424"
+                border="0">
+            <div id="username">
+                <asp:Label ID="lblUserName" runat="server" Text="Lanette Burrows"></asp:Label></div>
+            <div id="date" align="right">
+                <asp:Label ID="lblDate" runat="server" Text="30 September 2006"></asp:Label></div>
+            <div id="border">
+            </div>
+            <img id="tabfacility" height="23" alt="Facility Name" src="../IMAGES/tab_facility.gif"
+                width="377" border="0">
+            <div id="facility">
+                <asp:Label ID="lblLocation" runat="server" Text="Nsambya Hospital and Medical Center"></asp:Label></div>
+            <div id="contentholdinghome">
+                <div id="level2nav">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            <tr>
+                                <td class="navbutton2" onmouseover="expand2(this);" onmouseout="collapse2(this);">
+                                    <a class="leveltwo">Registration</a><br>
+                                    <div class="navbutton2" id="EnrolmentARTPMTCT" runat="server">
+                                        <a class="menuitem2" id="mnuEnrolment" runat="server" >HIV Care</a> 
+                                        <a class="menuitem2" id="mnuPMTCTEnrol" runat="server">PATIENT REGISTRATION</a>
+                                    </div>
+                                </td>
+                                <td class="navbutton2">
+                                    <a class="leveltwo" id="mnuPatientTranfer" runat="server" href="frmClinical_Transfer.aspx">
+                                        Transfer</a><br />
+                                </td>
+                                <td class="navbutton2" onmouseover="expand2(this);" onmouseout="collapse2(this);">
+                                    <a class="leveltwo">Additional Forms</a><br />
+                                    <div class="navbutton2" id="AdditionalForms" runat="server">
+                                        <a class="menuitem2" id="mnuFamilyInformation" runat="server" >Family Information</a>
+                                        <a class="menuitem2" id="mnuPatientClassification" runat="server" >Patient Classification</a>
+                                        <a class="menuitem2" id="mnuFollowupEducation" runat="server" >Follow-up Education</a>
+                                        <a class="menuitem2" id="mnuExposedInfant" runat="server" >Exposed Infant Follow-up</a>
+                                    </div>
+                                </td>
+                                <td class="navbutton2">
+                                    <a class="leveltwo" id="mnuExistingForms" runat="server">View Existing Forms</a><br />
+                                </td>
+                               
+                                <td class="navbutton2" onmouseover="expand2(this);" onmouseout="collapse2(this);">
+                                    <a class="leveltwo">Create New Form </a>
+                                    <br />
+                                    <div id="DivDynModule" class="navbutton2" width="155" runat="server"> 
+                                       <a class="menuitem2" id="mnuLabOrderDynm" onclick="javascript:ClearSession();" visible ="false" runat="server">Order Lab Tests</a>    
+                                    </div>
+                                    
+                                    <div id="ClinicID" class="navbutton2" width="155" runat="server">
+                                        <a class="menuitem2" id="mnuInitEval"   onclick="javascript:ClearSession();" runat="server">Initial Evaluation</a> 
+                                        <a class="menuitem2" id="mnuFollowupART" onclick="javascript:ClearSession();" runat="server">ART Follow-up</a> 
+                                        <a class="menuitem2" id="mnuNonARTFollowUp" onclick="javascript:ClearSession();" runat="server">Non-ART Follow-up</a>
+                                      
+                                        <a class="menuitem2" id="mnuAdultPharmacy"  onmousedown="javascript:ClearSession();" onclick="javascript:ClearSession();" runat="server">Pharmacy</a> 
+                                       <%-- <a class="menuitem2" id="mnuPaediatricPharmacy" onclick="javascript:ClearSession();" runat="server">Paediatric Pharmacy</a>--%>
+                                        <a class="menuitem2" id="mnuLabOrder" onclick="javascript:ClearSession();" runat="server">Lab Order</a>
+                                        <a class="menuitem2" id="mnuOrderLabTest" onclick="javascript:ClearSession();" runat="server">Order Lab Tests</a> 
+                                        <a class="menuitem2" id="mnuHomeVisit" onclick="javascript:ClearSession();" runat="server">Home Visit</a> 
+                                       <%--<a class="menuitem2" id="mnuContactCare1" onclick="javascript:ClearSession();" runat="server">Care Tracking</a>--%>
+                                    </div>
+                                    <div id="divPMTCT" class="navbutton2" width="155" runat="server">
+                                        <a class="menuitem2" id="mnuAdultPharmacyPMTCT" onclick="javascript:ClearSession();" runat="server">Pharmacy</a> 
+                                        <%--<a class="menuitem2" id="mnuPaediatricPharmacyPMTCT" onclick="javascript:ClearSession();" runat="server">Paediatric Pharmacy</a>--%>
+                                        <a class ="menuitem2" id ="mnuLabOrderPMTCT" onclick="javascript:ClearSession();" runat="server">Lab Order</a>
+                                        <a class="menuitem2" id="mnuOrderLabTestPMTCT" onclick="javascript:ClearSession();" runat="server">Order Lab Tests</a> 
+                                    </div>
+
+                                    <div id="divUgandaBlueCard" class="navbutton2" width="155" runat="server">
+                                              <a class="menuitem2" id="mnuPriorARTHIVCare" onclick="javascript:ClearSession();" runat="server">Prior ART/HIV Care</a> 
+                                              <a class="menuitem2" id="mnuARTCare" onclick="javascript:ClearSession();" runat="server">ART Care</a>
+                                              <a class="menuitem2" id="mnuHIVCareARTEncounter" onclick="javascript:ClearSession();" runat="server">HIV Care/ART Encounter</a> 
+                                    </div>
+                                    <div id="divKenyaBlueCard" class="navbutton2" width="155" runat="server">
+                                              <a class="menuitem2" id="mnuARTHistory" onclick="javascript:ClearSession();" runat="server">ART History</a> 
+                                              <a class="menuitem2" id="mnuARTTherapy" onclick="javascript:ClearSession();" runat="server">ART Therapy</a>
+                                              <a class="menuitem2" id="mnuARTVisit" onclick="javascript:ClearSession();" runat="server">Initial and Follow up Visits</a> 
+                                    </div>
+
+                                    <%--<br />
+                                    <div class="navbutton2" width="155">
+                                        <table class="navbutton2" width="155">
+                                            <tr>
+                                                <td class="menuitemsub" width="155" onmouseover="expandsubmenu(this);" onmouseout="collapsesubmenu(this);" id="tdART" runat="server">
+                                                    HIV Care&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                                    <div id="ClinicID" class="navbutton2" width="155" runat="server">
+                                                        <a class="menuitem2" id="mnuInitEval"   onclick="javascript:ClearSession();" runat="server">Initial Evaluation</a> 
+                                                        <a class="menuitem2" id="mnuFollowupART" onclick="javascript:ClearSession();" runat="server">ART Follow-up</a> 
+                                                        <a class="menuitem2" id="mnuNonARTFollowUp" onclick="javascript:ClearSession();" runat="server">Non-ART Follow-up</a> 
+                                                        <a class="menuitem2" id="mnuAdultPharmacy"  onmousedown="javascript:ClearSession();" onclick="javascript:ClearSession();" runat="server">Adult Pharmacy</a> 
+                                                        <a class="menuitem2" id="mnuPatientRecord" onclick="javascript:ClearSession();" runat="server">Patient Record</a> 
+                                                        <a class="menuitem2" id="mnuPharmacyCTC" onclick="javascript:ClearSession();" runat="server">Pharmacy</a>
+                                                        <a class="menuitem2" id="mnuPaediatricPharmacy" onclick="javascript:ClearSession();" runat="server">Paediatric Pharmacy</a>
+                                                        <a class="menuitem2" id="mnuLabOrder" onclick="javascript:ClearSession();" runat="server">Lab Order</a> 
+                                                        <a class="menuitem2" id="mnuOrderLabTest" onclick="javascript:ClearSession();" runat="server">Order Lab Tests</a> 
+                                                        <a class="menuitem2" id="mnuHomeVisit" onclick="javascript:ClearSession();" runat="server">Home Visit</a> 
+                                                        <a class="menuitem2" id="mnuContactCare1" onclick="javascript:ClearSession();" runat="server">Care Tracking</a>
+                                                    </div>
+                                                </td>    
+                                            </tr>
+                                            <tr>
+                                                <td class="menuitemsublast" width="155" onmouseover="expandsubmenu(this);" onmouseout="collapsesubmenulast(this);" id="tdPMTCT" runat="server">
+                                                    PMTCT&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                                    <div id="divPMTCT" class="navbutton2" width="155" runat="server">
+                                                        <a class="menuitem2" id="mnuAdultPharmacyPMTCT" onclick="javascript:ClearSession();" runat="server">Adult Pharmacy</a> 
+                                                        <a class="menuitem2" id="mnuPharmacyPMTCTCTC" onclick="javascript:ClearSession();" runat="server">Pharmacy</a>
+                                                        <a class="menuitem2" id="mnuPaediatricPharmacyPMTCT" onclick="javascript:ClearSession();" runat="server">Paediatric Pharmacy</a>
+                                                        <a class ="menuitem2" id ="mnuLabOrderPMTCT" onclick="javascript:ClearSession();" runat="server">Lab Order</a>
+                                                        <a class="menuitem2" id="mnuOrderLabTestPMTCT" onclick="javascript:ClearSession();" runat="server">Order Lab Tests</a> 
+                                                        <a class="menuitem2" id="mnuContactCarePMTCT" onclick="javascript:ClearSession();" runat="server">Care Tracking</a>
+                                                    </div>
+                                                </td>
+                                           </tr>
+                                        </table></div>--%>
+                                   </td>
+                                <%----Changes makes today-----%>
+                                <td class="navbutton2">
+                                    <a class="leveltwo" id="mnuClinicalDeleteForm" runat="server">Delete Form</a>
+                                </td>
+                                <%----Changes makes today-----%>
+                                <td class="navbutton2" onmouseover="expand2(this);" onmouseout="collapse2(this);">
+                                    <a class="leveltwo" >Patient Reports</a><br>
+                                    <div class="navbutton2" id="ReportID" runat="server">
+                                        <a class="menuitem2" id="mnuDrugPickUp" runat="server" >Patient ARV Pick-up</a> <a
+                                            class="menuitem2" id="mnuPatientProfile" runat="server" >HIV Care Patient Profile</a>
+                                            <a class="menuitem2" id="mnupatientbluecart" href="#"  onclick="javascript:openBluecart();return false;">Patient Blue Card</a>
+                                            <a class="menuitem2" id="mnuDebitNote" runat="server" >Debit Note</a>
+                                            <a class="menuitem2" id="mnuClinicalSummary" href="#"  onclick="javascript:openClinicalSummary();return false;">Patient Profile Summary</a>
+                                            </div>
+                                </td>
+                                <td class="navbutton2">
+                                    <a class="leveltwo" id="mnuScheduleAppointment" runat="server" href="../Scheduler/frmScheduler_Appointmenthistory.aspx" onclick="javascript:ClearSession();">
+                                        Schedule App.</a>
+                                </td>
+                                <td class="navbutton2">
+                                    <a class="leveltwo" id="mnuPatienHome" runat="server" onclick="javascript:ClearSession();">Patient Home</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="contentpad" style="height:920">
+                    <div class="nomargin">
+                    </div>
+                    <!-- begin content area -->
+                    <asp:ContentPlaceHolder ID="ClinicalHome" runat="server">
+                    </asp:ContentPlaceHolder>
+                    <!-- end content area -->
+                    <table width="900">
+                      <tr style="width:100%">
+                         <td align ="left" style="width:50%">
+                            <p>
+                               <img src="../Images/FGI.bmp" width="70" vspace="5" hspace="5" border="0">
+                               <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" onclick="window.open('http://creativecommons.org/licenses/by-nc-sa/3.0/'); return false"><img src="../Images/CreativeCommon.jpg"  width="70" vspace="5" border="0"></a>
+                             </p>
+                         </td>
+                         <td align ="right" style="width:50%">
+                            <label class="right" style="width:300"> Version      : <asp:Label CssClass="blue11 nomargin" ID="lblversion" Text="Version B1.0" runat="server"></asp:Label></label>
+                            <label class="right" style="width:300"> Release Date :
+                                 <asp:Label CssClass="blue11 nomargin" ID="lblrelDate" Text="Date" runat="server"></asp:Label></label>
+                         </td>
+                      </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+            <br />
+    </div>
+    </form>
+</body>
+</html>

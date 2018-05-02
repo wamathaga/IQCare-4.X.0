@@ -1,0 +1,89 @@
+﻿
+.jspHorizontalBar,
+.jspVerticalBar
+{
+	background:#000000; /*#eeeef4;*/
+	opacity: 1;
+    right: 0px !important;
+}
+.jspTrack
+{
+	background: #FFF; /*#eeeef4;*/
+	opacity: 0.0;
+    /*right:50px !important;*/
+}
+
+.jspDrag
+{
+	background:  #bbd;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+    opacity: 0.1;
+}
+
+.jspTrack .jspActive,
+.jspTrack .jspHover,
+.jspDrag:hover
+{
+	background: #FFF; /*#8B8B9F;*/
+}
+
+
+.jspArrow
+{
+    background-image: url('../images/btnScrollUp.jpg');
+	/*background: url(../Styles/custom-theme/images/ui-icons_222222_256x240.png) no-repeat;
+	-moz-border-radius: 0px 0px 0px 10px;
+	-webkit-border-radius: 0px 0px 0px 10px;
+	border-radius: 0px 0px 0px 10px;*/
+}
+
+.jspVerticalBar>.jspActive,
+.jspArrow:hover
+{
+	/*background-image: url('../Styles/custom-theme/images/ui-icons_cd0a0a_256x240.png');*/
+}
+
+.jspVerticalBar>.jspDisabled,
+.jspVerticalBar>.jspDisabled:hover,
+.jspHorizontalBar>.jspDisabled,
+.jspHorizontalBar>.jspDisabled:hover
+{
+	background-color: transparent;
+	/*background-image: url('../Styles/custom-theme/images/ui-icons_888888_256x240.png');*/
+}
+
+.jspVerticalBar .jspArrow
+{
+	height: 50px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+	width: 15px;
+}
+
+.jspArrowUp
+{
+    background-image: url('../images/btnScrollUp.jpg');
+	/*background-position: 0 0;*/
+}
+
+.jspArrowDown
+{
+	background-image: url('../images/btnScrollDown.jpg');
+    /*background-position: -64px 0 !important; */
+}
+
+.jspArrowLeft
+{
+	background-position: -96px 0 !important;
+}
+
+.jspArrowRight
+{
+	background-position: -32px 0 !important;
+}
+
+.

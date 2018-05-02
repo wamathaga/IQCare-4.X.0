@@ -1,0 +1,502 @@
+﻿body
+{
+    font-size: 16px;
+    font-family: Tahoma,Arial, "Segoe UI" ,Sans-Serif;
+    height: 100%;
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+}
+
+h3
+{
+    font-size: 20px;
+    font-weight: bold;
+}
+h3 .whitehdr
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: White;
+}
+.hiddenButtons
+{
+    visibility: collapse;
+}
+
+.BlueBG
+{
+    background-color: rgb(37,160,218) !important;
+    color: White !important;
+}
+
+.lablename
+{
+    color: White;
+}
+/* Login layout */
+#toggle
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 420px;
+    height: 470px;
+    padding: 10px 10px 10px 10px;
+    margin-top: -235px; /*set to a negative number 1/2 of your height*/
+    margin-left: -210px; /*set to a negative number 1/2 of your width*/
+    background-color: white;
+    border-radius: 0px;
+}
+/* END */
+#theWrapper
+{
+    background-color: black;
+}
+#somediv
+{
+    background-color: black;
+}
+
+#TopPane
+{
+    /* position:relative;      width:100%;      height:80px;     z-index:98;     padding: 10px 0px 0px 20px     */
+    margin-top: -80px;
+    height: 80px;
+    background-color: black;
+}
+#wrapper
+{
+    padding: 80px 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+}
+#detailSection
+{
+    min-height: 100%;
+    background-color: black;
+    max-width: 1200px;
+}
+#theContent
+{
+    margin: -20px 0 0 100px;
+    padding: 0px 10px 10px 0;
+    min-width: 900px;
+}
+#footer
+{
+    margin-bottom: -80px;
+    height: 80px;
+    background-color: black;
+}
+/*background-color:rgb(239,239,239)}*/
+.theContentInner
+{
+    float: left;
+    width: 350px;
+    height: 500px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    color: Black;
+    font-size: 16px;
+}
+.MenuButs
+{
+    float: left;
+    width: 250px;
+    height: 135px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* font style for all the Telerik controls that use the "Label" attribute */
+.LabelFontStyle
+{
+    color: Black;
+    font-size: 16px;
+    font-family: Tahoma,Arial, "Segoe UI" ,Sans-Serif;
+}
+
+.headerTxt
+{
+    font-size: 20px;
+    margin: 20px 0px 20px 0px;
+}
+
+.SectionheaderTxt
+{
+    background-color: #007C59; /* rgb(49,171,160); */
+    font-size: 20px;
+    margin: 20px 0px 20px 0px;
+    color: White;
+    width: 100%;
+}
+
+/*sets emphasis on certain labels that are not required but are still important */
+.Emphasis
+{
+    color: #0C1C8C;
+}
+
+/* to handle scrolling transitions for detail container on Patient Page */
+#wrapperSlide
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
+    overflow: hidden;
+}
+#container
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 100;
+    left: 100;
+    background-color: White;
+    overflow: scroll;
+}
+
+#mask
+{
+    width: 200%;
+    height: 100%;
+    background-color: #eee;
+}
+/* END */
+/*
+.LeftPane
+{
+    clear:both;
+    position:absolute;
+    width:200px;
+    height:100%; 
+    border: 2px solid rgb(190,190,190);
+    background-color:rgb(239,239,239);
+    border-radius:6px;
+    box-shadow: 5px 5px 2px #888888; 
+    padding:5px; top:80px; left:20px;
+    z-index:100
+}*/
+
+.Section
+{
+    table-layout: fixed;
+    margin-top: 0px;
+    width: 750px !important;
+}
+
+#FormContent
+{
+    background-color: black; /* rgb(239,239,239);*/
+    width: 900px;
+    height: 100%; /*overflow:visible;*/
+    margin: 0px 0px 60px 0px;
+    padding-bottom: 0px;
+    position: relative;
+}
+
+.updtForms
+{
+    background-color: black;
+}
+.LeftPane
+{
+    /*clear:both;*/
+    position: relative;
+    width: 230px;
+    border: 2px solid rgb(190,190,190);
+    background-color: white; /*border-radius:6px;      box-shadow: 5px 5px 2px #888888; */
+    padding: 5px;
+    top: 80px;
+    margin-right: 0px;
+    float: right;
+    overflow: visible;
+    z-index: 100;
+    font-size: 16px;
+    color: rgb(143,143,143);
+}
+.quickbarLink
+{
+    color: #007c59; /*rgb(49,171,160); */
+    cursor: pointer;
+}
+.quickbarLinklab
+{
+    color: Red; /*rgb(49,171,160); */
+    cursor: pointer;
+}
+.WhiteDiv
+{
+    position: relative;
+    width: 170px;
+    border: 0px;
+    background-color: white;
+    border-radius: 6px;
+    padding: 5px;
+    margin: 10px 10px 0px 10px;
+    z-index: 100;
+}
+
+.btnNavTop
+{
+    cursor: hand;
+    cursor: pointer;
+    padding: 0 0 0 0 !important;
+}
+.btnNav
+{
+    position: relative;
+    padding-top: 12px; /* font-family:Arial;     font-variant:normal;     font-size:16px;     font-weight:bold;     color:rgb(0,0,102);     width:100px;     height:30px;      border: 1px solid rgb(153,153,204);    background-color:rgb(204,204,255);     border-radius:6px;     box-shadow: 3px 3px 2px #888888;*/
+    text-align: center;
+    cursor: pointer;
+    float: left;
+    margin-right: 10px;
+}
+
+
+.btnNavMain
+{
+    position: relative;
+    padding-top: 12px;
+    font-variant: normal;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(0,0,102);
+    width: 200px;
+    height: 60px;
+    border: 1px solid rgb(153,153,204);
+    background-color: rgb(204,204,255); /*border-radius:6px;*/
+    box-shadow: 3px 3px 2px #888888;
+    text-align: center;
+    cursor: hand;
+    cursor: pointer;
+    float: left;
+    margin-right: 10px;
+}
+.btnNavMain:hover
+{
+    background-color: rgb(153,153,204);
+}
+
+.btnSmall
+{
+    position: relative;
+    padding-top: 8px;
+    font-variant: normal;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(0,0,102);
+    width: 60px;
+    height: 20px;
+    border: 1px solid rgb(153,153,204);
+    background-color: rgb(204,204,255);
+    border-radius: 6px;
+    text-align: center;
+    cursor: hand;
+    cursor: pointer;
+    float: left;
+    margin-right: 10px;
+}
+.btnSmall:hover
+{
+    background-color: rgb(153,153,204);
+}
+
+/*
+custom style for extruder
+*/
+.extruder.left.a .flap
+{
+    font-size: 18px;
+    color: white;
+    top: 0;
+    padding: 10px 0 10px 10px;
+    background: #007c59; /*rgb(49,171,160);*/
+    width: 30px;
+    position: absolute;
+    right: 0;
+    -moz-border-radius: 0 10px 10px 0;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-box-shadow: #666 2px 0px 3px;
+    -webkit-box-shadow: #666 2px 0px 3px;
+}
+
+.extruder.left.a .content
+{
+    border-right: 0px solid #772B14; /*background:rgba(255,255,255,.95);*/
+}
+
+.extruder.left.a .flap .flapLabel
+{
+    background: #007c59; /*rgb(49,171,160);*/
+}
+/* END */
+
+/* Print classes for Grid*/
+.printGrid
+{
+    font-size: 10px !important;
+}
+/* END */
+
+/* Account div */
+@font-face
+{
+    font-family: 'icomoon';
+    src: url('accountBox/foonts/icomoon.eot');
+    src: url('accountBox/fonts/icomoon.eot?#iefix') format('embedded-opentype'), url('accountBox/fonts/icomoon.woff') format('woff'), url('accountBox/fonts/icomoon.ttf') format('truetype'), url('accountBox/fonts/icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.dr-icon:before, .dr-icon:after
+{
+    position: relative;
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    color: White;
+}
+.dr-icon-switch:before
+{
+    content: "\e005";
+    font-size: 41px;
+    position: absolute;
+    top: -17px;
+    padding-left: 5px;
+}
+.dr-icon-user:before
+{
+    content: "\e001";
+    font-size: 45px;
+    top: -20px;
+    left: 63px;
+}
+.dr-icon-pattern
+{
+    position: absolute;
+    width: 100px;
+    text-align: center;
+    top: -19px;
+    left: -50px;
+    z-index: 150;
+    cursor: pointer;
+}
+/* END */
+
+/* More Menu - used to get to Administration etc */
+
+.more-menu
+{
+    width: 200px;
+    padding: 10px;
+    background: #000000;
+    border: 1px solid #FFFFFF;
+    color: #fff;
+    text-align: left; /*font: normal 12px "Segoe UI", Arial, Sans-serif;    -moz-border-radius: 6px;    -webkit-border-radius: 6px;    border-radius: 6px;*/
+    position: fixed;
+    left: 236px;
+    top: 90px;
+    z-index: 9999;
+}
+
+.more-menu h2
+{
+    font: 400 20px/1.5; /*Helvetica, Verdana, sans-serif;*/
+    margin: 0;
+    padding: 0;
+}
+
+.more-menu ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.more-menu li
+{
+    /*font: 200 20px/1.5 Helvetica, Verdana, sans-serif;*/
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0 5px 0;
+}
+
+.more-menu li:last-child
+{
+    border: none;
+}
+
+.more-menu li a
+{
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    width: 200px;
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+
+.more-menu li a:hover
+{
+    font-size: 17px;
+    background: #f6f6f6;
+    color: #000;
+}
+
+/* END */
+
+/* BUBBLE style for popups */
+
+.bubble
+{
+    position: relative;
+    padding: 20px;
+    background: #FFFFFF;
+    border: #7F7F7F solid 2px;
+}
+
+.bubble:after
+{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 15px 15px;
+    border-color: #000000 transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    top: -15px;
+    left: 191px;
+}
+
+.bubble:before
+{
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 16px 16px;
+    border-color: #7F7F7F transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    top: -18px;
+    left: 190px;
+}
+/* END */

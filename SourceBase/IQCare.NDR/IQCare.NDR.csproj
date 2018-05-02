@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E3361F22-ACC6-40BA-832D-9E116C863F0B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IQCare.NDR</RootNamespace>
+    <AssemblyName>IQCare.NDR</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>IQCare.NDR.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiveDatabaseSoftware.ActiveQueryBuilder">
+      <HintPath>..\..\..\..\..\..\IQCare Management\ActiveDatabaseSoftware.ActiveQueryBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.MSSQLMetadataProvider">
+      <HintPath>..\..\..\..\..\..\IQCare Management\ActiveDatabaseSoftware.MSSQLMetadataProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.OLEDBMetadataProvider">
+      <HintPath>..\..\..\..\..\..\IQCare Management\ActiveDatabaseSoftware.OLEDBMetadataProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.UniversalMetadataProvider">
+      <HintPath>..\..\..\..\..\..\IQCare Management\ActiveDatabaseSoftware.UniversalMetadataProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\..\..\..\..\..\IQCare Management\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Application.Common">
+      <HintPath>..\..\..\..\..\..\IQCare Management\Application.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Application.Interface">
+      <HintPath>..\..\..\..\..\..\IQCare Management\Application.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAccess.Base">
+      <HintPath>..\..\..\..\..\..\IQCare Management\DataAccess.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAccess.Common">
+      <HintPath>..\..\..\..\..\..\IQCare Management\DataAccess.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAccess.Entity">
+      <HintPath>..\..\..\..\..\..\IQCare Management\DataAccess.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\IQCare Management\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\BNDRGeneration.cs" />
+    <Compile Include="Common\DatatTableUtil.cs" />
+    <Compile Include="Common\EnumCollection.cs" />
+    <Compile Include="Common\INDRGeneration.cs" />
+    <Compile Include="frmNDRXMLCreation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNDRXMLCreation.Designer.cs">
+      <DependentUpon>frmNDRXMLCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmNDRXMLCreation.resx">
+      <DependentUpon>frmNDRXMLCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NDR.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

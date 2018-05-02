@@ -1,0 +1,824 @@
+#tmp {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    bottom: -9999999px;
+    right: -9999999px;
+}
+
+.ttw-notification-menu {
+    font-family: Arial, sans-serif;
+    height: 38px;
+    padding: 0;
+    border: 1px solid #090909;
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    background: #2a2a2a url(../images/dark/notification-menu-bg.png) repeat-x center center scroll;
+    display: block;
+    margin: 80px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.notification-menu-item {
+    display: block;
+    position: relative;
+    float: left; /*padding: 7px 12px 7px 12px;*/
+    border-right: 1px solid rgba(0, 0, 0 .5);
+
+}
+
+li.notification-menu-item:hover {
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, .5);
+    background-color: #086eb9;
+}
+
+.notification-menu-item a {
+    display: block;
+    color: #eee;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .5);
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 38px;
+    padding: 0 48px 0 12px;
+    box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, .15), inset -1px -1px 0 0 rgba(255, 255, 255, .05), inset 0 0 12px rgba(0, 0, 0, .5);
+    border-right: 1px solid rgba(0, 0, 0, .7);
+}
+
+.notification-menu-item:hover a {
+    color: #fff;
+}
+
+.notification-menu-item:first-child, .notification-menu-item:first-child a {
+    border-radius: 12px 0 0 12px;
+    -moz-border-radius: 12px 0 0 12px;
+    -webkit-border-radius: 12px 0 0 12px;
+    border-left: none;
+    background-clip: border;
+}
+
+.notification-menu-item:last-child, .notification-menu-item:last-child a {
+    border-right: none;
+    border-radius: 0 12px 12px 0;
+    -moz-border-radius: 0 12px 12px 0;
+    -webkit-border-radius: 0 12px 12px 0;
+    border-right: none;
+    background-clip: border;
+}
+
+/** Dropdown **/
+.ttw-notification-menu ul {
+    width: 160px;
+    background: #2a2a2a;
+    list-style: none;
+    position: absolute;
+    padding: 0;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid #090909;
+    left: -999999px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.ttw-notification-menu ul li {
+    padding-top: 1px;
+    float: none;
+    border-top: 1px solid rgba(255, 255, 255, .05);
+}
+
+.ttw-notification-menu ul li:first-child {
+    box-shadow: inset 0 6px 12px rgba(0, 0, 0, .3);
+}
+
+.ttw-notification-menu ul li:last-child {
+    border-bottom: none;
+    border-radius: 0 0 6px 6px;
+}
+
+.ttw-notification-menu ul a {
+    color: #888 !important;
+    display: block;
+    white-space: nowrap;
+    box-shadow: none;
+    border-right: none;
+}
+
+.ttw-notification-menu li:hover ul {
+    left: 0;
+}
+
+.ttw-notification-menu li:hover ul li:hover {
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(0, 0, 0, .2);
+}
+
+/** Notification Bubble **/
+.notification-bubble {
+    height: 18px;
+    background: rgba(0, 0, 0, .3) url(../images/dark/notification-menu-bg.png) repeat center center scroll;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -9px;
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .2);
+    text-align: center;
+    font-size: 9px;
+    line-height: 18px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .17);
+    -moz-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .17);
+    -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .17);
+    border-radius: 9px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+    padding: 0 7px
+}
+
+.notification-bubble.show {
+    display: block;
+}
+
+.notification-bubble.two {
+    background-color: #fec151;
+}
+
+.notification-bubble.three {
+    background-color: #7ad2f4;
+}
+
+.notification-menu-item a {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.notification-bubble {
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+
+/** Notification List **/
+.notification-list-wrapper {
+    display: none;
+    opacity: 0;
+    width: 250px;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    background: #2a2a2a url(../images/dark/bg-overlay.png) repeat-x center center scroll;
+    padding: 0;
+    border: 1px solid #090909;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+
+}
+
+.notification-list-wrapper:after {
+    content: '';
+    position: absolute;
+    border-color: transparent transparent #333 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -20px;
+}
+
+.notification-list-wrapper:before {
+    content: '';
+    position: absolute;
+    border-color: transparent transparent #090909 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -21px;
+}
+
+.notification-list-menu {
+    list-style: none;
+    clear: both;
+    width: 226px;
+    float: left;
+    padding: 0 12px;
+    font-size: 10px;
+}
+
+.notification-list-menu-item {
+    display: inline-block;
+    float: left;
+    color: #888;
+    text-transform: lowercase;
+    padding: 1px 0;
+    margin: 0 6px;
+    cursor: pointer;
+    border-bottom: 1px solid #666;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.notification-list-menu-item:hover {
+    border-bottom: 1px solid #888;
+    color: #bbb;
+}
+
+.close-notification-list {
+    float: right;
+    color: #ff8a87;
+    text-transform: lowercase;
+    padding: 1px 0;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    background: transparent url(../images/close.png) no-repeat center center scroll;
+    opacity: .3;
+    text-indent: -999999999px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.close-notification-list:hover {
+    color: #ff0000;
+    opacity: .7;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0 12px;
+    clear: both;
+}
+
+.notification-list-item {
+    color: #888;
+    padding: 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    border-top: 1px solid rgba(255, 255, 255, .05);
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    height: 16px;
+}
+
+.notification-list-item:first-child {
+    border-top: none;
+}
+
+.notification-list-item:last-child {
+    border-bottom: none;
+}
+
+.notification-list-item:hover {
+    background: rgba(0, 0, 0, .3);
+}
+
+.notification-list-item:hover + .notification-list-item {
+    border-top: 1px solid transparent;
+}
+
+.notification-list-item .message {
+    display: block;
+    margin-right: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+}
+
+.notification-list-item .close {
+    color: #aaa;
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    height: 14px;
+    width: 14px;
+    line-height: 14px;
+    text-align: center;
+    display: none;
+    z-index: 1;
+}
+
+.notification-list[data-type=unread] .close {
+    display: block;
+}
+
+.notification-list-item .close:after {
+    position: relative;
+    display: block;
+    content: 'x';
+    left: 0px;
+    height: 14px;
+    width: 14px;
+    z-index: 0
+}
+
+.notification-list-item .close:hover {
+    color: #888;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.notification-list-item.show-icon .icon {
+    display: block;
+    height: 16px;
+    width: 16px;
+    float: left;
+    margin-right: 6px;
+}
+
+.notification-list-item img {
+    height: 16px;
+    width: 16px;
+}
+
+.notification-list-item.show-icon .message {
+    width: 160px;
+    float: left;
+}
+
+.empty-list {
+    text-align: center;
+    font-style: italic;
+}
+
+/** Modal Notification **/
+.ttw-modal-outer {
+    font-family: Arial, sans-serif;
+    padding: 24px 0;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .6), 0 2px 5px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .6), 0 2px 5px rgba(0, 0, 0, 0.8);
+    -webkit-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .6), 0 2px 5px rgba(0, 0, 0, 0.8);
+    background: #2a2a2a url(../images/dark/bg-overlay.png) repeat-x center center scroll;
+}
+
+.ttw-modal-outer .ui-dialog-titlebar {
+    color: #aaa;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    padding: 0 24px 6px 24px;
+}
+
+.ttw-notification.modal {
+    padding: 24px;
+}
+
+.ttw-notification.modal .icon {
+    display: none;
+}
+
+.ttw-notification.modal.show-icon .icon {
+    display: block;
+    height: 43px;
+    width: 43px;
+    float: left;
+    background-position: center top !important;
+
+}
+
+.ttw-notification.modal img {
+    display: none;
+}
+
+.ttw-notification.modal .message {
+    width: 302px;
+    color: #888;
+    float: left;
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    position: relative;
+    top: 2px;
+}
+
+.ttw-notification.modal.show-icon .message {
+    width: 245px;
+    margin-left: 12px;
+    min-height: 40px;
+}
+
+.ttw-modal-outer .ui-dialog-buttonpane {
+    height: 31px;
+}
+
+.ttw-modal-outer .ui-dialog-buttonset {
+    display: inline-block;
+    float: right;
+    padding: 0 24px;
+}
+
+.ttw-modal-outer button {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    padding: 7px 18px;
+    background: #666 url(../images/button-overlay.png) repeat-x left center scroll; /* Old browsers */
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 1px solid #444;
+    -moz-box-shadow: 0px 1px 2px rgba(000, 000, 000, 0.3), inset 0px 1px 0px rgba(255, 255, 255, 0.6);
+    -webkit-box-shadow: 0px 1px 2px rgba(000, 000, 000, 0.3), inset 0px 1px 0px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
+    outline: none;
+    cursor: pointer;
+}
+
+.ttw-modal-outer button:hover {
+    background-color: #999;
+    border-color: #888;
+}
+
+.ttw-modal-outer button:first-child {
+    border-color: #2d5d70;
+    background-color: #4087a3;
+    text-shadow: 0 -1px 1px #5691a8;
+}
+
+.ttw-modal-outer button:first-child:hover {
+    border-color: #5aa9c9;
+    background-color: #65b9da;
+}
+
+.ttw-modal-outer .ui-icon-closethick {
+    display: none;
+}
+
+.ui-widget-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff; /* Old browsers */
+    opacity: .2;
+}
+
+/** Bar Notification **/
+
+.ttw-bar-outer {
+    font-family: Arial, sans-serif;
+    position: relative;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, .4);
+    box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    background: #2a2a2a url(../images/dark/bg-overlay.png) repeat-x center center scroll;
+}
+
+.ttw-bar-outer .ui-dialog-titlebar {
+    display: none;
+}
+
+.ttw-notification.bar {
+    padding: 6px 24px;
+    min-height: 40px !important;
+}
+
+.ttw-notification.bar .icon {
+    display: none;
+}
+
+.ttw-notification.bar.show-icon .icon {
+    display: block;
+    height: 36px;
+    width: 36px;
+    float: left;
+    position: absolute;
+    top: 50%;
+    margin-top: -18px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.ttw-notification.bar img {
+    display: block;
+    height: 36px;
+    width: 36px;
+}
+
+.ttw-notification.bar .message {
+    color: #888;
+    float: left;
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    line-height: 40px;
+    top: 6px;
+}
+
+.ttw-notification.bar.show-icon .message {
+    margin: 0px 0 0 48px;
+    min-height: 40px;
+}
+
+.ttw-bar-outer.show-buttons .message {
+    margin-bottom: 36px;
+}
+
+.ttw-bar-outer .ui-dialog-buttonpane {
+    height: 31px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.ttw-bar-outer .ui-dialog-buttonset {
+    display: inline-block;
+    float: left;
+    padding: 0 24px;
+}
+
+.ttw-bar-outer button {
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    padding: 3px 6px;
+    background: #aaa url(../images/button-overlay.png) repeat-x left center scroll; /* Old browsers */
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: 1px solid #999;
+    -moz-box-shadow: 0px 1px 2px rgba(000, 000, 000, 0.3), inset 0px 1px 0px rgba(255, 255, 255, 0.6);
+    -webkit-box-shadow: 0px 1px 2px rgba(000, 000, 000, 0.3), inset 0px 1px 0px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
+    outline: none;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.ttw-bar-outer button:last-child {
+    margin-right: 0;
+}
+
+.ttw-bar-outer button:hover {
+    background-color: #999;
+    border-color: #888;
+}
+
+.ttw-bar-outer button:first-child {
+    border-color: #6eb8d6;
+    background-color: #7ac7e6;
+    text-shadow: 0 -1px 1px #5691a8;
+}
+
+.ttw-bar-outer button:first-child:hover {
+    border-color: #5aa9c9;
+    background-color: #65b9da;
+}
+
+.ttw-bar-outer .close {
+    position: absolute;
+    right: 24px;
+    top: 6px;
+    cursor: pointer;
+}
+
+.ttw-bar-outer .close:after {
+    font-family: Arial, sans-serif;
+    color: #666;
+    content: 'x';
+    display: block;
+    font-size: 11px;
+}
+
+/** Success Bar **/
+.ttw-notification.bar.success {
+    padding: 6px 32px;
+    background: rgb(138, 211, 130); /*Old browsers*/
+    background: -moz-linear-gradient(top, rgba(138, 211, 130, 0.7) 0%, rgba(106, 177, 101, 0.7) 100%); /*FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(138, 211, 130, 0.7)), color-stop(100%, rgba(106, 177, 101, 0.7))); /*Chrome,Safari4+*/
+    background: -webkit-linear-gradient(top, rgba(138, 211, 130, 0.7) 0%, rgba(106, 177, 101, 0.7) 100%); /*Chrome10+,Safari5.1+*/
+    background: -o-linear-gradient(top, rgba(138, 211, 130, 0.7) 0%, rgba(106, 177, 101, 0.7) 100%); /*Opera11.10+*/
+    background: -ms-linear-gradient(top, rgba(138, 211, 130, 0.7) 0%, rgba(106, 177, 101, 0.7) 100%); /*IE10+*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#8ad382', endColorstr = '#6ab165', GradientType = 0); /*IE6-9*/
+    background: linear-gradient(top, rgba(138, 211, 130, 0.7) 0%, rgba(106, 177, 101, 0.7) 100%); /*W3C*/
+
+}
+
+.ttw-notification.bar.warning {
+    background: rgb(252, 226, 121); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(252, 226, 121, 0.7) 0%, rgba(253, 218, 72, 0.7) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(252, 226, 121, 0.7)), color-stop(100%, rgba(253, 218, 72, 0.7))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(252, 226, 121, 0.7) 0%, rgba(253, 218, 72, 0.7) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(252, 226, 121, 0.7) 0%, rgba(253, 218, 72, 0.7) 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, rgba(252, 226, 121, 0.7) 0%, rgba(253, 218, 72, 0.7) 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#fce279', endColorstr = '#fdda48', GradientType = 0); /* IE6-9 */
+    background: linear-gradient(top, rgba(252, 226, 121, 0.7) 0%, rgba(253, 218, 72, 0.7) 100%); /* W3C */
+
+}
+
+.ttw-notification.bar.error {
+    background: -moz-linear-gradient(top, rgba(216, 119, 119, 0.7) 0%, rgba(217, 87, 87, 0.7) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(216, 119, 119, 0.7)), color-stop(100%, rgba(217, 87, 87, 0.7))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(216, 119, 119, 0.7) 0%, rgba(217, 87, 87, 0.7) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(216, 119, 119, 0.7) 0%, rgba(217, 87, 87, 0.7) 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, rgba(216, 119, 119, 0.7) 0%, rgba(217, 87, 87, 0.7) 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#b3d87777', endColorstr = '#b3d95757', GradientType = 0); /* IE6-9 */
+    background: linear-gradient(top, rgba(216, 119, 119, 0.7) 0%, rgba(217, 87, 87, 0.7) 100%); /* W3C */
+
+}
+
+.ttw-notification.bar.notice {
+    background: -moz-linear-gradient(top, rgba(234, 247, 255, 0.7) 0%, rgba(218, 237, 247, 0.7) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(234, 247, 255, 0.7)), color-stop(100%, rgba(218, 237, 247, 0.7))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(234, 247, 255, 0.7) 0%, rgba(218, 237, 247, 0.7) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(234, 247, 255, 0.7) 0%, rgba(218, 237, 247, 0.7) 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, rgba(234, 247, 255, 0.7) 0%, rgba(218, 237, 247, 0.7) 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#b3eaf7ff', endColorstr = '#b3daedf7', GradientType = 0); /* IE6-9 */
+    background: linear-gradient(top, rgba(234, 247, 255, 0.7) 0%, rgba(218, 237, 247, 0.7) 100%); /* W3C */
+
+}
+
+.ttw-bar-outer.success, .ttw-bar-outer.warning, .ttw-bar-outer.notice, .ttw-bar-outer.error {
+    border: none;
+}
+
+.ttw-notification.bar.success img, .ttw-notification.bar.warning img, .ttw-notification.bar.error img, .ttw-notification.bar.notice img {
+    display: none;
+}
+
+.ttw-notification.bar.success .message, .ttw-bar-outer.success .close:after, .ttw-notification.bar.error .message, .ttw-bar-outer.error .close:after {
+    color: #fff;
+    text-shadow: none;
+}
+
+.ttw-notification.bar.warning .message, .ttw-bar-outer.warning .close:after, .ttw-notification.bar.notice .message, .ttw-bar-outer.notice .close:after {
+    color: #444;
+    text-shadow: none;
+}
+
+.ttw-modal-outer.success button, .ttw-modal-outer.error button, .ttw-modal-outer.warning button, .ttw-modal-outer.notice button {
+    background-color: #666;
+    border-color: transparent;
+    text-shadow: none;
+}
+
+/** Growl Notifications - Light**/
+
+.growl-wrapper {
+    padding: 0 10px;
+    width: 314px;
+    position: absolute;
+}
+
+.ttw-notification.growl {
+    display: none;
+    opacity: 0;
+    min-height: 44px;
+    width: 294px;
+    padding: 9px;
+    margin: 10px 0;
+    position: relative;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0 -12px 48px rgba(0, 0, 0, .07), 0 2px 5px rgba(0, 0, 0, 0.5);
+    background: #2a2a2a url(../images/dark/bg-overlay.png) repeat-x center center scroll;
+}
+
+/* http://perishablepress.com/press/2009/12/06/new-clearfix-hack */
+.ttw-notification.growl:after {
+    clear: both;
+    content: ' ';
+    display: block;
+    font-size: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.ttw-notification.growl .icon {
+    display: none;
+}
+
+.ttw-notification.growl.show-icon .icon {
+    display: block;
+    height: 43px;
+    width: 43px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: left;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.ttw-notification.growl img {
+    display: none;
+}
+
+.ttw-notification.growl .message {
+    width: 293px;
+    color: #888;
+    float: left;
+    font-family: arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    top: 2px;
+}
+
+.ttw-notification.growl.show-icon .message {
+    width: 237px;
+    margin-left: 12px;
+}
+
+.ttw-notification.growl .message a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.ttw-notification.growl .message a:hover {
+    text-decoration: underline;
+}
+
+.ttw-notification.growl .close {
+    width: 18px;
+    height: 18px;
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    background: #2a2a2a url(../images/dark/bg-overlay.png) repeat-x center center scroll;
+    background-clip: padding;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    color: #888;
+}
+
+.ttw-notification.growl .close::after {
+    content: 'x';
+    position: absolute;
+    top: -1px;
+    left: 5px;
+    color: #777;
+    font-family: arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: center;
+}
+
+.ttw-notification.growl .close:hover:after {
+    color: #666;
+}
+
+/* http://perishablepress.com/press/2009/12/06/new-clearfix-hack */
+.ttw-notification.bar:after,
+.ttw-notification.modal:after {
+    clear: both;
+    content: ' ';
+    display: block;
+    font-size: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+

@@ -1,0 +1,95 @@
+
+<div id="container">
+<div class="utility" align="right">
+<a href="" class="utility">Help</a> | <a href="help.html" class="utility">Password</a> | <a href="help.html" class="utility">Logout</a> 
+</div>
+
+<!-- level one nav  -->
+<div id="levelone">
+
+<table cellspacing="0" cellpadding="0" border="0" width="950">
+<tr>
+    <td rowspan="2" height="26" width="121" class="navbutton"><a class="innerbutton" href="/patient_search.html">Find/Add Patient</a><br /></td>
+<td rowspan="2" height="26" width="70" class="navbutton" onmouseover="expand(this);" 
+      onmouseout="collapse(this);"><a class="innerbutton" href="page.asp">Reports</a><br />
+<!--begin dropdown -->
+<div class="navbutton" style="width:145px;">
+          <table cellpadding="0" cellspacing="0" border="0" class="menu" width="162">
+            <tr><td>
+              <a href="page.asp" class="menuitem">Patient Reports</a>
+            </td></tr>
+            <tr><td>
+              <a href="page.asp" class="menuitem">Clinical Reports</a>
+            </td></tr>
+            <tr><td>
+              <a href="page.asp" class="menuitem">Donor Reports</a>
+            </td></tr>
+                   </table>
+        </div>
+<!--end  dropdown -->
+</td>
+	<td rowspan="2" height="26" width="82" class="navbutton"><a class="innerbutton" href="page.asp">Scheduler</a><br /></td>
+	<td rowspan="2" height="26"  width="88" class="navbutton" onmouseover="expand(this);" 
+      onmouseout="collapse(this);"><a class="innerbutton" href="page.asp">Administration</a><br />
+<!-- begin dropdown -->
+<div class="navbutton" style="width:189px;">
+          <table cellpadding="0" cellspacing="0" border="0" class="menu" width="189">
+            <tr><td>
+              <a href="page.asp" class="menuitem">Facility Set Up</a>
+            </td></tr>
+            <tr><td>
+              <a href="page.asp" class="menuitem">Customize Drop Down Lists</a>
+            </td></tr>
+            <tr><td>
+              <a href="page.asp" class="menuitem">User Administration</a>
+            </td></tr>
+			<tr><td>
+              <a href="page.asp" class="menuitem">User Group Administration</a>
+            </td></tr>
+			<tr><td>
+              <a href="page.asp" class="menuitem">Delete Patient</a>
+			 </td></tr>
+			 <tr><td>
+              <a href="page.asp" class="menuitem">Configure Custom Fields</a>
+            </td></tr>
+			<tr><td>
+              <a href="page.asp" class="menuitem">Export</a>
+            </td></tr>
+			<tr><td>
+              <a href="page.asp" class="menuitem">Import</a>
+            </td></tr>
+			<tr><td>
+              <a href="page.asp" class="menuitem">Scheduler Configuration</a>
+            </td></tr>
+                   </table>
+        </div>
+		<!-- end dropdown -->
+</td>
+	<td rowspan="2" height="26" width="77" class="navbutton"><a class="innerbutton" href="page.asp">Back Up</a><br /></td>
+	<td rowspan="2" height="26" width="98" class="navbutton" onmouseover="imgswap('tab','images/tab_right_over');" onmouseout="imgswap('tab','images/tab_right');"><a class="innerbutton2" href="/facility_home.html">Facility Home</a><br /></td>
+	<td rowspan="2" height="26"  width="23"  valign="top"><img src="/images/tab_right.gif" oversrc="/images/tab_right_over.gif" width="23" height="27"  border="0" alt="tab" id="tab" name="tab" /></td>
+    <td height="21" class="breadcrumb" valign="bottom"> <a href="" class="breadcrumb">Previous Page</a> &raquo; <a href="" class="breadcrumb">Previous Page</a> &raquo; Current Page</td>
+</tr>
+<tr>
+    <td class="topline" height="5"> </td>
+</tr>
+</table>
+
+</div>
+
+<div id="main">
+<div id="bluetop"></div>
+
+<img src="/images/iq_logo.gif" width="236" height="94" border="0" id="logo" alt="International Quality Care by AIDSRelief" />
+<img src="/images/pmms.gif" width="264" height="53" border="0" id="pmms" alt="Patient Management and Monitoring System" />
+<img src="/images/collage.jpg" width="424" height="117" border="0" id="collage" alt="AIDS Relief Uganda" />
+<div id="username">Lanette Burrowsy</div>
+
+<div id="date" align="right">30 September 2006</div>
+
+<div id="border"> </div>
+ 
+<img src="/images/tab_facility.gif" width="377" height="23" border="0" id="tabfacility" alt="Facility Name" />
+<div id="facility">Nsambya Hospital and Medical Center</div>
+
+<div id="contentholding">

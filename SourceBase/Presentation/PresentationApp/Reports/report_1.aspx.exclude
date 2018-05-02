@@ -1,0 +1,125 @@
+<%@ Page Language="C#" MasterPageFile="~/AdminHeaderFooter.master" AutoEventWireup="true" Title="Untitled Page" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="adminheaderfooter" Runat="Server">
+
+<SCRIPT language=javascript>
+
+
+function SetCheckBoxes(FormName, FieldName, CheckValue)
+{
+	if(!document.forms[FormName])
+		return;
+	var objCheckBoxes = document.forms[FormName].elements[FieldName];
+		
+									
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = CheckValue;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = CheckValue;
+
+}
+
+
+//Generic function to toggle elements
+function toggle(divId)
+{
+var Id = divId;
+if (document.layers)
+  {
+    if(document.layers[Id].visibility == "hide")
+    { show(Id);
+      return;
+    }
+    else if (document.layers[Id].visibility == "show")
+    { hide(Id);
+      return;
+    }
+  }
+if (document.all)
+  { if(document.all[Id].style.display == "none")
+      { show(Id);
+        return;
+      }
+    else if (document.all[Id].style.display == "inline")
+      { hide(Id);
+        return;
+      }
+  }
+else if (document.getElementById)
+  {
+    if(document.getElementById(Id).style.display == "none")
+      { show(Id);
+        return;
+      }
+    else if (document.getElementById(Id).style.display == "inline")
+      { hide(Id);
+       return;
+      }
+  }
+}
+
+//hides div
+function hide(divId) {
+if (document.layers) document.layers[divId].visibility = 'hide';
+else if (document.all) document.all[divId].style.display = 'none';
+else if (document.getElementById) document.getElementById(divId).style.display = 'none';
+}
+
+//shows div
+function show(divId) {
+if (document.layers) document.layers[divId].visibility = 'show';
+else if (document.all) document.all[divId].style.display = 'inline';
+else if (document.getElementById) document.getElementById(divId).style.display = 'inline';
+}
+function specify(id)
+
+{
+var selectId = id;
+var sdivId = 'other' + selectId;
+
+if (document.getElementById(selectId)[document.getElementById(selectId).selectedIndex].value != 'Adherance counsellor signature')
+
+
+
+{
+
+hide (sdivId);
+
+}
+else 
+{
+show (sdivId);
+}
+}
+
+</SCRIPT>
+<form id="custom" method="post" runat="server">
+<h1 class=margin>Custom Reports</h1>
+<div style="position: absolute; left: 634px; top: 16px; text-align:left;">
+<a href="report_new.aspx" class="button">CREATE NEW REPORT</a>
+</div>
+<div class="border"><br />
+<LABEL class="right20">Saved Reports: </LABEL>
+<asp:DropDownList ID=savedReportscat runat=server>
+<asp:ListItem value="" Text="--Select Report Category--"></asp:ListItem>
+<asp:ListItem value="" Text="Demographic Reports"></asp:ListItem>
+</asp:DropDownList>
+<asp:DropDownList ID=savedReportsTitle runat=server cssclass=margin10left >
+<asp:ListItem value="" Text="--Select Report Title--"></asp:ListItem>
+<asp:ListItem value="" Text="A very long title for this report from Uganda"></asp:ListItem>
+</asp:DropDownList>
+<asp:Button ID=run Text="Run" runat=server cssclass=margin10left /><asp:Button ID=edit Text="Edit" runat=server cssclass=margin10left   /><asp:Button ID=export Text="Export Report" runat=server cssclass=margin10left  />
+<br /><br />
+<label class="right20">Import Report: </label>
+<asp:TextBox ID=importreport runat=server disabled=disabled></asp:TextBox><asp:Button ID=browse Text=Browse runat=server cssclass=margin10left />
+<br /><br />
+
+</div>
+</form>
+<br /><br /><br /><br />
+</asp:Content>
+

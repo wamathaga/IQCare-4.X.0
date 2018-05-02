@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{59A182CA-7E3E-4130-AA78-6D2E86E0EB4E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RemServer</RootNamespace>
+    <AssemblyName>RemServer</AssemblyName>
+    <StartupObject>RemServer.StartPoint</StartupObject>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\References\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DataAccess\Bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Application.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\Application.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConnection.Designer.cs">
+      <DependentUpon>frmConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StartPoint.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Application.BusinessProcess\Application.BusinessProcess.csproj">
+      <Project>{7E4C94BA-1706-49DE-BF5E-B5CA7170899E}</Project>
+      <Name>Application.BusinessProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Application.Interface\Application.Interface.csproj">
+      <Project>{22462AF4-C366-4401-88EF-285EA96EE3FA}</Project>
+      <Name>Application.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Administration\BusinessProcess.Administration.csproj">
+      <Project>{43C54C10-7642-4D56-8B1C-038E329346B3}</Project>
+      <Name>BusinessProcess.Administration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Clinical\BusinessProcess.Clinical.csproj">
+      <Project>{3A0E522E-2794-4044-B6BD-89F880485C6B}</Project>
+      <Name>BusinessProcess.Clinical</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.FormBuilder\BusinessProcess.FormBuilder.csproj">
+      <Project>{0FB67E76-16ED-4F07-BCDB-2DDDACFEAFA5}</Project>
+      <Name>BusinessProcess.FormBuilder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Laboratory\BusinessProcess.Laboratory.csproj">
+      <Project>{376C3F48-6B0E-4BF4-B622-0CC4606FA6AD}</Project>
+      <Name>BusinessProcess.Laboratory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Pharmacy\BusinessProcess.Pharmacy.csproj">
+      <Project>{F2ACE509-D1D0-4284-880E-B51173BF9F9E}</Project>
+      <Name>BusinessProcess.Pharmacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Scheduler\BusinessProcess.Scheduler.csproj">
+      <Project>{906F49BF-520A-45AD-89EB-2E4FCC8B59E2}</Project>
+      <Name>BusinessProcess.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.SCM\BusinessProcess.SCM.csproj">
+      <Project>{17D04A78-611C-465B-A128-4214BFF52687}</Project>
+      <Name>BusinessProcess.SCM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Security\BusinessProcess.Security.csproj">
+      <Project>{E5753796-926B-47B2-8856-0CAEA6BED4B6}</Project>
+      <Name>BusinessProcess.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessProcess.Service\BusinessProcess.Service.csproj">
+      <Project>{D4E4D2B3-1287-45B9-8C39-241387CA54C8}</Project>
+      <Name>BusinessProcess.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Base\DataAccess.Base.csproj">
+      <Project>{254BD540-00D8-46A2-9D35-39E8920B5750}</Project>
+      <Name>DataAccess.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Common\DataAccess.Common.csproj">
+      <Project>{FA6D554F-BC52-454A-89D5-F8E576B3843E}</Project>
+      <Name>DataAccess.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Entity\DataAccess.Entity.csproj">
+      <Project>{B039AEFB-4059-4368-87BF-03545ACAB705}</Project>
+      <Name>DataAccess.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmConnection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmConnection.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

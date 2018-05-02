@@ -1,0 +1,1431 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using Interface.Reports;
+using Application.Presentation;
+using System.IO;
+
+public partial class frmReportCustomNew : System.Web.UI.Page
+{
+
+    
+    private DataSet dsFieldGroup=null;
+    IReports CustomReport;
+    DataSet dsCustomReport;
+    DataSet dsExistingReport;
+    private const int MaximumColumns=12;
+   
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        this.btnNewCategory.Attributes.Add("onclick", "javascript:document.getElementById('" + txtNewCategory.ClientID + "').style.visibility ='visible';document.getElementById('" + txtNewCategory.ClientID + "').focus();return false;");
+        this.btnSaveReport.Attributes.Add("onclick", "javascript:return ValidatePage('" + txtTitle.ClientID + "','" + ddCategory.ClientID + "','" + txtNewCategory.ClientID + "');");
+        this.btnExportParameters.Attributes.Add("onclick", "javascript:return ValidatePage('" + txtTitle.ClientID + "','" + ddCategory.ClientID + "','" + txtNewCategory.ClientID + "');");
+
+        if (!IsPostBack)
+        {
+            dsCustomReport = CreateDataSet();
+            Session["dsCustomReport"] = dsCustomReport;
+            FillCategory();
+            // for updating or Run existing Report
+            if (Request.QueryString["ReportId"] != null && Request.QueryString["ReportId"].ToString() != "")
+            {
+                if (Convert.ToInt32(Request.QueryString["ReportId"]) > 0)
+                {
+                    CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+                    dsExistingReport = CustomReport.GetCustomReportData(Convert.ToInt32(Request.QueryString["ReportId"]));
+                    FillData(dsExistingReport);
+                    Session["Mode"] = "U";
+                    Session["ReportId"] = Request.QueryString["ReportId"].ToString();
+                }
+            }//=====================================
+            else
+            {
+                BindGrid();
+            }
+        }
+        else
+        {
+            SaveValues();
+            SetSelectedValuesInGrid();
+            setFieldByGroupId();
+        }
+    }
+
+    private void FillCategory()
+    {
+        
+        CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+        dsFieldGroup = (DataSet)CustomReport.GetAllCategory();
+
+        ddCategory.DataSource = dsFieldGroup.Tables[0];
+        ddCategory.DataTextField = "CategoryName";
+        ddCategory.DataValueField = "CategoryId";
+        ddCategory.DataBind();
+        ddCategory.Items.Insert(0, new ListItem("Select", ""));
+    }
+
+    private void setFieldByGroupId()
+    {
+        DataTable dt=null;
+        DataSet dsFieldGroup=null; 
+        if (Session["dtFields"] != null)
+        {
+            dt = (DataTable)Session["dtFields"];
+        }
+        try
+        {
+            DropDownList ddlGroup, ddlField, ddlFiledType,ddlView;
+            DropDownList ddlValue1, ddlValue2, ddlValue3, ddlValue4;
+            foreach (DataGridItem itm in this.dgFields.Items)
+            {
+                ddlGroup = (DropDownList)itm.FindControl("ddFieldGroup");
+                ddlFiledType = (DropDownList)itm.FindControl("ddFieldsType");
+                ddlField = (DropDownList)itm.FindControl("ddFields");
+                ddlView = (DropDownList)itm.FindControl("ddView");
+                ddlValue1 = (DropDownList)itm.FindControl("ddFilterValue1");
+                ddlValue2 = (DropDownList)itm.FindControl("ddFilterValue2");
+                ddlValue3 = (DropDownList)itm.FindControl("ddFilterValue3");
+                ddlValue4 = (DropDownList)itm.FindControl("ddFilterValue4");
+
+
+                if (ddlGroup.SelectedValue != null && ddlGroup.SelectedValue != "")
+                {
+                    CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+                    dsFieldGroup = (DataSet)CustomReport.GetFields(Convert.ToInt32(ddlGroup.SelectedValue));
+
+                    if (dsFieldGroup != null && dsFieldGroup.Tables[0] != null && dsFieldGroup.Tables[0].Rows.Count > 0)
+                    {
+                        ddlFiledType.DataSource = dsFieldGroup.Tables[0];
+                        ddlFiledType.DataTextField = "ViewName";
+                        ddlFiledType.DataValueField = "ValueType";
+                        ddlFiledType.DataBind();
+
+                        ddlField.DataSource = dsFieldGroup.Tables[0];
+                        ddlField.DataTextField = "FieldDisplayName";
+                        ddlField.DataValueField = "FieldId";
+                        ddlField.DataBind();
+
+                        ddlView.DataSource = dsFieldGroup.Tables[0];
+                        ddlView.DataTextField = "ValueViewName";
+                        ddlView.DataValueField = "ValueViewName";
+                        ddlView.DataBind();
+
+                    }
+                    if (dt != null && ddlGroup.SelectedValue != "" && dt.Rows.Count >= itm.ItemIndex && dt.Rows[itm.ItemIndex]["Field"].ToString() != "")
+                    {
+                        string str = dt.Rows[itm.ItemIndex]["Field"].ToString();
+                        ddlField.SelectedValue = ddlField.Items.FindByValue(str).Value;
+                        ddlFiledType.SelectedIndex = ddlField.SelectedIndex;
+                        ddlView.SelectedIndex = ddlField.SelectedIndex;
+                        DataTable theDT;
+                        if (ddlFiledType.SelectedValue.Trim() == "7" && ddlView.SelectedValue!="") // DropDown
+                        {
+                            try
+                            {
+                                CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+                                theDT = CustomReport.GetDropDownValueForField("[" + ddlField.SelectedItem.Text.Trim() + "]",ddlView.SelectedValue.ToString());
+
+                                ddlValue1.DataSource = theDT;
+                                ddlValue1.DataTextField = theDT.Columns[0].ColumnName;
+                                ddlValue1.DataValueField = theDT.Columns[0].ColumnName;
+                                ddlValue1.DataBind();
+
+                                ddlValue2.DataSource = theDT;
+                                ddlValue2.DataTextField = theDT.Columns[0].ColumnName;
+                                ddlValue2.DataValueField = theDT.Columns[0].ColumnName;
+                                ddlValue2.DataBind();
+
+                                ddlValue3.DataSource = theDT;
+                                ddlValue3.DataTextField = theDT.Columns[0].ColumnName;
+                                ddlValue3.DataValueField = theDT.Columns[0].ColumnName;
+                                ddlValue3.DataBind();
+
+                                ddlValue4.DataSource = theDT;
+                                ddlValue4.DataTextField = theDT.Columns[0].ColumnName;
+                                ddlValue4.DataValueField = theDT.Columns[0].ColumnName;
+                                ddlValue4.DataBind();
+                            }
+                            catch (Exception ex)
+                            {
+                                //throw ex;
+                            }
+                        }
+
+                    }
+                }
+                else 
+                {
+                    ddlField.Items.Clear();
+                    ddlFiledType.Items.Clear();
+                }
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+        }
+        makeQuery();
+     }
+
+    private void setFieldByGroupId(DropDownList ddlGroup, DropDownList ddlField, DropDownList ddlFiledType,DropDownList ddlViews)
+    {
+        if (ddlGroup.SelectedValue != "")
+        {
+            DataSet dsFieldGroup = null;
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsFieldGroup = (DataSet)CustomReport.GetFields(Convert.ToInt32(ddlGroup.SelectedValue));
+
+            if (dsFieldGroup != null && dsFieldGroup.Tables[0] != null && dsFieldGroup.Tables[0].Rows.Count > 0)
+            {
+                ddlFiledType.DataSource = dsFieldGroup.Tables[0];
+                ddlFiledType.DataTextField = "ViewName";
+                ddlFiledType.DataValueField = "ValueType";
+                ddlFiledType.DataBind();
+
+                ddlField.DataSource = dsFieldGroup.Tables[0];
+                ddlField.DataTextField = "FieldDisplayName";
+                ddlField.DataValueField = "FieldId";
+                ddlField.DataBind();
+
+                ddlViews.DataSource = dsFieldGroup.Tables[0];
+                ddlViews.DataTextField = "ValueViewName";
+                ddlViews.DataValueField = "ValueViewName";
+                ddlViews.DataBind();
+
+
+            }
+        }
+    }
+
+    private void fillConditionalDropDownList(ref DropDownList ddlField,ref DropDownList ddlViews, ref DropDownList ddlValue1,ref DropDownList ddlValue2,ref DropDownList ddlValue3,ref  DropDownList ddlValue4)
+    {
+        try
+        {
+            if (ddlViews.SelectedValue.ToString() != "")
+            {
+                DataTable theDT;
+                CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+                theDT = CustomReport.GetDropDownValueForField("[" + ddlField.SelectedItem.Text.Trim() + "]", ddlViews.SelectedValue.ToString());
+
+                ddlValue1.DataSource = theDT;
+                ddlValue1.DataTextField = theDT.Columns[0].ColumnName;
+                ddlValue1.DataValueField = theDT.Columns[0].ColumnName;
+                ddlValue1.DataBind();
+
+                ddlValue2.DataSource = theDT;
+                ddlValue2.DataTextField = theDT.Columns[0].ColumnName;
+                ddlValue2.DataValueField = theDT.Columns[0].ColumnName;
+                ddlValue2.DataBind();
+
+                ddlValue3.DataSource = theDT;
+                ddlValue3.DataTextField = theDT.Columns[0].ColumnName;
+                ddlValue3.DataValueField = theDT.Columns[0].ColumnName;
+                ddlValue3.DataBind();
+
+                ddlValue4.DataSource = theDT;
+                ddlValue4.DataTextField = theDT.Columns[0].ColumnName;
+                ddlValue4.DataValueField = theDT.Columns[0].ColumnName;
+                ddlValue4.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+        }
+
+    }
+
+    private void btnFieldsNew_Click(object sender, EventArgs e)
+    { 
+        
+    }
+
+    public void dgFields_DataBound(object sender, DataGridItemEventArgs e)
+    {
+        if (e.Item.ItemType != ListItemType.Header && e.Item.ItemType != ListItemType.Footer)
+        {
+            DropDownList ddOperator;
+            ddOperator=(DropDownList)(e.Item.FindControl("ddOperator1"));
+            FillOperatorsListInDropDown(ref ddOperator);
+            ddOperator = (DropDownList)(e.Item.FindControl("ddOperator2"));
+            FillOperatorsListInDropDown(ref ddOperator);
+            ddOperator = (DropDownList)(e.Item.FindControl("ddOperator3"));
+            FillOperatorsListInDropDown(ref ddOperator);
+            ddOperator = (DropDownList)(e.Item.FindControl("ddOperator4"));
+            FillOperatorsListInDropDown(ref ddOperator);
+            DropDownList ddlWhere;
+
+
+            HtmlTableRow tr;
+            //HtmlTable trToHide;
+            TextBox txtValue;
+            LinkButton lnkRemove;
+            LinkButton lnkButton;
+            HtmlImage dateImage;
+            DropDownList ddlOptions;
+            
+            // adding attribute for hide row
+            tr = (HtmlTableRow) e.Item.FindControl("trFilter2");
+            txtValue = (TextBox)e.Item.FindControl("txtFilterValue2");
+            ddlOptions = (DropDownList)e.Item.FindControl("ddFilterValue2");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate2");
+            lnkRemove = (LinkButton) e.Item.FindControl("lnkRemoveFilter2");
+            lnkButton = (LinkButton)e.Item.FindControl("lnkAddFilter1");
+            lnkRemove.Attributes.Add("onclick", "javascript:HideRowWithValueText('" + tr.ClientID + "','" + txtValue.ClientID + "','" + ddlOptions.ClientID + "','" + dateImage.ClientID + "');ShowRow('" + lnkButton.ClientID + "');return false;");
+
+            tr = (HtmlTableRow)e.Item.FindControl("trFilter3");
+            txtValue = (TextBox)e.Item.FindControl("txtFilterValue3");
+            ddlOptions = (DropDownList)e.Item.FindControl("ddFilterValue3");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate3");
+            lnkRemove = (LinkButton)e.Item.FindControl("lnkRemoveFilter3");
+            lnkButton = (LinkButton)e.Item.FindControl("lnkAddFilter2");
+            lnkRemove.Attributes.Add("onclick", "javascript:HideRowWithValueText('" + tr.ClientID + "','" + txtValue.ClientID + "','" + ddlOptions.ClientID + "','" + dateImage.ClientID + "');ShowRow('" + lnkButton.ClientID + "');return false;");
+
+            tr = (HtmlTableRow)e.Item.FindControl("trFilter4");
+            txtValue = (TextBox)e.Item.FindControl("txtFilterValue4");
+            ddlOptions = (DropDownList)e.Item.FindControl("ddFilterValue4");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate4");
+            lnkRemove = (LinkButton)e.Item.FindControl("lnkRemoveFilter4");
+            lnkButton = (LinkButton)e.Item.FindControl("lnkAddFilter3");
+            lnkRemove.Attributes.Add("onclick", "javascript:HideRowWithValueText('" + tr.ClientID + "','" + txtValue.ClientID + "','" + ddlOptions.ClientID + "','" + dateImage.ClientID + "');ShowRow('" + lnkButton.ClientID + "');return false;");
+
+            //=============================================
+            
+            // adding attribute for Show row
+            tr = (HtmlTableRow)e.Item.FindControl("trFilter2");
+            lnkRemove = (LinkButton)e.Item.FindControl("lnkAddFilter1");
+            lnkRemove.Attributes.Add("onclick", "javascript:ShowRow('" + tr.ClientID + "');HideRow('" + lnkRemove.ClientID + "');return false;");
+
+            tr = (HtmlTableRow)e.Item.FindControl("trFilter3");
+            lnkRemove = (LinkButton)e.Item.FindControl("lnkAddFilter2");
+
+            lnkRemove.Attributes.Add("onclick", "javascript:ShowRow('" + tr.ClientID + "');HideRow('" + lnkRemove.ClientID + "');return false;");
+
+            tr = (HtmlTableRow)e.Item.FindControl("trFilter4");
+            lnkRemove = (LinkButton)e.Item.FindControl("lnkAddFilter3");
+            lnkRemove.Attributes.Add("onclick", "javascript:ShowRow('" + tr.ClientID + "');HideRow('" + lnkRemove.ClientID + "');return false;");
+
+            //txtFilterValue1
+            TextBox txt,txtDisplay;
+            DropDownList ddl,ddViews;
+            DropDownList ddlField,ddlFieldGroup,ddlValueType;
+            
+            txtDisplay = (TextBox)e.Item.FindControl("txtReportLabel");
+            ddlField = (DropDownList)e.Item.FindControl("ddFields");
+            ddlValueType = (DropDownList)e.Item.FindControl("ddFieldsType");
+            ddViews = (DropDownList)e.Item.FindControl("ddView");
+
+            ddlField.Attributes.Add("onclick", "javascript:SetValueType('" + ddlValueType.ClientID + "','" + ddlField.ClientID + "','" + txtDisplay.ClientID + "','" + ddViews.ClientID + "')");
+            ddlFieldGroup = (DropDownList)e.Item.FindControl("ddFieldGroup");
+            
+             if(Session["dtFields"]!=null && ((DataTable)Session["dtFields"]).Rows.Count>=e.Item.ItemIndex)
+             {
+                 ddlField.SelectedValue = ((DataTable)Session["dtFields"]).Rows[e.Item.ItemIndex]["Field"].ToString();
+             }
+
+            //==============================================================================
+            
+            txt = (TextBox)e.Item.FindControl("txtFilterValue1");
+            ddl = (DropDownList)e.Item.FindControl("ddFilterValue1");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate1");
+
+            dateImage.Attributes.Add("onclick", "javascript:w_displayDatePicker('" + txt.ClientID + "');");
+            ddlWhere = ((DropDownList)e.Item.FindControl("ddOperator1"));
+            ddlWhere.Attributes.Add("onclick", "javascript:Display('" + ddlValueType.ClientID + "','" + dateImage.ClientID + "','" + txt.ClientID + "','" + ddl.ClientID + "','" + ddlWhere.ClientID + "')");
+            
+            //========================
+
+            txt = (TextBox)e.Item.FindControl("txtFilterValue2");
+            ddl = (DropDownList)e.Item.FindControl("ddFilterValue2");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate2");
+
+            dateImage.Attributes.Add("onclick", "javascript:w_displayDatePicker('" + txt.ClientID + "');");
+            ddlWhere = ((DropDownList)e.Item.FindControl("ddOperator2"));
+            ddlWhere.Attributes.Add("onclick", "javascript:Display('" + ddlValueType.ClientID + "','" + dateImage.ClientID + "','" + txt.ClientID + "','" + ddl.ClientID + "','" + ddlWhere.ClientID + "')");
+            //========================
+
+            txt = (TextBox)e.Item.FindControl("txtFilterValue3");
+            ddl = (DropDownList)e.Item.FindControl("ddFilterValue3");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate3");
+
+            dateImage.Attributes.Add("onclick", "javascript:w_displayDatePicker('" + txt.ClientID + "');");
+            ddlWhere = ((DropDownList)e.Item.FindControl("ddOperator3"));
+            ddlWhere.Attributes.Add("onclick", "javascript:Display('" + ddlValueType.ClientID + "','" + dateImage.ClientID + "','" + txt.ClientID + "','" + ddl.ClientID + "','" + ddlWhere.ClientID + "')");
+            //========================
+            txt = (TextBox)e.Item.FindControl("txtFilterValue4");
+            ddl = (DropDownList)e.Item.FindControl("ddFilterValue4");
+            dateImage = (HtmlImage)e.Item.FindControl("imgFilterDate4");
+
+            dateImage.Attributes.Add("onclick", "javascript:w_displayDatePicker('" + txt.ClientID + "');");
+            ddlWhere = ((DropDownList)e.Item.FindControl("ddOperator4"));
+            ddlWhere.Attributes.Add("onclick", "javascript:Display('" + ddlValueType.ClientID + "','" + dateImage.ClientID + "','" + txt.ClientID + "','" + ddl.ClientID + "','" + ddlWhere.ClientID + "')");
+            //=====================================================================
+            fillFieldGroupInDropDown(ref ddlFieldGroup);
+        }
+    }
+
+    private void SetSelectedValuesInGrid()
+    {
+       DataTable dtTemp = (DataTable)Session["dtFields"];
+       DropDownList ddTemp;
+       DropDownList ddlField, ddlFieldType,ddlViews;
+       DropDownList ddlValue1, ddlValue2, ddlValue3, ddlValue4;
+       TextBox txtValue;
+       int RowNum; 
+       //==================================        
+       foreach (DataGridItem Item in this.dgFields.Items)
+       {
+
+           RowNum = Item.ItemIndex;
+
+           ddTemp = (DropDownList)Item.FindControl("ddFieldGroup");
+           ddTemp.SelectedValue = dtTemp.Rows[RowNum]["FieldGroup"].ToString();
+           ddlField = (DropDownList)Item.FindControl("ddFields");
+           ddlFieldType = (DropDownList)Item.FindControl("ddFieldsType");
+           ddlViews = (DropDownList)Item.FindControl("ddView");
+
+           setFieldByGroupId(ddTemp, ddlField, ddlFieldType,ddlViews);
+           //===============
+           // ddTemp = (DropDownList)Item.FindControl("ddFields");
+           if (dtTemp.Rows[RowNum]["Field"].ToString() != "")
+           {
+               try
+               {
+                   ddlField.SelectedValue = dtTemp.Rows[RowNum]["Field"].ToString();
+               }
+               catch
+               { }
+           }
+           //===============
+           ddlFieldType.SelectedIndex = ddlField.SelectedIndex;
+           ddlViews.SelectedIndex = ddlField.SelectedIndex;
+           //===============
+
+           ddTemp = (DropDownList)Item.FindControl("ddFunctions");
+           ddTemp.SelectedValue = dtTemp.Rows[RowNum]["Function"].ToString();
+           //===============
+           ddTemp = (DropDownList)Item.FindControl("ddSort");
+           ddTemp.SelectedValue = dtTemp.Rows[RowNum]["Sort"].ToString();
+           //===============
+           if (dtTemp.Rows[RowNum]["where1"].ToString() != "")
+           {
+               ddTemp = (DropDownList)Item.FindControl("ddOperator1");
+               ddTemp.SelectedValue = dtTemp.Rows[RowNum]["where1"].ToString();
+           }
+
+           HtmlTableRow tr;
+           if (dtTemp.Rows[RowNum]["where2"].ToString() != "")
+            {
+               ddTemp = (DropDownList)Item.FindControl("ddOperator2");
+               ddTemp.SelectedValue = dtTemp.Rows[RowNum]["where2"].ToString();
+               tr = (HtmlTableRow)Item.FindControl("trFilter2");
+               tr.Style.Add("visibility", "visible");
+
+            }
+
+           if (dtTemp.Rows[RowNum]["where3"].ToString() != "")
+           {
+               ddTemp = (DropDownList)Item.FindControl("ddOperator3");
+               ddTemp.SelectedValue = dtTemp.Rows[RowNum]["where3"].ToString();
+               tr = (HtmlTableRow)Item.FindControl("trFilter3");
+               tr.Style.Add("visibility", "visible");
+
+           }
+           if (dtTemp.Rows[RowNum]["where4"].ToString() != "")
+           {
+               ddTemp = (DropDownList)Item.FindControl("ddOperator4");
+               ddTemp.SelectedValue = dtTemp.Rows[RowNum]["where4"].ToString();
+               tr = (HtmlTableRow)Item.FindControl("trFilter4");
+               tr.Style.Add("visibility", "visible");
+           }
+
+            ddTemp = (DropDownList)Item.FindControl("ddAndOr2");
+            ddTemp.SelectedValue = dtTemp.Rows[RowNum]["AndOr2"].ToString();
+
+            ddTemp = (DropDownList)Item.FindControl("ddAndOr3");
+            ddTemp.SelectedValue = dtTemp.Rows[RowNum]["AndOr3"].ToString();
+
+            //===============
+            ddTemp = (DropDownList)Item.FindControl("ddAndOr4");
+            ddTemp.SelectedValue = dtTemp.Rows[RowNum]["AndOr4"].ToString();
+            //===============
+
+           //=============================================================================
+           if (ddlFieldType.SelectedValue == "7")
+           {
+               ddlValue1 = (DropDownList)Item.FindControl("ddFilterValue1");
+               ddlValue2 = (DropDownList)Item.FindControl("ddFilterValue2");
+               ddlValue3 = (DropDownList)Item.FindControl("ddFilterValue3");
+               ddlValue4 = (DropDownList)Item.FindControl("ddFilterValue4");
+               fillConditionalDropDownList(ref ddlField, ref ddlViews, ref ddlValue1, ref ddlValue2, ref ddlValue3, ref ddlValue4);
+               //===============
+               try
+               {
+                   if (dtTemp.Rows[RowNum]["where1"].ToString() != "" && !dtTemp.Rows[RowNum]["where1"].ToString().Contains("NULL"))
+                   {
+                       ddlValue1.SelectedValue = dtTemp.Rows[RowNum]["where1Value"].ToString();
+                       ddlValue1.Style.Add("visibility", "visible");
+                       ddlValue1.Style.Add("width", "120");
+                   }
+                   else
+                   {
+                       ddlValue1.Style.Add("visibility", "hidden");
+                       ddlValue1.Style.Add("width", "0");
+                   }
+
+                   if (dtTemp.Rows[RowNum]["where2"].ToString() != "" && !dtTemp.Rows[RowNum]["where2"].ToString().Contains("NULL"))
+                   {
+                       ddlValue2.SelectedValue = dtTemp.Rows[RowNum]["where2Value"].ToString();
+                       ddlValue2.Style.Add("visibility", "visible");
+                       ddlValue2.Style.Add("width", "120");
+                   }
+                   else
+                   {
+                       ddlValue2.Style.Add("visibility", "hidden");
+                       ddlValue2.Style.Add("width", "0");
+                   }
+
+                   if (dtTemp.Rows[RowNum]["where3"].ToString() != "" && !dtTemp.Rows[RowNum]["where3"].ToString().Contains("NULL"))
+                   {
+                       ddlValue3.SelectedValue = dtTemp.Rows[RowNum]["where3Value"].ToString();
+                       ddlValue3.Style.Add("visibility", "visible");
+                       ddlValue3.Style.Add("width", "120");
+                   }
+                   else
+                   {
+                       ddlValue3.Style.Add("visibility", "hidden");
+                       ddlValue3.Style.Add("width", "0");
+                   }
+
+                   if (dtTemp.Rows[RowNum]["where4"].ToString() != "" && !dtTemp.Rows[RowNum]["where4"].ToString().Contains("NULL"))
+                   {
+                       ddlValue4.SelectedValue = dtTemp.Rows[RowNum]["where4Value"].ToString();
+                       ddlValue4.Style.Add("visibility", "visible");
+                       ddlValue4.Style.Add("width", "120");
+                   }
+                   else
+                   {
+                       ddlValue4.Style.Add("visibility", "hidden");
+                       ddlValue4.Style.Add("width", "0");
+                   }
+               }
+               catch { }
+           }
+           else 
+           {
+               HtmlImage dateImage;
+                 txtValue = (TextBox)Item.FindControl("txtFilterValue1");
+                 if (dtTemp.Rows[RowNum]["where1"].ToString() == "" || dtTemp.Rows[RowNum]["where1"].ToString().Contains("NULL"))
+                 {
+                     txtValue.Style.Add("visibility", "hidden");
+                     txtValue.Style.Add("width", "0");
+                 }
+                 else
+                 {
+                     txtValue.Text = dtTemp.Rows[RowNum]["where1Value"].ToString();
+                     txtValue.Style.Add("visibility", "visible");
+                     txtValue.Style.Add("width", "120");
+                     if (ddlFieldType.SelectedValue == "8")
+                     {
+                         dateImage = (HtmlImage)Item.FindControl("imgFilterDate1");
+                         dateImage.Style.Add("visibility", "visible");
+                         dateImage.Style.Add("width", "20");
+                     }
+
+                 }
+                 
+                 txtValue = (TextBox)Item.FindControl("txtFilterValue2");
+                 if (dtTemp.Rows[RowNum]["where2"].ToString() == "" || dtTemp.Rows[RowNum]["where2"].ToString().Contains("NULL"))
+                 {
+                     txtValue.Style.Add("visibility", "hidden");
+                     txtValue.Style.Add("width", "0");
+                 }
+                 else
+                 {
+                     txtValue.Text = dtTemp.Rows[RowNum]["where2Value"].ToString();
+                     txtValue.Style.Add("visibility", "visible");
+                     txtValue.Style.Add("width", "120");
+                     if (ddlFieldType.SelectedValue == "8")
+                     {
+                         dateImage = (HtmlImage)Item.FindControl("imgFilterDate2");
+                         dateImage.Style.Add("visibility", "visible");
+                         dateImage.Style.Add("width", "20");
+                     }
+
+                 }
+
+                 txtValue = (TextBox)Item.FindControl("txtFilterValue3");
+                 if (dtTemp.Rows[RowNum]["where3"].ToString() == "" || dtTemp.Rows[RowNum]["where3"].ToString().Contains("NULL"))
+                 {
+                     txtValue.Style.Add("visibility", "hidden");
+                     txtValue.Style.Add("width", "0");
+                 }
+                 else
+                 {
+                     txtValue.Text = dtTemp.Rows[RowNum]["where3Value"].ToString();
+                     txtValue.Style.Add("visibility", "visible");
+                     txtValue.Style.Add("width", "120");
+                     if (ddlFieldType.SelectedValue == "8")
+                     {
+                         dateImage = (HtmlImage)Item.FindControl("imgFilterDate3");
+                         dateImage.Style.Add("visibility", "visible");
+                         dateImage.Style.Add("width", "20");
+                     }
+
+                 }
+
+                 txtValue = (TextBox)Item.FindControl("txtFilterValue4");
+                 if (dtTemp.Rows[RowNum]["where4"].ToString() == "" || dtTemp.Rows[RowNum]["where4"].ToString().Contains("NULL"))
+                 {
+                     txtValue.Style.Add("visibility", "hidden");
+                     txtValue.Style.Add("width", "0");
+                 }
+                 else
+                 {
+                     txtValue.Text = dtTemp.Rows[RowNum]["where4Value"].ToString();
+                     txtValue.Style.Add("visibility", "visible");
+                     txtValue.Style.Add("width", "120");
+                     if (ddlFieldType.SelectedValue == "8")
+                     {
+                         dateImage = (HtmlImage)Item.FindControl("imgFilterDate4");
+                         dateImage.Style.Add("visibility", "visible");
+                         dateImage.Style.Add("width", "20");
+                     }
+
+                 }
+
+
+           }
+            //=================================================================
+       }
+
+    }
+
+    protected void lnkRemoveField_Click(object sender,EventArgs e)
+    {
+        DataTable dt = (DataTable)Session["dtFields"];
+        dt.Rows.RemoveAt(dt.Rows.Count - 1);
+        this.dgFields.DataSource = dt;
+        dgFields.DataBind();
+        Session["dtFields"] = dt;
+
+        if (dt.Rows.Count == 1)
+        {
+            this.lnkRemoveField.Visible = false;
+        }
+        SetSelectedValuesInGrid();
+        setFieldByGroupId();
+    }
+
+    private void SaveValues()
+    {
+
+        if (this.txtNewCategory.Value != "")
+        {
+            this.txtNewCategory.Style.Add("visibility", "visible");
+        }
+
+
+        DataTable dt = (DataTable)Session["dtFields"];
+        DataRow dr;
+
+        //===================================================
+        //DataGridItem item = dgFields.Items[dgFields.Items.Count - 1];
+
+        //dr = dt.Rows[dt.Rows.Count - 1];
+        foreach (DataGridItem item in dgFields.Items)
+        {
+            dr = dt.Rows[item.ItemIndex];
+            dr["isDisplay"] = ((CheckBox)item.FindControl("chkDisplayOnReport")).Checked;
+            dr["FieldGroup"] = ((DropDownList)item.FindControl("ddFieldGroup")).SelectedValue;
+            dr["Field"] = ((DropDownList)item.FindControl("ddFields")).SelectedValue;
+            dr["FieldLabel"] = ((TextBox)item.FindControl("txtReportLabel")).Text;
+            dr["Function"] = ((DropDownList)item.FindControl("ddFunctions")).SelectedValue;
+            dr["Sort"] = ((DropDownList)item.FindControl("ddSort")).SelectedValue;
+            dr["where1"] = ((DropDownList)item.FindControl("ddOperator1")).SelectedValue;
+
+            dr["AndOr2"] = ((DropDownList)item.FindControl("ddAndOr2")).SelectedValue;
+            dr["where2"] = ((DropDownList)item.FindControl("ddOperator2")).SelectedValue;
+            
+
+            dr["AndOr3"] = ((DropDownList)item.FindControl("ddAndOr3")).SelectedValue;
+            dr["where3"] = ((DropDownList)item.FindControl("ddOperator3")).SelectedValue;
+
+            dr["AndOr4"] = ((DropDownList)item.FindControl("ddAndOr4")).SelectedValue;
+            dr["where4"] = ((DropDownList)item.FindControl("ddOperator4")).SelectedValue;
+
+            if (((DropDownList)item.FindControl("ddFieldsType")).SelectedValue.Trim() == "7")
+            {   
+                dr["where1Value"] = ((DropDownList)item.FindControl("ddFilterValue1")).Text;
+                dr["where2Value"] = ((DropDownList)item.FindControl("ddFilterValue2")).Text;
+                dr["where3Value"] = ((DropDownList)item.FindControl("ddFilterValue3")).Text;
+                dr["where4Value"] = ((DropDownList)item.FindControl("ddFilterValue4")).Text;
+            }
+            else
+            {
+                dr["where1Value"] = ((TextBox)item.FindControl("txtFilterValue1")).Text;
+                dr["where2Value"] = ((TextBox)item.FindControl("txtFilterValue2")).Text;
+                dr["where3Value"] = ((TextBox)item.FindControl("txtFilterValue3")).Text;
+                dr["where4Value"] = ((TextBox)item.FindControl("txtFilterValue4")).Text;
+            }   
+
+            dt.AcceptChanges();
+        }
+        Session["dtFields"] = dt;
+
+    }
+
+    protected void lnkAddMoreField_Click(object sender, EventArgs e)
+    {
+        SaveValues();
+        DataTable dt = (DataTable)Session["dtFields"];
+        DataRow dr;
+        int MaximumColumnsOnReport=0;
+        
+        foreach (DataRow theDR in dt.Rows)
+        {
+            if (Convert.ToBoolean(theDR["isDisplay"]))
+            {
+                MaximumColumnsOnReport += 1;
+            }
+
+        }
+
+
+        //===================================================
+        if (MaximumColumnsOnReport < MaximumColumns)
+        {
+            dr = dt.NewRow();
+            dr["ColumnNo"] = "Column " + (dt.Rows.Count + 1);
+            dr["isDisplay"] = true;
+            dt.Rows.Add(dr);
+        }
+        else
+        {
+            string message = "";
+            message = "<script> alert('You can not add more than 12 columns on report');</script>";
+            Page.RegisterStartupScript("message", message);
+            return;
+
+        }
+        this.dgFields.DataSource = dt;
+        dgFields.DataBind();
+        Session["dtFields"] = dt;
+        this.lnkRemoveField.Visible = true;
+        SetSelectedValuesInGrid();
+        setFieldByGroupId();
+        makeQuery();
+    }
+
+    private void BindGrid()
+    {
+
+        DataTable dt = GetTableForGrid();
+        DataRow dr ;
+
+        dr = dt.NewRow();
+        dr["ColumnNo"] = "Column 1";
+        dr["isDisplay"] = true;
+        dt.Rows.Add(dr);
+                
+        this.dgFields.DataSource = dt;
+        dgFields.DataBind();
+        Session["dtFields"] = dt;
+        this.lnkRemoveField.Visible = false;
+
+    }
+
+    private void FillOperatorsListInDropDown(ref DropDownList ddl)
+    {
+        DataTable dtOperator = new DataTable();
+        DataColumn dc = new DataColumn("Operator", typeof(string));
+        dtOperator.Columns.Add(dc);
+        DataRow dr;
+
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "IS NULL";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "IS NOT NULL";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "=";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "!=";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = ">";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "<";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = "<=";
+        dtOperator.Rows.Add(dr);
+        //=============================
+        dr = dtOperator.NewRow();
+        dr["Operator"] = ">=";
+        dtOperator.Rows.Add(dr);
+
+        ddl.DataSource = dtOperator;
+        ddl.DataTextField = "Operator";
+        ddl.DataValueField = "Operator";
+        ddl.DataBind();
+        ddl.Items.Insert(0,new ListItem("Select", ""));
+
+    }
+
+    private void fillFieldGroupInDropDown(ref DropDownList ddl)
+    {
+        try
+        {
+            //dsFieldGroup = new DataSet();
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsFieldGroup = (DataSet)CustomReport.GetAllFieldGroups();
+           
+            ddl.DataSource = dsFieldGroup.Tables[0];
+            ddl.DataTextField = "GroupName";
+            ddl.DataValueField = "GroupId";
+            ddl.DataBind();
+            ddl.Items.Insert(0, new ListItem("Select", ""));
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private DataSet CreateDataSet()
+    {
+        DataSet dsCustomReports = new DataSet();
+        
+        DataTable dtMstReport = new DataTable("dtMstReport");
+        DataTable dtlReportFields = new DataTable("dtlReportFields");
+        DataTable dtlReportFilter = new DataTable("dtlReportFilter");
+
+        //============= adding columns to MstReport DataTable ================
+        dtMstReport.Columns.Add(new DataColumn("ColumnNo", typeof(int)));
+        dtMstReport.Columns.Add(new DataColumn("CategoryId", typeof(int)));
+        dtMstReport.Columns.Add(new DataColumn("CategoryName", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("ReportName", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("Description", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("Condition", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("ReportId", typeof(int)));
+
+        //============= adding columns to Report's Field DataTable ================
+        dtlReportFields.Columns.Add(new DataColumn("GroupId", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("FieldId", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("FieldLabel", typeof(string)));
+        dtlReportFields.Columns.Add(new DataColumn("AggregateFunction", typeof(string)));
+        dtlReportFields.Columns.Add(new DataColumn("IsDisplay", typeof(bool)));
+        dtlReportFields.Columns.Add(new DataColumn("Sequence", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("Sort", typeof(string)));
+
+        //============= adding columns to Report's Filter DataTable ================
+        dtlReportFilter.Columns.Add(new DataColumn("LinkFieldId", typeof(int)));
+        dtlReportFilter.Columns.Add(new DataColumn("Operator", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("FilterValue", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("AndOr", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("Sequence", typeof(int)));
+
+        dsCustomReports.Tables.Add(dtMstReport);
+        dsCustomReports.Tables.Add(dtlReportFields);
+        dsCustomReports.Tables.Add(dtlReportFilter);     
+        
+    
+        return dsCustomReports;
+    }
+
+    protected void btnSaveReport_Click(object sender, EventArgs e)
+    {
+        int saveFlag = 0;
+        saveFlag = Save();
+        if (saveFlag > 0)
+        {
+            Response.Redirect("frmReportViewer.aspx?ReportId=" + saveFlag.ToString(), true);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    protected void btnExportParameters_Click(object sender, EventArgs e)
+    {
+        ExportReport();
+    }
+
+    private void ExportReport()
+    {
+        if (Session["ReportId"] == null || Session["ReportId"].ToString() == "")
+        {
+            if (Save() <= 0)
+            {
+                return;
+            }
+        }
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsExistingReport = CustomReport.GetCustomReportData(Convert.ToInt32(Session["ReportId"]));
+            DataTable dtReportField = null;
+            DataTable dtReportFilter = null;
+
+            if (dsExistingReport.Tables.Count > 1 && dsExistingReport.Tables[1] != null)
+            {
+                dtReportField = dsExistingReport.Tables[1];
+            }
+            if (dsExistingReport.Tables.Count > 2 && dsExistingReport.Tables[2] != null)
+            {
+                dtReportFilter = dsExistingReport.Tables[2];
+            }
+
+            DataRow drMstReport;
+            dsCustomReport = CreateDataSet();
+            drMstReport = dsCustomReport.Tables["dtMstReport"].NewRow();
+
+            drMstReport["ReportName"] = dsExistingReport.Tables[0].Rows[0]["ReportName"].ToString();
+            drMstReport["Description"] = dsExistingReport.Tables[0].Rows[0]["Description"].ToString();
+            drMstReport["Condition"] = dsExistingReport.Tables[0].Rows[0]["Condition"].ToString();
+            drMstReport["CategoryId"] = dsExistingReport.Tables[0].Rows[0]["CategoryId"].ToString();
+            dsCustomReport.Tables["dtMstReport"].Rows.Add(drMstReport);
+
+            DataRow drReportFields;
+            DataRow drReportFilter;
+            DataView dvFilter;
+
+            if (dtReportField != null)
+            {
+                foreach (DataRow dr in dtReportField.Rows)
+                {
+                    drReportFields = dsCustomReport.Tables["dtlReportFields"].NewRow();
+
+                    drReportFields["GroupId"] = Convert.ToInt32(dr["GroupId"]);
+                    drReportFields["FieldId"] = Convert.ToInt32(dr["FieldId"]);
+
+                    drReportFields["FieldLabel"] = dr["FieldLabel"].ToString();
+                    drReportFields["AggregateFunction"] = dr["AggregateFunction"].ToString();
+                    drReportFields["IsDisplay"] = dr["IsDisplay"];
+                    drReportFields["Sequence"] = dr["Sequence"];
+                    drReportFields["Sort"] = dr["Sort"];
+                    dsCustomReport.Tables["dtlReportFields"].Rows.Add(drReportFields);
+                    //===============================================================================
+                    dvFilter = new DataView(dtReportFilter, "ReportFieldId=" + dr["ReportFieldId"], "Sequence", DataViewRowState.CurrentRows);
+                    if (dvFilter.Count > 0)
+                    {
+                        for (int i = 0; i < dvFilter.Count; i++)
+                        {
+                            drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                            drReportFilter["LinkFieldId"] = Convert.ToInt32(dr["Sequence"]);
+                            drReportFilter["Operator"] = dvFilter[i]["Operator"].ToString();
+                            drReportFilter["FilterValue"] = dvFilter[i]["FilterValue"].ToString();
+                            drReportFilter["AndOr"] = dvFilter[i]["AndOr"].ToString();
+                            drReportFilter["Sequence"] = dvFilter[i]["Sequence"].ToString();
+                            dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+                        }
+                    }
+                    //===============================================================================
+                }
+            }
+            Stream stream = new MemoryStream();
+            dsCustomReport.WriteXml(stream);
+            byte[] Buffer;
+
+            Buffer = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(Buffer, 0, (int)stream.Length);
+            stream.Close();
+
+            Response.Clear();
+
+            Response.ContentType = "application/xml";
+            Response.AddHeader("content-disposition", "attachment; filename=Report.xml");
+            Response.BinaryWrite(Buffer);
+
+            Response.End();
+        
+    }
+
+    private int Save()
+    {
+        //=============== Table 1 (dtMstReport) ==============================
+        //makeQuery();
+        try
+        {
+            DataRow drMstReport;
+            dsCustomReport = CreateDataSet();
+            drMstReport = dsCustomReport.Tables["dtMstReport"].NewRow();
+            if (this.ddCategory.SelectedValue != null && this.ddCategory.SelectedValue != "")
+            {
+                drMstReport["CategoryId"] = Convert.ToInt32(this.ddCategory.SelectedValue);
+            }
+            else
+            {
+                drMstReport["CategoryId"] = 0;
+            }
+
+            if (txtNewCategory != null && txtNewCategory.Value != "")
+            {
+                drMstReport["CategoryName"] = txtNewCategory.Value.Trim();
+            }
+            else
+            {
+                drMstReport["CategoryName"] = "";
+            }
+
+            drMstReport["ReportName"] = this.txtTitle.Text.Trim();
+            drMstReport["Description"] = this.txtDescription.Text.Trim();
+            drMstReport["Condition"] = this.txtSQLStatement.Text.Trim();
+
+            dsCustomReport.Tables["dtMstReport"].Rows.Add(drMstReport);
+            //===================================================================
+            //=============== Table 1 (dtlReportFields) ==============================
+            DropDownList ddlTemp, ddlAndOr;
+            DataRow drReportFields;
+            DataRow drReportFilter;
+            int counter = 1;
+            foreach (DataGridItem itm in this.dgFields.Items)
+            {
+                drReportFields = dsCustomReport.Tables["dtlReportFields"].NewRow();
+
+                if (((DropDownList)itm.FindControl("ddFieldGroup")).SelectedValue == "")
+                {
+                    string message = "";
+                    message = "<script> alert('Plase select Group of column : " + Convert.ToString(Convert.ToInt32(itm.ItemIndex) + 1) + "');</script>";
+                    Page.RegisterStartupScript("message", message);
+                    return 0;
+                }
+
+                drReportFields["GroupId"] = Convert.ToInt32(((DropDownList)itm.FindControl("ddFieldGroup")).SelectedValue);
+                drReportFields["FieldId"] = Convert.ToInt32(((DropDownList)itm.FindControl("ddFields")).SelectedValue);
+                drReportFields["FieldLabel"] = ((TextBox)itm.FindControl("txtReportLabel")).Text.Trim();
+                drReportFields["AggregateFunction"] = ((DropDownList)itm.FindControl("ddFunctions")).SelectedValue;
+                drReportFields["IsDisplay"] = ((CheckBox)itm.FindControl("chkDisplayOnReport")).Checked;
+                drReportFields["Sequence"] = counter;
+                drReportFields["Sort"] = ((DropDownList)itm.FindControl("ddSort")).SelectedValue.ToString();
+                dsCustomReport.Tables["dtlReportFields"].Rows.Add(drReportFields);
+
+                //======================================
+                ddlTemp = (DropDownList)itm.FindControl("ddOperator1");
+                if (ddlTemp != null && ddlTemp.SelectedValue != null && ddlTemp.SelectedValue != "")
+                {
+                    drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                    drReportFilter["LinkFieldId"] = counter;
+                    drReportFilter["Operator"] = ((DropDownList)itm.FindControl("ddOperator1")).SelectedValue; ;
+                    if (((DropDownList)itm.FindControl("ddFieldsType")).SelectedValue.Trim() == "7")
+                    {
+                        drReportFilter["FilterValue"] = ((DropDownList)itm.FindControl("ddFilterValue1")).SelectedValue.ToString();
+                    }
+                    else
+                    {
+                        drReportFilter["FilterValue"] = ((TextBox)itm.FindControl("txtFilterValue1")).Text.Trim();
+                    }
+                    drReportFilter["AndOr"] = "";
+                    drReportFilter["Sequence"] = 1;
+                    dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+                }
+                //=============
+                ddlTemp = (DropDownList)itm.FindControl("ddOperator2");
+                ddlAndOr = (DropDownList)itm.FindControl("ddAndOr2");
+
+                if (ddlAndOr.SelectedValue != null && ddlTemp != null && ddlTemp.SelectedValue != null && ddlTemp.SelectedValue != "")
+                {
+                    drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                    drReportFilter["LinkFieldId"] = counter;
+                    drReportFilter["Operator"] = ((DropDownList)itm.FindControl("ddOperator2")).SelectedValue; ;
+                    if (((DropDownList)itm.FindControl("ddFieldsType")).SelectedValue.Trim() == "7")
+                    {
+                        drReportFilter["FilterValue"] = ((DropDownList)itm.FindControl("ddFilterValue2")).SelectedValue.ToString();
+                    }
+                    else
+                    {
+                        drReportFilter["FilterValue"] = ((TextBox)itm.FindControl("txtFilterValue2")).Text.Trim();
+                    }
+                    drReportFilter["AndOr"] = "";
+                    drReportFilter["Sequence"] = 2;
+                    dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+
+                }
+                //=============
+                ddlTemp = (DropDownList)itm.FindControl("ddOperator3");
+                ddlAndOr = (DropDownList)itm.FindControl("ddAndOr3");
+
+                if (ddlAndOr.SelectedValue != null && ddlTemp != null && ddlTemp.SelectedValue != null && ddlTemp.SelectedValue != "")
+                {
+                    drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                    drReportFilter["LinkFieldId"] = counter;
+                    drReportFilter["Operator"] = ((DropDownList)itm.FindControl("ddOperator3")).SelectedValue; ;
+                    if (((DropDownList)itm.FindControl("ddFieldsType")).SelectedValue.Trim() == "7")
+                    {
+                        drReportFilter["FilterValue"] = ((DropDownList)itm.FindControl("ddFilterValue3")).SelectedValue.ToString();
+                    }
+                    else
+                    {
+                        drReportFilter["FilterValue"] = ((TextBox)itm.FindControl("txtFilterValue3")).Text.Trim(); ;
+                    }
+                    drReportFilter["AndOr"] = "";
+                    drReportFilter["Sequence"] = 3;
+                    dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+                }
+                //=============
+                ddlTemp = (DropDownList)itm.FindControl("ddOperator4");
+                ddlAndOr = (DropDownList)itm.FindControl("ddAndOr4");
+
+                if (ddlAndOr.SelectedValue != null && ddlTemp != null && ddlTemp.SelectedValue != null && ddlTemp.SelectedValue != "")
+                {
+                    drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                    drReportFilter["LinkFieldId"] = counter;
+                    drReportFilter["Operator"] = ((DropDownList)itm.FindControl("ddOperator4")).SelectedValue; ;
+                    if (((DropDownList)itm.FindControl("ddFieldsType")).SelectedValue.Trim() == "7")
+                    {
+                        drReportFilter["FilterValue"] = ((DropDownList)itm.FindControl("ddFilterValue4")).SelectedValue.ToString();
+                    }
+                    else
+                    {
+                        drReportFilter["FilterValue"] = ((TextBox)itm.FindControl("txtFilterValue4")).Text.Trim(); ;
+                    }
+                    drReportFilter["AndOr"] = "";
+                    drReportFilter["Sequence"] = 4;
+                    dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+                }
+                //=============
+                counter += 1;
+            }
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            int theReportId;
+            if (Session["Mode"] != null && Session["Mode"].ToString() == "U")
+            {
+                dsCustomReport.Tables["dtMstReport"].Rows[0]["ReportId"] = Convert.ToInt32(Session["ReportId"]);
+                CustomReport.SaveCustomReport(dsCustomReport, 1);
+                theReportId = Convert.ToInt32(Session["ReportId"]);
+            }
+            else
+            {
+
+                theReportId = CustomReport.SaveCustomReport(dsCustomReport, 0);
+            }
+            Session["ReportId"] = theReportId;
+            return theReportId;
+        }
+        catch (SqlException sqlEx)
+        {
+            string message = "";
+            message = "<script> alert('" + sqlEx.Message.Replace("'","") + "');</script>";
+            Page.RegisterStartupScript("message", message);
+            return 0;
+        }
+        
+    }
+  
+    private DataTable GetTableForGrid()
+    {
+        DataTable dt = new DataTable();
+
+
+        dt.Columns.Add(new DataColumn("ColumnNo", typeof(string)));
+        dt.Columns.Add(new DataColumn("isDisplay", typeof(bool)));
+        dt.Columns.Add(new DataColumn("FieldGroup", typeof(string)));
+        dt.Columns.Add(new DataColumn("Field", typeof(string)));
+        dt.Columns.Add(new DataColumn("FieldLabel", typeof(string)));
+        dt.Columns.Add(new DataColumn("Function", typeof(string)));
+        dt.Columns.Add(new DataColumn("Sort", typeof(string)));
+        dt.Columns.Add(new DataColumn("where1", typeof(string)));
+        dt.Columns.Add(new DataColumn("where1Value", typeof(string)));
+        dt.Columns.Add(new DataColumn("AndOr2", typeof(string)));
+        dt.Columns.Add(new DataColumn("where2", typeof(string)));
+        dt.Columns.Add(new DataColumn("where2Value", typeof(string)));
+        dt.Columns.Add(new DataColumn("AndOr3", typeof(string)));
+        dt.Columns.Add(new DataColumn("where3", typeof(string)));
+        dt.Columns.Add(new DataColumn("where3Value", typeof(string)));
+        dt.Columns.Add(new DataColumn("AndOr4", typeof(string)));
+        dt.Columns.Add(new DataColumn("where4", typeof(string)));
+        dt.Columns.Add(new DataColumn("where4Value", typeof(string)));
+        return dt;
+    }
+    
+    private void FillData(DataSet dsExistingReport)
+    {
+        if (dsExistingReport != null)
+        {
+            DataTable theDT = GetTableForGrid();
+            DataRow theRow;
+            DataView theDV;
+            if (dsExistingReport.Tables[0] != null)
+            {
+                this.txtTitle.Text = dsExistingReport.Tables[0].Rows[0]["ReportName"].ToString();
+                this.txtDescription.Text = dsExistingReport.Tables[0].Rows[0]["Description"].ToString();
+                this.ddCategory.SelectedValue = dsExistingReport.Tables[0].Rows[0]["CategoryId"].ToString();
+                this.txtSQLStatement.Text = dsExistingReport.Tables[0].Rows[0]["Condition"].ToString();
+            }
+            if (dsExistingReport.Tables[1] != null)
+            {
+                foreach (DataRow theDR in dsExistingReport.Tables[1].Rows)
+                {
+                    theRow = theDT.NewRow();
+                    theRow["ColumnNo"] = "Column : " + theDR["Sequence"].ToString();
+                    theRow["isDisplay"] = theDR["isDisplay"];
+                    theRow["FieldGroup"] = theDR["GroupId"];
+                    theRow["Field"] = theDR["FieldId"];
+                    theRow["FieldLabel"] = theDR["FieldLabel"];
+                    theRow["Function"] = theDR["AggregateFunction"];
+                    theRow["Sort"] = theDR["Sort"];
+                    if(dsExistingReport.Tables[2]!=null && dsExistingReport.Tables[2].Rows.Count>0)
+                    {
+                        theDV = new DataView(dsExistingReport.Tables[2], "ReportFieldId=" + theDR["ReportFieldId"], "Sequence", DataViewRowState.CurrentRows);
+                        if (theDV.Count > 0)
+                        {
+                            for (int i = 0; i < theDV.Count; i++)
+                            {
+                                theRow["Where" + Convert.ToInt32(i + 1).ToString()] = theDV[i]["Operator"].ToString();
+                                theRow["Where" + Convert.ToInt32(i + 1).ToString() + "Value"] = theDV[i]["FilterValue"].ToString();
+                                if (i > 0)
+                                {
+                                    theRow["AndOr" + Convert.ToInt32(i + 1).ToString()] = theDV[i]["AndOr"].ToString();
+
+                                }
+                            }
+                        }
+
+                    }
+                    theDT.Rows.Add(theRow);
+               }
+            }
+            this.dgFields.DataSource = theDT;
+            this.dgFields.DataBind();
+            Session["dtFields"] = theDT;
+            SetSelectedValuesInGrid();
+            setFieldByGroupId();
+        }
+
+
+
+    }
+
+    private void makeQuery() // to make dynamic Query
+    { 
+        try
+        {
+            //Variables and control declaration
+            DropDownList ddlField, ddlWhere, ddlAndOr, ddlValue,ddlFunction,ddlSort,ddlView; 
+            TextBox txtValue,txtDisplayName;
+            CheckBox chkDisplay;
+            string field="";
+            string OrderBy = "";
+            string DisplayName = "";
+            string GroupBy = "";
+            string theQuery = "Select";
+            string theCondition = "where ";
+            string views="";
+            bool CheckAnd;
+            int functionCounter = 1;
+            //================================================
+
+            foreach (DataGridItem itm in this.dgFields.Items)
+            {
+                ddlField = (DropDownList)itm.FindControl("ddFields");
+                ddlView = (DropDownList)itm.FindControl("ddFieldsType");
+                txtDisplayName = (TextBox)itm.FindControl("txtReportLabel");
+                chkDisplay = (CheckBox)itm.FindControl("chkDisplayOnReport");
+
+               
+
+                if (!views.Contains(ddlView.SelectedItem.Text.Trim()))
+                {
+                    views = views + ddlView.SelectedItem.Text.Trim() + ",";
+                }
+                if (ddlField.SelectedValue != "") // if any Field is selected
+                {
+                    field = "[" + ddlField.SelectedItem.Text.Trim() + "]";
+
+                    if (txtDisplayName.Text.Trim() != "")
+                    {
+                        DisplayName = txtDisplayName.Text.Trim();
+                    }
+                    else
+                    {
+                        DisplayName = ddlField.SelectedItem.Text.Trim();
+                    }
+                     
+                    ddlFunction = (DropDownList)itm.FindControl("ddFunctions");
+                    ddlSort = (DropDownList)itm.FindControl("ddSort");
+
+                    if (ddlFunction.SelectedValue != "") // if any Function like sum,count etc selected
+                    {
+                        if (ddlFunction.SelectedValue.Trim().ToUpper() == "COUNT" || ddlFunction.SelectedValue.Trim().ToUpper() == "SUM")
+                        {
+                            if (functionCounter == 1) // to check weather first count 
+                            {
+                                theQuery = theQuery + " " + ddlFunction.SelectedValue + "(" + field + ") as '" + DisplayName + "'";
+                            }
+                            else
+                            {
+                                theQuery = theQuery + " ," + ddlFunction.SelectedValue + "(" + field + ") as '" + DisplayName + "'";                                    
+                            }
+                            functionCounter++;
+                        }
+                        else if (ddlFunction.SelectedValue.Trim().ToUpper() == "COUNTDISTINCT")
+                        {
+                            if (functionCounter == 1) // to check weather first count
+                            {
+                                theQuery = theQuery + " Count( distinct " + field + ") as '" + DisplayName + "'";
+                            }
+                            else
+                            {
+                                theQuery = theQuery + " ,Count( distinct " + field + ") as '" + DisplayName + "'";
+                            }
+                            functionCounter++;
+                        }
+                        else if (ddlFunction.SelectedValue.Trim().ToUpper() == "GROUP")
+                        {
+                            if (chkDisplay.Checked)
+                            {
+                                theQuery = theQuery + ", " + field + " as '" + DisplayName + "'";
+                            }
+                            GroupBy = GroupBy + field + ",";
+                        }
+                    }
+                    else if(chkDisplay.Checked) // if FieldDisplay on report is checked
+                    {
+                        theQuery = theQuery + ", " + field + " as '" + DisplayName + "'";
+                    }
+                    CheckAnd = false;
+                    for (int i = 1; i < 5; i++) // loop for filter (where clause)
+                    {
+                        ddlWhere = (DropDownList)itm.FindControl("ddOperator" + i.ToString());
+                        txtValue = (TextBox)itm.FindControl("txtFilterValue" + i.ToString());
+                        ddlValue = (DropDownList)itm.FindControl("ddFilterValue1" + i.ToString());
+                        
+                        if (ddlWhere.SelectedValue != "")
+                        {
+                            if (!CheckAnd)
+                            {
+                                theCondition = theCondition + " (";
+                            }
+                            CheckAnd = true;
+                            if (!ddlWhere.SelectedValue.Contains("NULL"))
+                            {
+                                if (i == 1)
+                                {
+                                    theCondition = theCondition + " " + field + " " + ddlWhere.SelectedValue + " '" + txtValue.Text.Trim() + "' ";
+                                }
+                                else
+                                {
+                                    ddlAndOr = (DropDownList)itm.FindControl("ddAndOr" + i.ToString());
+                                    theCondition = theCondition + " " + ddlAndOr.SelectedValue.ToString() + " " + field + ddlWhere.SelectedValue + "'" + txtValue.Text.Trim() + "'";
+                                }
+                            }
+                            else
+                            {
+                                if (i == 1)
+                                {
+                                    theCondition = theCondition + " " + field + " " + ddlWhere.SelectedValue;
+                                }
+                                else
+                                {
+                                    ddlAndOr = (DropDownList)itm.FindControl("ddAndOr" + i.ToString());
+                                    theCondition = theCondition + " " + ddlAndOr.SelectedValue.ToString() + " " + field + ddlWhere.SelectedValue;
+                                }
+                            }
+                        }
+                    }
+                    if (CheckAnd)
+                    {
+                        theCondition = theCondition + " ) and "; 
+                    }
+                    if (ddlSort.SelectedValue != "")
+                    {
+                        if (OrderBy.Trim().Length <= 0)
+                        {
+                            OrderBy = " order by " + field + " " + ddlSort.SelectedValue.ToString();
+                        }
+                        else
+                        {
+                            OrderBy = OrderBy + "," + field + " " + ddlSort.SelectedValue.ToString();
+                        }
+                    }
+                }
+            }
+
+            views = views.Trim().Substring(0, views.Trim().Length - 1);
+            string[] arrView = views.Split(',');
+            string viewVisit = "VW_PatientAssessmentTherapy, VW_Visit, VW_PatientAssessment, VW_PatientHIVOther, VW_OISorAIDSDefingIllnesses, VW_PatientClinicalStatus, VW_PatientAdherence, VW_PatientStage, VW_PatientSymptoms, VW_TherapyAdherence, VW_PatientTherapy";
+            string join = "";
+            if (arrView.Length > 1)
+            {
+                for (int i = 0; i < arrView.Length - 1; i++)
+                {
+                    if (arrView[i].ToString().ToUpper() == "VW_FACILITY" || arrView[i+1].ToString().ToUpper() == "VW_FACILITY")
+                    {
+                        join = join + " " + arrView[i].ToString() + ".LocationId=" + arrView[i + 1].ToString() + ".LocationId and ";
+                    }
+                    //vw_PatientClinicalStatus (add VisitId)
+                    else if (viewVisit.Contains(arrView[i].ToString()) && viewVisit.Contains(arrView[i + 1].ToString()))
+                    {
+                        join = join + " " + arrView[i].ToString() + ".Ptn_pk=" + arrView[i + 1].ToString() + ".Ptn_pk";
+                        join = join + " and " + arrView[i].ToString() + ".VisitId=" + arrView[i + 1].ToString() + ".VisitId ";
+                        join = join + " and " + arrView[i].ToString() + ".LocationId=" + arrView[i + 1].ToString() + ".LocationId and ";
+                    }
+                    else
+                    {
+                        join = join + " " + arrView[i].ToString() + ".Ptn_pk=" + arrView[i + 1].ToString() + ".Ptn_pk";
+                        join = join + " and " + arrView[i].ToString() + ".LocationId=" + arrView[i + 1].ToString() + ".LocationId and ";
+                    }
+                }
+            }
+         
+            theCondition = theCondition.Substring(0, theCondition.Trim().Length - 3);
+            theCondition = theCondition.Replace("and and", " and ");
+            theQuery = theQuery.Replace("Select,", "Select ");
+            if (GroupBy.Trim().Length > 5)
+            {
+                GroupBy = "Group by " + GroupBy.Substring(0, GroupBy.Trim().Length - 1);
+            }
+
+            theQuery = theQuery + " From " + views;
+            if (join.Length > 1)
+            {
+                theQuery = theQuery + " where " +  join.Substring(0,join.Trim().Length-3)  ;
+            }
+
+            if (theCondition.Trim().Length > 8)
+            {
+                if (!theQuery.Contains("where"))
+                {
+                    theQuery = theQuery + " " +  theCondition;
+                }
+                else
+                {
+                    theQuery = theQuery + " " +  theCondition.Replace("where", " and ");
+                }
+            }
+
+         
+            this.txtSQLStatement.Text = theQuery.Trim() + " " + GroupBy + " " + OrderBy ;
+
+
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+         }
+    }
+
+
+}

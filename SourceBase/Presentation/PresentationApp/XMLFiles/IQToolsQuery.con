@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+  <Category ID="5" Name="Clinical">
+    <SubCategory Name="Programmatic">
+      <Query>
+        <Query_ID>240</Query_ID>
+        <Name>PMT_P4-AllPatients</Name>
+        <Description>P4: Line List of ALL Patients Ever Enrolled</Description>
+        <SubCategoryID>187</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>241</Query_ID>
+        <Name>PMT_P1-EnrollmentByMonth</Name>
+        <Description>P1: Patient Enrollment By Month</Description>
+        <SubCategoryID>188</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>242</Query_ID>
+        <Name>PMT_P3-ARTStartByMonth</Name>
+        <Description>P3: Number Of Patients Starting ART By Month</Description>
+        <SubCategoryID>189</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>243</Query_ID>
+        <Name>PMT_P2-AllARTPatients</Name>
+        <Description>P2: Line List of ALL ART Patients Enrolled</Description>
+        <SubCategoryID>190</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>244</Query_ID>
+        <Name>PMT_P5-StartingARTInTimeFrame</Name>
+        <Description>P5: Line List of Patients Starting ART Within The Specified Timeframe</Description>
+        <SubCategoryID>191</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>248</Query_ID>
+        <Name>PMT_P6-WorkloadAnalysis</Name>
+        <Description>P6: Forms Computerized By Data Staff Within A Specified Timeframe</Description>
+        <SubCategoryID>195</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>249</Query_ID>
+        <Name>PMT_P7-EnrollmentByEntryPoint</Name>
+        <Description>P7: Number Of Patients Enrolled By Entry Point</Description>
+        <SubCategoryID>196</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>251</Query_ID>
+        <Name>PMT_P8-DueForCD4</Name>
+        <Description>P8: Line List Of ART Patients Due For A CD4 Count Now</Description>
+        <SubCategoryID>198</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>256</Query_ID>
+        <Name>PMT_P11-AllTerminations</Name>
+        <Description>P11: Line List Of All Terminations (CDC)</Description>
+        <SubCategoryID>203</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>257</Query_ID>
+        <Name>PMT_P9-WHO34</Name>
+        <Description>P9: Line List Of Active Patients On WHO Stages 3 &amp; 4 On Their Last Visit</Description>
+        <SubCategoryID>204</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>258</Query_ID>
+        <Name>PMT_P10-CurrentOn2NDLine</Name>
+        <Description>P10: Line List Of Patients Currently On 2nd Line Regimen</Description>
+        <SubCategoryID>205</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>265</Query_ID>
+        <Name>PMT_P12-NoCTX</Name>
+        <Description>P12: Line List Of Active Patients Who Did Not Have Sulfa/TMX During The Last 3Mths</Description>
+        <SubCategoryID>212</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>267</Query_ID>
+        <Name>PMT_P13-PCR</Name>
+        <Description>P13: PCR</Description>
+        <SubCategoryID>214</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>537</Query_ID>
+        <Name>IQC_CliniciansWorkload</Name>
+        <Description>Clinicians Workload Query</Description>
+        <SubCategoryID>477</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="CD4 Cohorts">
+      <Query>
+        <Query_ID>252</Query_ID>
+        <Name>PMT_QR-Table4b</Name>
+        <Description>C2: Line List Of Patients At Start Of 12 Month Cohort - CDC Table 4</Description>
+        <SubCategoryID>199</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>253</Query_ID>
+        <Name>PMT_QR-Table4a</Name>
+        <Description>C1: Line List Of Patients At Start Of 6Month Cohort - CDC table 4</Description>
+        <SubCategoryID>200</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="Patient Disease">
+      <Query>
+        <Query_ID>254</Query_ID>
+        <Name>PMT_PD1-AllTB</Name>
+        <Description>Line List Of All Patients On Treatment For TB</Description>
+        <SubCategoryID>201</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>255</Query_ID>
+        <Name>PMT_PD3-CNSManifestations</Name>
+        <Description>PD3: CNS Manifestions - Cryptococcal Menengitis</Description>
+        <SubCategoryID>202</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>259</Query_ID>
+        <Name>PMT_PD2-TBInTimeFrame</Name>
+        <Description>PD2: Line List Of Patients With TB In Specified Timeframe</Description>
+        <SubCategoryID>206</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>270</Query_ID>
+        <Name>PMT_PD4-Cancer</Name>
+        <Description>PD4: Line List Of Cancer Patients</Description>
+        <SubCategoryID>217</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="Quarterly Report">
+      <Query>
+        <Query_ID>272</Query_ID>
+        <Name>PMT_QR-Table6</Name>
+        <Description>QR1: Line List Of Patients In Table 6 - CDC Quarterly Report</Description>
+        <SubCategoryID>219</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>277</Query_ID>
+        <Name>PMT_QR-Table5</Name>
+        <Description>QR2: Line List Of ART Patients With Unrecognized Regimen</Description>
+        <SubCategoryID>224</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="Survival Analysis">
+      <Query>
+        <Query_ID>275</Query_ID>
+        <Name>PMT_StatusAt1Year</Name>
+        <Description>Line List Of ALL ART Patients Status 1 Year After ART Start</Description>
+        <SubCategoryID>222</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>354</Query_ID>
+        <Name>IQC_previousART</Name>
+        <Description>ART History</Description>
+        <SubCategoryID>301</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>397</Query_ID>
+        <Name>IQC_HIVInOldAge</Name>
+        <Description>HIV Effects in Old Age</Description>
+        <SubCategoryID>348</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="AR Lists">
+      <Query>
+        <Query_ID>278</Query_ID>
+        <Name>IQC_0067a</Name>
+        <Description>1. Cumulative Patients on Care and Treatment (CDC Quarterly Report - Table 1, Column 3)</Description>
+        <SubCategoryID>225</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>279</Query_ID>
+        <Name>IQC_0067b</Name>
+        <Description>2. Unique patients That received HIV care During The Last 3 Months</Description>
+        <SubCategoryID>226</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>280</Query_ID>
+        <Name>IQC_0067c</Name>
+        <Description>3. Cumulative Patients Started on ART (CDC Quarterly Report - Table 2, Column 3)</Description>
+        <SubCategoryID>227</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>281</Query_ID>
+        <Name>IQC_0067d</Name>
+        <Description>4. Current Patients on ART (CDC Quarterly Report - Table 2, Column 6)</Description>
+        <SubCategoryID>228</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>282</Query_ID>
+        <Name>IQC_0067e</Name>
+        <Description>5. ART Terminations (CDC Quarterly Report - Table 6)</Description>
+        <SubCategoryID>229</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>283</Query_ID>
+        <Name>IQC_0067f</Name>
+        <Description>6. Line List of Patient Visits In The Month</Description>
+        <SubCategoryID>230</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>284</Query_ID>
+        <Name>IQC_0067g</Name>
+        <Description>7. Line List of Lab Tests Done In The Month</Description>
+        <SubCategoryID>231</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="CDC_Uganda">
+      <Query>
+        <Query_ID>290</Query_ID>
+        <Name>CDC_UG2000</Name>
+        <Description>P2000: Number of Active Patients in HIV Care at the Beginning of and During the Quarter</Description>
+        <SubCategoryID>237</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>291</Query_ID>
+        <Name>CDC_Ug2001</Name>
+        <Description>P2001:Number New Enrollees in HIV Care during the Quarter</Description>
+        <SubCategoryID>238</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>292</Query_ID>
+        <Name>CDC_Ug2002</Name>
+        <Description>P2002:Number in HIV Care who received Cotrim Prophylaxis</Description>
+        <SubCategoryID>239</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>293</Query_ID>
+        <Name>CDC_Ug2003</Name>
+        <Description>P2003:Number in HIV Care Sexually Active</Description>
+        <SubCategoryID>240</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>294</Query_ID>
+        <Name>CDC_Ug2004</Name>
+        <Description>P2004:Number in HIV Care Sexually Active with Partner Tested</Description>
+        <SubCategoryID>241</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>295</Query_ID>
+        <Name>CDC_Ug2005</Name>
+        <Description>P2005:Number in HIV Care Screened for ART by beginning of the Quarter</Description>
+        <SubCategoryID>242</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>296</Query_ID>
+        <Name>CDC_Ug2006</Name>
+        <Description>P2006:Number in HIV Care Screened for ART during the Quarter</Description>
+        <SubCategoryID>243</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>297</Query_ID>
+        <Name>CDC_Ug2007</Name>
+        <Description>P2007:Number in HIV Care with previous ART Experience</Description>
+        <SubCategoryID>244</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>298</Query_ID>
+        <Name>CDC_Ug2008</Name>
+        <Description>P2008:Number in HIV Care with History of PMTCT</Description>
+        <SubCategoryID>245</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>299</Query_ID>
+        <Name>CDC_Ug2009</Name>
+        <Description>P2009:WHO Stage1-4 in HIV Care</Description>
+        <SubCategoryID>246</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>300</Query_ID>
+        <Name>CDC_Ug2010</Name>
+        <Description>P2010:Median CD4 Count (6+ years) in HIV Care</Description>
+        <SubCategoryID>247</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>301</Query_ID>
+        <Name>CDC_Ug2011</Name>
+        <Description>P2011:Median CD4 Percent (&lt;6 years) in HIV Care</Description>
+        <SubCategoryID>248</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>302</Query_ID>
+        <Name>CDC_Ug2012</Name>
+        <Description>P2012: Number in HIV Care with Alcoholism and Substance abuse</Description>
+        <SubCategoryID>249</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>303</Query_ID>
+        <Name>CDC_Ug2013</Name>
+        <Description>P2013: Number in HIV Care with History of TB at Screening</Description>
+        <SubCategoryID>250</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>304</Query_ID>
+        <Name>CDC_Ug2014</Name>
+        <Description>P2014: Number in HIV Care with Active TB at Screening</Description>
+        <SubCategoryID>251</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>305</Query_ID>
+        <Name>CDC_Ug2015</Name>
+        <Description>P2015: Number on ART beginning of the Quarter</Description>
+        <SubCategoryID>252</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>306</Query_ID>
+        <Name>CDC_Ug2016</Name>
+        <Description>P2015: Number in ART Care Transferred in during the Quarter</Description>
+        <SubCategoryID>253</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>307</Query_ID>
+        <Name>CDC_Ug2018</Name>
+        <Description>P2017:Number on Cotrim Prophylaxis during the Quarter (ART Care)</Description>
+        <SubCategoryID>254</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>308</Query_ID>
+        <Name>CDC_Ug2019</Name>
+        <Description>P2018:Number of Family Members tested for HIV (ART Care)</Description>
+        <SubCategoryID>255</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>309</Query_ID>
+        <Name>CDC_Ug2020</Name>
+        <Description>P2019:WHO Stage 1-4 (ART Care)</Description>
+        <SubCategoryID>256</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>310</Query_ID>
+        <Name>CDC_Ug2021</Name>
+        <Description>P2020:Median CD4+ Count (6+ years) (ART Care)</Description>
+        <SubCategoryID>257</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>311</Query_ID>
+        <Name>CDC_Ug2022</Name>
+        <Description>P2021:Median CD4% (&lt;6 years) (ART Care)</Description>
+        <SubCategoryID>258</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>312</Query_ID>
+        <Name>CDC_Ug2023</Name>
+        <Description>P2022:Number in ART Care diagnosed with Cryptococcal Meningitis during the Quarter</Description>
+        <SubCategoryID>259</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>313</Query_ID>
+        <Name>CDC_Ug2024</Name>
+        <Description>P2023:History of TB at Screening (ART Care)</Description>
+        <SubCategoryID>260</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>314</Query_ID>
+        <Name>CDC_Ug2025</Name>
+        <Description>P2024:Active TB at Screening (ART Care)</Description>
+        <SubCategoryID>261</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>315</Query_ID>
+        <Name>CDC_Ug2026</Name>
+        <Description>P2025: Alcoholism and Substance abuse (ART Care)</Description>
+        <SubCategoryID>262</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>316</Query_ID>
+        <Name>CDC_Ug2027</Name>
+        <Description>P2026: Number with Previous ART (ART Care)</Description>
+        <SubCategoryID>263</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>317</Query_ID>
+        <Name>CDC_Ug2028</Name>
+        <Description>P2027: Number with History of PMTCT (ART Care)</Description>
+        <SubCategoryID>264</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>318</Query_ID>
+        <Name>CDC_Ug2029</Name>
+        <Description>P2028: Currently Not on ART (ART Care)</Description>
+        <SubCategoryID>265</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>319</Query_ID>
+        <Name>CDC_Ug2030</Name>
+        <Description>P2029: Total initial Number in Cohort</Description>
+        <SubCategoryID>266</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>320</Query_ID>
+        <Name>CDC_Ug2031</Name>
+        <Description>P2030:Patient Stopped ART Physician, Stopped ART,TRansferred out,Died,Lost to Follow-up</Description>
+        <SubCategoryID>267</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>321</Query_ID>
+        <Name>CDC_Ug2032</Name>
+        <Description>P2031:Number on Cotrim Prophylaxis (ART Care) </Description>
+        <SubCategoryID>268</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>322</Query_ID>
+        <Name>CDC_Ug2033</Name>
+        <Description>P2032:Episodes of Toxicity (ART Care) </Description>
+        <SubCategoryID>269</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>323</Query_ID>
+        <Name>CDC_Ug2034</Name>
+        <Description>P2033:Switched ART Regimen because of Toxicity</Description>
+        <SubCategoryID>270</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>324</Query_ID>
+        <Name>CDC_Ug2035</Name>
+        <Description>P2034:Switched ART Regimen because of Treatment Failure (ART Care)</Description>
+        <SubCategoryID>271</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>325</Query_ID>
+        <Name>CDC_Ug2036</Name>
+        <Description>P2035: New Diagnosis of Active TB (ART Care)</Description>
+        <SubCategoryID>272</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>326</Query_ID>
+        <Name>CDC_Ug2037</Name>
+        <Description>P2036: New Diagnosis of Cryptococcal Meningitis (ART Care)</Description>
+        <SubCategoryID>273</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>327</Query_ID>
+        <Name>CDC_Ug2038</Name>
+        <Description>P2037:Pregnant (ART Care)</Description>
+        <SubCategoryID>274</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>328</Query_ID>
+        <Name>CDC_Ug2039</Name>
+        <Description>P2038:Regimens (ART Care)</Description>
+        <SubCategoryID>275</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>329</Query_ID>
+        <Name>CDC_Ug2017</Name>
+        <Description>P2016:Number Initiated on ART during the Quarter (ART Care)</Description>
+        <SubCategoryID>276</SubCategoryID>
+      </Query>
+    </SubCategory>
+    <SubCategory Name="RC Lists">
+      <Query>
+        <Query_ID>330</Query_ID>
+        <Name>IQC_0068b_ll</Name>
+        <Description>1. RC Line List of Patients On Care in the Quarter</Description>
+        <SubCategoryID>277</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>331</Query_ID>
+        <Name>IQC_0068c_ll</Name>
+        <Description>2. RC Line List of Patients Currently on ART</Description>
+        <SubCategoryID>278</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>332</Query_ID>
+        <Name>IQC_0068d_ll</Name>
+        <Description>3. RC Line list of Patients Currently on 2nd Line Regimen</Description>
+        <SubCategoryID>279</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>333</Query_ID>
+        <Name>IQC_0068f_ll</Name>
+        <Description>4. RC Line List of Patients Active and No CD4 Done</Description>
+        <SubCategoryID>280</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>334</Query_ID>
+        <Name>IQC_0068g_ll</Name>
+        <Description>5. RC Line List of Patients Eligible but Not Started on ART</Description>
+        <SubCategoryID>281</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>335</Query_ID>
+        <Name>IQC_0068i_ll</Name>
+        <Description>6. RC Line List of Patients On Cotrim in the Last 3 Months</Description>
+        <SubCategoryID>282</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>336</Query_ID>
+        <Name>IQC_0068j_ll</Name>
+        <Description>7. RC Line List of Patients Defaulters Over 90 Days</Description>
+        <SubCategoryID>283</SubCategoryID>
+      </Query>
+      <Query>
+        <Query_ID>337</Query_ID>
+        <Name>IQC_0068k_ll</Name>
+        <Description>8. RC Line Lists of Patients ART Care Follow-Up</Description>
+        <SubCategoryID>284</SubCategoryID>
+      </Query>
+    </SubCategory>
+  </Category>
+</Root>

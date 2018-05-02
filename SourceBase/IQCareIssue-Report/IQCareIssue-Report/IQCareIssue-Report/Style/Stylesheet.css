@@ -1,0 +1,49 @@
+﻿body
+{
+}
+.style1
+{
+    width: 100%;
+}
+.style2
+{
+    width: 119px;
+}
+.style3
+{
+    width: 253px;
+}
+#container
+{
+    color: #ffffff;
+    background: gray;
+}
+#container1
+{
+    color: #ffffff;
+    background: gray;
+}
+.required {
+	color: #000099; font-size:15px; font-family:Arial}
+.alert{color:Red;font-size:12px; font-family:Arial;
+       
+       }
+.normaltext{color:Black; font-size:15px; font-family:Arial;font-weight: bold}
+	
+.margin20 {
+margin-left: 20px; margin-right: 6px}
+
+.bold {
+	font-weight: bold
+}
+.pad5 {
+	padding-right: 5px; padding-left: 5px; padding-bottom: 5px; padding-top: 5px
+}
+.center {
+	text-align: center
+}
+.tfont
+{
+    font-size:12px; font-family:Arial;
+}
+.header{background-color: #ccccff}

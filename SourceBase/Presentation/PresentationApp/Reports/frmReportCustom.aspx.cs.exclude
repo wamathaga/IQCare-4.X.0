@@ -1,0 +1,243 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.IO;
+using Application.Common;
+using Interface.Reports;
+using Application.Presentation;
+     
+
+public partial class Reports_frmReportCustom : System.Web.UI.Page
+{
+    IReports CustomReport;
+
+    #region "User Functions"
+      
+    #endregion
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        this.btnExportReport.Attributes.Add("onclick", "javascript:return CheckReport('" + this.ddTitle.ClientID +"')");
+        if (Page.IsPostBack != true)
+        {
+            DataSet dsCategory;
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsCategory = CustomReport.GetAllCategory();
+            ddCategory.DataSource = dsCategory.Tables[0];
+            ddCategory.DataTextField = "CategoryName";
+            ddCategory.DataValueField = "CategoryId";
+            ddCategory.DataBind();
+            ddCategory.Items.Insert(0, new ListItem("Select Category",""));
+        }
+       
+    }
+
+    protected void btnNewRport_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("frmReportCustomNew.aspx", true);
+    }
+
+    protected void lnkNewReport_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("frmReportCustomNew.aspx", true);
+    }
+
+    protected void btnExportReport_Click(object sender, EventArgs e)
+    {
+        if (this.ddTitle.SelectedValue.ToString() != "")
+        {
+            DataSet dsExistingReport, dsCustomReport;
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsExistingReport = CustomReport.GetCustomReportData(Convert.ToInt32(this.ddTitle.SelectedValue));
+            DataTable dtReportField = null;
+            DataTable dtReportFilter = null;
+
+            if (dsExistingReport.Tables.Count > 1 && dsExistingReport.Tables[1] != null)
+            {
+                dtReportField = dsExistingReport.Tables[1];
+            }
+            if (dsExistingReport.Tables.Count > 2 && dsExistingReport.Tables[2] != null)
+            {
+                dtReportFilter = dsExistingReport.Tables[2];
+            }
+
+            DataRow drMstReport;
+            dsCustomReport = CreateDataSet();
+            drMstReport = dsCustomReport.Tables["dtMstReport"].NewRow();
+
+            drMstReport["ReportName"] = dsExistingReport.Tables[0].Rows[0]["ReportName"].ToString();
+            drMstReport["Description"] = dsExistingReport.Tables[0].Rows[0]["Description"].ToString();
+            drMstReport["Condition"] = dsExistingReport.Tables[0].Rows[0]["Condition"].ToString();
+            drMstReport["CategoryId"] = dsExistingReport.Tables[0].Rows[0]["CategoryId"].ToString();
+            dsCustomReport.Tables["dtMstReport"].Rows.Add(drMstReport);
+
+            DataRow drReportFields;
+            DataRow drReportFilter;
+            DataView dvFilter;
+
+            if (dtReportField != null)
+            {
+                foreach (DataRow dr in dtReportField.Rows)
+                {
+                    drReportFields = dsCustomReport.Tables["dtlReportFields"].NewRow();
+
+                    drReportFields["GroupId"] = Convert.ToInt32(dr["GroupId"]);
+                    drReportFields["FieldId"] = Convert.ToInt32(dr["FieldId"]);
+
+                    drReportFields["FieldLabel"] = dr["FieldLabel"].ToString();
+                    drReportFields["AggregateFunction"] = dr["AggregateFunction"].ToString();
+                    drReportFields["IsDisplay"] = dr["IsDisplay"];
+                    drReportFields["Sequence"] = dr["Sequence"];
+                    drReportFields["Sort"] = dr["Sort"];
+                    dsCustomReport.Tables["dtlReportFields"].Rows.Add(drReportFields);
+                    //===============================================================================
+                    dvFilter = new DataView(dtReportFilter, "ReportFieldId=" + dr["ReportFieldId"], "Sequence", DataViewRowState.CurrentRows);
+                    if (dvFilter.Count > 0)
+                    {
+                        for (int i = 0; i < dvFilter.Count; i++)
+                        {
+                            drReportFilter = dsCustomReport.Tables["dtlReportFilter"].NewRow();
+                            drReportFilter["LinkFieldId"] = Convert.ToInt32(dr["Sequence"]);
+                            drReportFilter["Operator"] = dvFilter[i]["Operator"].ToString();
+                            drReportFilter["FilterValue"] = dvFilter[i]["FilterValue"].ToString();
+                            drReportFilter["AndOr"] = dvFilter[i]["AndOr"].ToString();
+                            drReportFilter["Sequence"] = dvFilter[i]["Sequence"].ToString();
+                            dsCustomReport.Tables["dtlReportFilter"].Rows.Add(drReportFilter);
+                        }
+                    }
+                    //===============================================================================
+                }
+            }
+            Stream stream = new MemoryStream();
+            dsCustomReport.WriteXml(stream);
+            byte[] Buffer;
+
+            Buffer = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(Buffer, 0, (int)stream.Length);
+            stream.Close();
+
+            Response.Clear();
+
+            Response.ContentType = "application/xml";
+            Response.AddHeader("content-disposition", "attachment; filename=Report.xml");
+            Response.BinaryWrite(Buffer);
+
+            Response.End();
+        }
+    }
+
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        if (this.ddTitle.SelectedValue != "")
+        {
+            Response.Redirect("frmReportCustomNew.aspx?ReportId=" + this.ddTitle.SelectedValue.ToString(), true);
+        }
+    }
+    protected void ddCategory_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddCategory.SelectedValue != "")
+        {
+            DataSet dsReports;
+            CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+            dsReports = CustomReport.GetReportList(Convert.ToInt32(ddCategory.SelectedValue));
+            ddTitle.DataSource = dsReports.Tables[0];
+            ddTitle.DataTextField = "ReportName";
+            ddTitle.DataValueField = "ReportId";
+            ddTitle.DataBind();
+            ddTitle.Items.Insert(0, new ListItem("Select Title", ""));
+        }
+    }
+
+    protected void btnEditImport_Click(object sender, EventArgs e)
+    {
+        if (this.inptReport.Value != "")
+        {
+            if (File.Exists(this.inptReport.Value.Trim()))
+            {
+                DataSet theDS = CreateDataSet();
+                try
+                {
+                     theDS.ReadXml(this.inptReport.Value);
+
+                     CustomReport = (IReports)ObjectFactory.CreateInstance("BusinessProcess.Reports.BReports,BusinessProcess.Reports");
+                     int theReportId;
+                     theReportId = CustomReport.SaveCustomReport(theDS, 0);
+                     Response.Redirect("frmReportCustomNew.aspx?ReportId=" + theReportId.ToString(), true);
+                     
+                }
+                catch (Exception ex)
+                {
+                    string message = "";
+                    message = "<script> alert('Please provide valid file.');</script>";
+                    Page.RegisterStartupScript("message", message);
+                    return;
+                } 
+
+            }
+        }
+
+
+    }
+
+    private DataSet CreateDataSet()
+    {
+        DataSet dsCustomReports = new DataSet();
+
+        DataTable dtMstReport = new DataTable("dtMstReport");
+        DataTable dtlReportFields = new DataTable("dtlReportFields");
+        DataTable dtlReportFilter = new DataTable("dtlReportFilter");
+
+        //============= adding columns to MstReport DataTable ================
+        dtMstReport.Columns.Add(new DataColumn("ColumnNo", typeof(int)));
+        dtMstReport.Columns.Add(new DataColumn("CategoryId", typeof(int)));
+        dtMstReport.Columns.Add(new DataColumn("CategoryName", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("ReportName", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("Description", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("Condition", typeof(string)));
+        dtMstReport.Columns.Add(new DataColumn("ReportId", typeof(int)));
+
+        //============= adding columns to Report's Field DataTable ================
+        dtlReportFields.Columns.Add(new DataColumn("GroupId", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("FieldId", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("FieldLabel", typeof(string)));
+        dtlReportFields.Columns.Add(new DataColumn("AggregateFunction", typeof(string)));
+        dtlReportFields.Columns.Add(new DataColumn("IsDisplay", typeof(bool)));
+        dtlReportFields.Columns.Add(new DataColumn("Sequence", typeof(int)));
+        dtlReportFields.Columns.Add(new DataColumn("Sort", typeof(string)));
+
+        //============= adding columns to Report's Filter DataTable ================
+        dtlReportFilter.Columns.Add(new DataColumn("LinkFieldId", typeof(int)));
+        dtlReportFilter.Columns.Add(new DataColumn("Operator", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("FilterValue", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("AndOr", typeof(string)));
+        dtlReportFilter.Columns.Add(new DataColumn("Sequence", typeof(int)));
+
+        dsCustomReports.Tables.Add(dtMstReport);
+        dsCustomReports.Tables.Add(dtlReportFields);
+        dsCustomReports.Tables.Add(dtlReportFilter);
+
+        return dsCustomReports;
+    }
+
+
+
+    protected void btnRun_Click(object sender, EventArgs e)
+    {
+        if (this.ddTitle.SelectedValue != "")
+        {
+           
+            Response.Redirect("frmReportViewer.aspx?ReportId=" + this.ddTitle.SelectedValue.ToString(), true);
+        }
+    }
+}

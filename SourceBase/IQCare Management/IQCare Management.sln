@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQCare Management", "IQCare Management.csproj", "{0F4F7B80-C05C-4129-A644-911E14BBB67A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQCare.Service", "IQCare.Service\IQCare.Service.csproj", "{82EBF600-0829-4FEA-9D90-A396A302DDDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQCare.FormBuilder", "IQCare.FormBuilder\IQCare.FormBuilder.csproj", "{FC595C57-2718-4639-AD31-25CF08BF1A2A}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "IQMGT", "IQMGT\IQMGT.vdproj", "{7C443424-AD26-4FF8-A557-7328E7FA23D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQCare.SCM", "IQCare.SCM\IQCare.SCM.csproj", "{D6D52F8E-125C-477E-8F21-BA3C513CDAA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Presentation", "..\Presentation\Application.Presentation\Application.Presentation.csproj", "{2E7534C9-101D-4B6D-8E57-056101E4D54D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://192.168.0.2:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = IQCare\u0020Management.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = IQCare.FormBuilder\\IQCare.FormBuilder.csproj
+		SccProjectName2 = IQCare.FormBuilder
+		SccLocalPath2 = IQCare.FormBuilder
+		SccProjectUniqueName3 = IQCare.SCM\\IQCare.SCM.csproj
+		SccProjectName3 = IQCare.SCM
+		SccLocalPath3 = IQCare.SCM
+		SccProjectUniqueName4 = IQCare.Service\\IQCare.Service.csproj
+		SccProjectName4 = IQCare.Service
+		SccLocalPath4 = IQCare.Service
+		SccProjectUniqueName5 = IQMGT\\IQMGT.vdproj
+		SccProjectName5 = IQMGT
+		SccLocalPath5 = IQMGT
+		SccProjectUniqueName6 = ..\\Presentation\\Application.Presentation\\Application.Presentation.csproj
+		SccProjectName6 = ../Presentation/Application.Presentation
+		SccLocalPath6 = ..\\Presentation\\Application.Presentation
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F4F7B80-C05C-4129-A644-911E14BBB67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4F7B80-C05C-4129-A644-911E14BBB67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4F7B80-C05C-4129-A644-911E14BBB67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4F7B80-C05C-4129-A644-911E14BBB67A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82EBF600-0829-4FEA-9D90-A396A302DDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82EBF600-0829-4FEA-9D90-A396A302DDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82EBF600-0829-4FEA-9D90-A396A302DDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82EBF600-0829-4FEA-9D90-A396A302DDDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC595C57-2718-4639-AD31-25CF08BF1A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC595C57-2718-4639-AD31-25CF08BF1A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC595C57-2718-4639-AD31-25CF08BF1A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC595C57-2718-4639-AD31-25CF08BF1A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C443424-AD26-4FF8-A557-7328E7FA23D6}.Debug|Any CPU.ActiveCfg = Debug
+		{7C443424-AD26-4FF8-A557-7328E7FA23D6}.Release|Any CPU.ActiveCfg = Release
+		{7C443424-AD26-4FF8-A557-7328E7FA23D6}.Release|Any CPU.Build.0 = Release
+		{D6D52F8E-125C-477E-8F21-BA3C513CDAA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D52F8E-125C-477E-8F21-BA3C513CDAA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D52F8E-125C-477E-8F21-BA3C513CDAA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D52F8E-125C-477E-8F21-BA3C513CDAA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7534C9-101D-4B6D-8E57-056101E4D54D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
